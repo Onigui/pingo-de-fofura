@@ -1,0 +1,2755 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pingo de Fofura - Banho e Tosa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff85a2;
+            --secondary: #ffd6e0;
+            --accent: #a5e1d2;
+            --dark: #333;
+            --light: #f8f9fa;
+            --success: #28a745;
+            --admin: #6f42c1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Header Principal */
+        .main-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 1rem;
+        }
+
+        .logo i {
+            font-size: 3rem;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+
+        /* Seletor de Interface */
+        .interface-selector {
+            background: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .interface-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .interface-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-width: 200px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .interface-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .interface-btn.admin {
+            background: linear-gradient(135deg, var(--admin), #8b5cf6);
+        }
+
+        .interface-btn i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Efeitos interativos para formulário */
+        input[type="text"]:focus, input[type="tel"]:focus, input[type="email"]:focus {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 3px rgba(255, 133, 162, 0.1) !important;
+            outline: none !important;
+        }
+
+        /* Efeitos para radio buttons e checkboxes */
+        input[type="radio"]:checked + div,
+        input[type="checkbox"]:checked + div {
+            background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+            color: white !important;
+            border-color: var(--primary) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 25px rgba(255, 133, 162, 0.3) !important;
+        }
+
+        input[type="radio"]:checked + div span,
+        input[type="checkbox"]:checked + div span {
+            color: white !important;
+        }
+
+        input[type="radio"]:checked + div i,
+        input[type="checkbox"]:checked + div i {
+            color: white !important;
+        }
+
+        /* Hover effects */
+        label:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+        }
+
+        /* Button hover effect */
+        button[type="submit"]:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 12px 35px rgba(255, 133, 162, 0.4) !important;
+        }
+
+        button[type="submit"]:hover div {
+            left: 100% !important;
+        }
+
+        /* Área do Cliente */
+        .client-area {
+            display: none;
+        }
+
+        .client-nav {
+            background: white;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .client-nav.hidden {
+            transform: translateY(-100%);
+        }
+
+        .client-nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Menu Mobile */
+        .mobile-menu-toggle {
+            display: none;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 50%;
+            cursor: pointer;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-size: 1.2rem;
+            width: 60px;
+            height: 60px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-toggle:hover {
+            background: #ff6b8b;
+            transform: scale(1.1);
+        }
+
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 1.5rem;
+            z-index: 1001;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.show {
+            transform: translateY(0);
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .mobile-menu-title {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .mobile-menu-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark);
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+        }
+
+        .mobile-menu-btn {
+            background: none;
+            border: 2px solid var(--secondary);
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            text-align: center;
+        }
+
+        .mobile-menu-btn:hover, .mobile-menu-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .mobile-menu-btn i {
+            font-size: 1.5rem;
+        }
+
+        .mobile-menu-btn span {
+            font-size: 0.9rem;
+        }
+
+        .client-nav-btn {
+            background: none;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .client-nav-btn:hover, .client-nav-btn.active {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Área Administrativa */
+        .admin-area {
+            display: none;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, var(--admin), #8b5cf6);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .admin-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .admin-user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .admin-nav {
+            background: white;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .admin-nav.hidden {
+            transform: translateY(-100%);
+        }
+
+        .admin-nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* Menu Mobile Admin */
+        .admin-mobile-menu-toggle {
+            display: none;
+            background: var(--admin);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 50%;
+            cursor: pointer;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-size: 1.2rem;
+            width: 60px;
+            height: 60px;
+            transition: all 0.3s ease;
+        }
+
+        .admin-mobile-menu-toggle:hover {
+            background: #5a3ba3;
+            transform: scale(1.1);
+        }
+
+        .admin-mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .admin-mobile-menu {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 1.5rem;
+            z-index: 1001;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .admin-mobile-menu.show {
+            transform: translateY(0);
+        }
+
+        .admin-mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e0cffc;
+        }
+
+        .admin-mobile-menu-title {
+            color: var(--admin);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .admin-mobile-menu-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark);
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .admin-mobile-menu-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+        }
+
+        .admin-mobile-menu-btn {
+            background: none;
+            border: 2px solid #e0cffc;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            text-align: center;
+        }
+
+        .admin-mobile-menu-btn:hover, .admin-mobile-menu-btn.active {
+            background-color: var(--admin);
+            color: white;
+            border-color: var(--admin);
+        }
+
+        .admin-mobile-menu-btn i {
+            font-size: 1.5rem;
+        }
+
+        .admin-mobile-menu-btn span {
+            font-size: 0.9rem;
+        }
+
+        .admin-nav-btn {
+            background: none;
+            border: none;
+            padding: 0.6rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .admin-nav-btn:hover, .admin-nav-btn.active {
+            background-color: var(--admin);
+            color: white;
+        }
+
+        /* Botão de Voltar */
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Seções */
+        section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: none;
+        }
+
+        section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .admin-area h2 {
+            color: var(--admin);
+            border-bottom-color: #e0cffc;
+        }
+
+        /* Formulários */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 133, 162, 0.2);
+        }
+
+        .admin-area input:focus, .admin-area select:focus, .admin-area textarea:focus {
+            border-color: var(--admin);
+            box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.2);
+        }
+
+        /* Botões */
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        button:hover {
+            background-color: #ff6b8b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .admin-area button {
+            background-color: var(--admin);
+        }
+
+        .admin-area button:hover {
+            background-color: #5a3ba3;
+        }
+
+        button.secondary {
+            background-color: var(--accent);
+        }
+
+        button.secondary:hover {
+            background-color: #8bd3c1;
+        }
+
+        /* Cards de Serviços */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card {
+            background: white;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .service-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .service-card.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 133, 162, 0.3);
+        }
+
+        .service-card input[type="checkbox"] {
+            display: none;
+        }
+
+        .service-card .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .service-card.selected .service-icon {
+            color: white;
+        }
+
+        .service-card .service-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .service-card .service-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .service-card .service-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .service-card.selected .service-price {
+            color: white;
+        }
+
+        /* Tabela de Preços */
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .price-table th, .price-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .price-table th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: 600;
+        }
+
+        .price-table tr:hover {
+            background-color: var(--light);
+        }
+
+        /* Galeria */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .gallery-item {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .gallery-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            color: white;
+            font-size: 3rem;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .interface-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .interface-btn {
+                min-width: 250px;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            /* Esconder menu desktop no mobile */
+            .client-nav,
+            .admin-nav {
+                display: none;
+            }
+
+            /* Mostrar menu mobile */
+            .mobile-menu-toggle,
+            .admin-mobile-menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .mobile-menu-overlay,
+            .mobile-menu,
+            .admin-mobile-menu-overlay,
+            .admin-mobile-menu {
+                display: block;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* Ajustar container para mobile */
+            .container {
+                margin: 1rem auto;
+                padding: 0 0.5rem;
+            }
+
+            section {
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* Login Modal */
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-modal.show {
+            display: flex;
+        }
+
+        .login-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .login-form h3 {
+            color: var(--admin);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        /* Estilos específicos para área do cliente */
+        .client-welcome {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .client-welcome h2 {
+            color: white;
+            border: none;
+            margin-bottom: 1rem;
+        }
+
+        .whatsapp-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .whatsapp-btn:hover {
+            background: #ff6b8b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 133, 162, 0.3);
+        }
+
+        /* Manter estilo WhatsApp para botões específicos */
+        .whatsapp-btn.whatsapp-style {
+            background: #25D366;
+        }
+
+        .whatsapp-btn.whatsapp-style:hover {
+            background: #128C7E;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Principal -->
+    <header class="main-header">
+        <div class="logo">
+            <i class="fas fa-heart"></i>
+            Pingo de Fofura
+        </div>
+        <div class="tagline">Banho e Tosa com Amor e Carinho</div>
+        <div class="contact-info">
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                Rua Raul Torres N 213
+            </div>
+            <div class="contact-item">
+                <i class="fab fa-whatsapp"></i>
+                (14) 99854-5722
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-clock"></i>
+                Seg-Sáb: 8h às 18h
+            </div>
+        </div>
+    </header>
+
+    <!-- Seletor de Interface -->
+    <div class="interface-selector" id="interface-selector">
+        <h2>Como você gostaria de acessar?</h2>
+        <p>Escolha a opção que melhor se adequa às suas necessidades:</p>
+        
+        <div class="interface-buttons">
+            <button class="interface-btn" onclick="showClientArea()">
+                <i class="fas fa-user"></i>
+                <div>Sou Cliente</div>
+                <small>Agendar serviços, consultar preços</small>
+            </button>
+            
+            <button class="interface-btn admin" onclick="window.location.href='admin.html'">
+                <i class="fas fa-user-shield"></i>
+                <div>Área Administrativa</div>
+                <small>Gerenciar negócio, relatórios</small>
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de Login Administrativo -->
+    <div class="login-modal" id="login-modal">
+        <div class="login-form">
+            <h3><i class="fas fa-lock"></i> Acesso Administrativo</h3>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-username">Usuário:</label>
+                    <input type="text" id="admin-username" required placeholder="Digite seu usuário">
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Senha:</label>
+                    <input type="password" id="admin-password" required placeholder="Digite sua senha">
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <button type="submit" style="background: var(--admin);">
+                        <i class="fas fa-sign-in-alt"></i> Entrar
+                    </button>
+                    <button type="button" onclick="hideAdminLogin()" class="secondary">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
+            </form>
+            <div style="margin-top: 1rem; padding: 1rem; background: var(--light); border-radius: 5px; font-size: 0.9rem;">
+                <strong>Usuário padrão:</strong><br>
+                Usuário: admin<br>
+                Senha: admin123
+            </div>
+        </div>
+    </div>
+
+    <!-- Área do Cliente -->
+    <div class="client-area" id="client-area">
+        <!-- Navegação do Cliente -->
+        <nav class="client-nav">
+            <div class="client-nav-buttons">
+                <button class="client-nav-btn active" data-section="client-welcome">
+                    <i class="fas fa-home"></i> Início
+                </button>
+                <button class="client-nav-btn" data-section="client-pet-form">
+                    <i class="fas fa-paw"></i> Ficha de Atendimento
+                </button>
+                <button class="client-nav-btn" data-section="client-booking">
+                    <i class="fas fa-calendar-plus"></i> Agendar
+                </button>
+                <button class="client-nav-btn" data-section="client-services">
+                    <i class="fas fa-cut"></i> Serviços
+                </button>
+                <button class="client-nav-btn" data-section="client-prices">
+                    <i class="fas fa-tags"></i> Preços
+                </button>
+                <button class="client-nav-btn" data-section="client-gallery">
+                    <i class="far fa-images"></i> Galeria
+                </button>
+                <button class="back-btn" onclick="showInterfaceSelector()">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </button>
+            </div>
+        </nav>
+
+        <!-- Menu Mobile -->
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+        
+        <div class="mobile-menu" id="mobile-menu">
+            <div class="mobile-menu-header">
+                <div class="mobile-menu-title">
+                    <i class="fas fa-paw"></i> Menu
+                </div>
+                <button class="mobile-menu-close" id="mobile-menu-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mobile-menu-buttons">
+                <button class="mobile-menu-btn active" data-section="client-welcome">
+                    <i class="fas fa-home"></i>
+                    <span>Início</span>
+                </button>
+                <button class="mobile-menu-btn" data-section="client-pet-form">
+                    <i class="fas fa-paw"></i>
+                    <span>Ficha de Atendimento</span>
+                </button>
+                <button class="mobile-menu-btn" data-section="client-booking">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span>Agendar</span>
+                </button>
+                <button class="mobile-menu-btn" data-section="client-services">
+                    <i class="fas fa-cut"></i>
+                    <span>Serviços</span>
+                </button>
+                <button class="mobile-menu-btn" data-section="client-prices">
+                    <i class="fas fa-tags"></i>
+                    <span>Preços</span>
+                </button>
+                <button class="mobile-menu-btn" data-section="client-gallery">
+                    <i class="far fa-images"></i>
+                    <span>Galeria</span>
+                </button>
+                <button class="mobile-menu-btn" onclick="showInterfaceSelector(); closeMobileMenu();">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Voltar</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Seção de Boas-vindas do Cliente -->
+            <section id="client-welcome" class="active">
+                <div class="client-welcome">
+                    <h2><i class="fas fa-heart"></i> Bem-vindo ao Pingo de Fofura!</h2>
+                    <p>Cuidamos do seu pet com todo amor e carinho que ele merece. Nossos serviços são realizados por profissionais qualificados em um ambiente seguro e acolhedor.</p>
+                    <div style="margin-top: 2rem;">
+                        <button class="whatsapp-btn" onclick="showClientSection('client-booking')" style="cursor: pointer;">
+                            <i class="fas fa-calendar-plus"></i> Agende seu horário
+                        </button>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                    <div style="background: white; padding: 2rem; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                        <i class="fas fa-heart" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                        <h3 style="color: var(--primary); margin-bottom: 1rem;">Cuidado com Amor</h3>
+                        <p>Tratamos cada pet como se fosse nosso, com carinho e atenção especial.</p>
+                    </div>
+                    
+                    <div style="background: white; padding: 2rem; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                        <i class="fas fa-certificate" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                        <h3 style="color: var(--primary); margin-bottom: 1rem;">Profissionais Qualificados</h3>
+                        <p>Nossa equipe é treinada e experiente em cuidados com animais.</p>
+                    </div>
+                    
+                    <div style="background: white; padding: 2rem; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                        <i class="fas fa-shield-alt" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                        <h3 style="color: var(--primary); margin-bottom: 1rem;">Ambiente Seguro</h3>
+                        <p>Instalações limpas e seguras para o bem-estar do seu pet.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Cadastro de Pet -->
+            <section id="client-pet-form">
+                <h2><i class="fas fa-paw"></i> Ficha de Atendimento</h2>
+                
+                <div style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 3rem 2rem; border-radius: 20px; margin-bottom: 2rem; text-align: center; box-shadow: 0 8px 32px rgba(255, 133, 162, 0.3); position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; opacity: 0.5;"></div>
+                    <div style="position: absolute; bottom: -30px; left: -30px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%; opacity: 0.3;"></div>
+                    <div style="position: relative; z-index: 2;">
+                        <div style="display: inline-block; background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 50%; margin-bottom: 1rem;">
+                            <i class="fas fa-clipboard-list" style="font-size: 2.5rem; color: white;"></i>
+                        </div>
+                        <h3 style="color: white; margin-bottom: 0.8rem; font-size: 2rem; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            FICHA DE ATENDIMENTO
+                        </h3>
+                        <div style="background: rgba(255,255,255,0.2); padding: 0.5rem 1.5rem; border-radius: 25px; display: inline-block; margin-bottom: 1rem;">
+                            <h4 style="color: white; margin: 0; font-size: 1.2rem; font-weight: 600;">
+                                <i class="fas fa-cut" style="margin-right: 0.5rem;"></i>
+                                Pingo de Fofura Estética Animal
+                            </h4>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.15); padding: 0.8rem 1.5rem; border-radius: 15px; display: inline-block;">
+                            <p style="margin: 0; font-size: 1.1rem; font-weight: 500;">
+                                <i class="fas fa-calendar-alt" style="margin-right: 0.5rem;"></i>
+                                Data: <span id="current-date" style="font-weight: 600;"></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulário de Cadastro do Pet -->
+                <form id="pet-form" style="background: white; padding: 2rem; border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                    <!-- DADOS DO TUTOR -->
+                    <div style="background: linear-gradient(135deg, #fff, #fafbfc); border: none; border-radius: 20px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 8px 25px rgba(0,0,0,0.08); position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent)); border-radius: 20px 20px 0 0;"></div>
+                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+                            <div style="background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 1rem; border-radius: 50%; margin-right: 1rem; box-shadow: 0 4px 15px rgba(255, 133, 162, 0.3);">
+                                <i class="fas fa-user" style="font-size: 1.5rem; color: white;"></i>
+                            </div>
+                            <h3 style="color: var(--dark); margin: 0; font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                                DADOS DO TUTOR
+                            </h3>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                            <div class="form-group" style="position: relative;">
+                                <label for="pet-owner-name" style="font-weight: 600; color: var(--dark); margin-bottom: 0.5rem; display: block; font-size: 0.95rem;">
+                                    <i class="fas fa-user-circle" style="color: var(--primary); margin-right: 0.5rem;"></i>Nome Completo
+                                </label>
+                                <input type="text" id="pet-owner-name" required placeholder="Digite o nome completo do tutor" style="width: 100%; padding: 0.8rem 1rem; border: 2px solid #e9ecef; border-radius: 12px; font-size: 1rem; transition: all 0.3s ease; background: #fff;">
+                            </div>
+                            
+                            <div class="form-group" style="position: relative;">
+                                <label for="pet-owner-phone" style="font-weight: 600; color: var(--dark); margin-bottom: 0.5rem; display: block; font-size: 0.95rem;">
+                                    <i class="fas fa-phone" style="color: var(--primary); margin-right: 0.5rem;"></i>Telefone/WhatsApp
+                                </label>
+                                <input type="tel" id="pet-owner-phone" required placeholder="(14) 99999-9999" style="width: 100%; padding: 0.8rem 1rem; border: 2px solid #e9ecef; border-radius: 12px; font-size: 1rem; transition: all 0.3s ease; background: #fff;">
+                            </div>
+                            
+                            <div class="form-group" style="grid-column: 1 / -1; position: relative;">
+                                <label for="pet-owner-address" style="font-weight: 600; color: var(--dark); margin-bottom: 0.5rem; display: block; font-size: 0.95rem;">
+                                    <i class="fas fa-map-marker-alt" style="color: var(--primary); margin-right: 0.5rem;"></i>Endereço Completo
+                                </label>
+                                <input type="text" id="pet-owner-address" placeholder="Rua, número, bairro, cidade" style="width: 100%; padding: 0.8rem 1rem; border: 2px solid #e9ecef; border-radius: 12px; font-size: 1rem; transition: all 0.3s ease; background: #fff;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DADOS DO PET -->
+                    <div style="background: linear-gradient(135deg, #fff, #fafbfc); border: none; border-radius: 20px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 8px 25px rgba(0,0,0,0.08); position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--accent), var(--primary), var(--secondary)); border-radius: 20px 20px 0 0;"></div>
+                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+                            <div style="background: linear-gradient(135deg, var(--accent), #7dd3c0); padding: 1rem; border-radius: 50%; margin-right: 1rem; box-shadow: 0 4px 15px rgba(165, 225, 210, 0.4);">
+                                <i class="fas fa-paw" style="font-size: 1.5rem; color: white;"></i>
+                            </div>
+                            <h3 style="color: var(--dark); margin: 0; font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                                DADOS DO PET
+                            </h3>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                            <div class="form-group">
+                                <label for="pet-form-name" style="font-weight: 600; color: var(--dark); margin-bottom: 0.5rem; display: block; font-size: 0.95rem;">
+                                    <i class="fas fa-heart" style="color: var(--accent); margin-right: 0.5rem;"></i>Nome do Pet
+                                </label>
+                                <input type="text" id="pet-form-name" required placeholder="Digite o nome do pet" style="width: 100%; padding: 0.8rem 1rem; border: 2px solid #e9ecef; border-radius: 12px; font-size: 1rem; transition: all 0.3s ease; background: #fff;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="pet-form-breed" style="font-weight: 600; color: var(--dark); margin-bottom: 0.5rem; display: block; font-size: 0.95rem;">
+                                    <i class="fas fa-dna" style="color: var(--accent); margin-right: 0.5rem;"></i>Raça
+                                </label>
+                                <input type="text" id="pet-form-breed" required placeholder="Ex: Golden Retriever, SRD" style="width: 100%; padding: 0.8rem 1rem; border: 2px solid #e9ecef; border-radius: 12px; font-size: 1rem; transition: all 0.3s ease; background: #fff;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="pet-form-age" style="font-weight: 600; color: var(--dark); margin-bottom: 0.5rem; display: block; font-size: 0.95rem;">
+                                    <i class="fas fa-birthday-cake" style="color: var(--accent); margin-right: 0.5rem;"></i>Idade
+                                </label>
+                                <input type="text" id="pet-form-age" required placeholder="Ex: 2 anos, 6 meses" style="width: 100%; padding: 0.8rem 1rem; border: 2px solid #e9ecef; border-radius: 12px; font-size: 1rem; transition: all 0.3s ease; background: #fff;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="pet-form-weight" style="font-weight: 600; color: var(--dark); margin-bottom: 0.5rem; display: block; font-size: 0.95rem;">
+                                    <i class="fas fa-weight" style="color: var(--accent); margin-right: 0.5rem;"></i>Peso Aproximado
+                                </label>
+                                <input type="text" id="pet-form-weight" placeholder="Ex: 15kg" style="width: 100%; padding: 0.8rem 1rem; border: 2px solid #e9ecef; border-radius: 12px; font-size: 1rem; transition: all 0.3s ease; background: #fff;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="pet-form-color" style="font-weight: 600; color: var(--dark); margin-bottom: 0.5rem; display: block; font-size: 0.95rem;">
+                                    <i class="fas fa-palette" style="color: var(--accent); margin-right: 0.5rem;"></i>Cor/Pelagem
+                                </label>
+                                <input type="text" id="pet-form-color" placeholder="Ex: Dourado, Preto e branco" style="width: 100%; padding: 0.8rem 1rem; border: 2px solid #e9ecef; border-radius: 12px; font-size: 1rem; transition: all 0.3s ease; background: #fff;">
+                            </div>
+                        </div>
+
+                        <!-- Porte -->
+                        <div class="form-group" style="margin-bottom: 2rem;">
+                            <label style="font-weight: 600; color: var(--dark); margin-bottom: 1rem; display: block; font-size: 1rem;">
+                                <i class="fas fa-ruler-combined" style="color: var(--accent); margin-right: 0.5rem;"></i>Porte do Animal
+                            </label>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative; overflow: hidden;">
+                                    <input type="radio" name="pet-size" value="pequeno" id="pet-size-pequeno" required style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-dog" style="font-size: 1.5rem; color: var(--accent);"></i>
+                                        <span style="font-weight: 600; color: var(--dark);">Pequeno</span>
+                                        <span style="font-size: 0.8rem; color: #6c757d;">até 10kg</span>
+                                    </div>
+                                </label>
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative; overflow: hidden;">
+                                    <input type="radio" name="pet-size" value="medio" id="pet-size-medio" required style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-dog" style="font-size: 2rem; color: var(--accent);"></i>
+                                        <span style="font-weight: 600; color: var(--dark);">Médio</span>
+                                        <span style="font-size: 0.8rem; color: #6c757d;">10kg - 25kg</span>
+                                    </div>
+                                </label>
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative; overflow: hidden;">
+                                    <input type="radio" name="pet-size" value="grande" id="pet-size-grande" required style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-dog" style="font-size: 2.5rem; color: var(--accent);"></i>
+                                        <span style="font-weight: 600; color: var(--dark);">Grande</span>
+                                        <span style="font-size: 0.8rem; color: #6c757d;">acima de 25kg</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Pelagem -->
+                        <div class="form-group">
+                            <label style="font-weight: 600; color: var(--dark); margin-bottom: 1rem; display: block; font-size: 1rem;">
+                                <i class="fas fa-cut" style="color: var(--accent); margin-right: 0.5rem;"></i>Tipo de Pelagem
+                            </label>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative; overflow: hidden;">
+                                    <input type="radio" name="pet-coat" value="curta" id="pet-coat-curta" style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <div style="width: 30px; height: 15px; background: linear-gradient(135deg, var(--accent), #7dd3c0); border-radius: 8px;"></div>
+                                        <span style="font-weight: 600; color: var(--dark);">Curta</span>
+                                    </div>
+                                </label>
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative; overflow: hidden;">
+                                    <input type="radio" name="pet-coat" value="media" id="pet-coat-media" style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <div style="width: 30px; height: 20px; background: linear-gradient(135deg, var(--accent), #7dd3c0); border-radius: 8px;"></div>
+                                        <span style="font-weight: 600; color: var(--dark);">Média</span>
+                                    </div>
+                                </label>
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative; overflow: hidden;">
+                                    <input type="radio" name="pet-coat" value="longa" id="pet-coat-longa" style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <div style="width: 30px; height: 25px; background: linear-gradient(135deg, var(--accent), #7dd3c0); border-radius: 8px;"></div>
+                                        <span style="font-weight: 600; color: var(--dark);">Longa</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SAÚDE E COMPORTAMENTO -->
+                    <div style="background: linear-gradient(135deg, #fff, #fafbfc); border: none; border-radius: 20px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 8px 25px rgba(0,0,0,0.08); position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #28a745, var(--success), #20c997); border-radius: 20px 20px 0 0;"></div>
+                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+                            <div style="background: linear-gradient(135deg, var(--success), #20c997); padding: 1rem; border-radius: 50%; margin-right: 1rem; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);">
+                                <i class="fas fa-heartbeat" style="font-size: 1.5rem; color: white;"></i>
+                            </div>
+                            <h3 style="color: var(--dark); margin: 0; font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, var(--success), #20c997); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                                SAÚDE E COMPORTAMENTO
+                            </h3>
+                        </div>
+                        
+                        <!-- Vacina v10 -->
+                        <div class="form-group" style="margin-bottom: 2rem;">
+                            <label style="font-weight: 600; color: var(--dark); margin-bottom: 1rem; display: block; font-size: 1rem;">
+                                <i class="fas fa-syringe" style="color: var(--success); margin-right: 0.5rem;"></i>Vacina v10 em dia?
+                            </label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 400px;">
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative;">
+                                    <input type="radio" name="pet-vaccine" value="sim" id="pet-vaccine-sim" style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-check-circle" style="font-size: 1.5rem; color: var(--success);"></i>
+                                        <span style="font-weight: 600; color: var(--dark);">Sim</span>
+                                    </div>
+                                </label>
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative;">
+                                    <input type="radio" name="pet-vaccine" value="nao" id="pet-vaccine-nao" style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-times-circle" style="font-size: 1.5rem; color: #dc3545;"></i>
+                                        <span style="font-weight: 600; color: var(--dark);">Não</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Carrapatos/Pulgas -->
+                        <div class="form-group" style="margin-bottom: 2rem;">
+                            <label style="font-weight: 600; color: var(--dark); margin-bottom: 1rem; display: block; font-size: 1rem;">
+                                <i class="fas fa-bug" style="color: #dc3545; margin-right: 0.5rem;"></i>Está com carrapatos ou pulgas?
+                            </label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 400px;">
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative;">
+                                    <input type="radio" name="pet-parasites" value="sim" id="pet-parasites-sim" style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem; color: #dc3545;"></i>
+                                        <span style="font-weight: 600; color: var(--dark);">Sim</span>
+                                    </div>
+                                </label>
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative;">
+                                    <input type="radio" name="pet-parasites" value="nao" id="pet-parasites-nao" style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-check-circle" style="font-size: 1.5rem; color: var(--success);"></i>
+                                        <span style="font-weight: 600; color: var(--dark);">Não</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Alergia -->
+                        <div class="form-group" style="margin-bottom: 2rem;">
+                            <label style="font-weight: 600; color: var(--dark); margin-bottom: 1rem; display: block; font-size: 1rem;">
+                                <i class="fas fa-allergies" style="color: #ffc107; margin-right: 0.5rem;"></i>Alguma alergia?
+                            </label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 400px;">
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative;">
+                                    <input type="radio" name="pet-allergy" value="sim" id="pet-allergy-sim" style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-exclamation-circle" style="font-size: 1.5rem; color: #ffc107;"></i>
+                                        <span style="font-weight: 600; color: var(--dark);">Sim</span>
+                                    </div>
+                                </label>
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative;">
+                                    <input type="radio" name="pet-allergy" value="nao" id="pet-allergy-nao" style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-check-circle" style="font-size: 1.5rem; color: var(--success);"></i>
+                                        <span style="font-weight: 600; color: var(--dark);">Não</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Comportamento -->
+                        <div class="form-group" style="margin-bottom: 2rem;">
+                            <label style="font-weight: 600; color: var(--dark); margin-bottom: 1rem; display: block; font-size: 1rem;">
+                                <i class="fas fa-smile" style="color: var(--primary); margin-right: 0.5rem;"></i>Comportamento do Pet
+                            </label>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem;">
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative;">
+                                    <input type="radio" name="pet-behavior" value="calmo" id="pet-behavior-calmo" style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-dove" style="font-size: 1.5rem; color: var(--success);"></i>
+                                        <span style="font-weight: 600; color: var(--dark);">Calmo</span>
+                                    </div>
+                                </label>
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative;">
+                                    <input type="radio" name="pet-behavior" value="agitado" id="pet-behavior-agitado" style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-running" style="font-size: 1.5rem; color: #ffc107;"></i>
+                                        <span style="font-weight: 600; color: var(--dark);">Agitado</span>
+                                    </div>
+                                </label>
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative;">
+                                    <input type="radio" name="pet-behavior" value="agressivo" id="pet-behavior-agressivo" style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-angry" style="font-size: 1.5rem; color: #dc3545;"></i>
+                                        <span style="font-weight: 600; color: var(--dark);">Agressivo</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Medicação -->
+                        <div class="form-group" style="margin-bottom: 2rem;">
+                            <label style="font-weight: 600; color: var(--dark); margin-bottom: 1rem; display: block; font-size: 1rem;">
+                                <i class="fas fa-pills" style="color: #6f42c1; margin-right: 0.5rem;"></i>Toma medicação contínua?
+                            </label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 400px; margin-bottom: 1rem;">
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative;">
+                                    <input type="radio" name="pet-medication" value="sim" id="pet-medication-sim" style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-prescription-bottle-alt" style="font-size: 1.5rem; color: #6f42c1;"></i>
+                                        <span style="font-weight: 600; color: var(--dark);">Sim</span>
+                                    </div>
+                                </label>
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative;">
+                                    <input type="radio" name="pet-medication" value="nao" id="pet-medication-nao" style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-check-circle" style="font-size: 1.5rem; color: var(--success);"></i>
+                                        <span style="font-weight: 600; color: var(--dark);">Não</span>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label for="pet-medication-details" style="font-weight: 600; color: var(--dark); margin-bottom: 0.5rem; display: block; font-size: 0.95rem;">
+                                    <i class="fas fa-edit" style="color: #6f42c1; margin-right: 0.5rem;"></i>Se sim, qual medicação?
+                                </label>
+                                <input type="text" id="pet-medication-details" placeholder="Descreva a medicação e dosagem" style="width: 100%; padding: 0.8rem 1rem; border: 2px solid #e9ecef; border-radius: 12px; font-size: 1rem; transition: all 0.3s ease; background: #fff;">
+                            </div>
+                        </div>
+
+                        <!-- Problemas de pele -->
+                        <div class="form-group">
+                            <label style="font-weight: 600; color: var(--dark); margin-bottom: 1rem; display: block; font-size: 1rem;">
+                                <i class="fas fa-band-aid" style="color: #dc3545; margin-right: 0.5rem;"></i>Problemas de pele ou feridas?
+                            </label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 400px;">
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative;">
+                                    <input type="radio" name="pet-skin" value="sim" id="pet-skin-sim" style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem; color: #dc3545;"></i>
+                                        <span style="font-weight: 600; color: var(--dark);">Sim</span>
+                                    </div>
+                                </label>
+                                <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center; position: relative;">
+                                    <input type="radio" name="pet-skin" value="nao" id="pet-skin-nao" style="position: absolute; opacity: 0;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                                        <i class="fas fa-check-circle" style="font-size: 1.5rem; color: var(--success);"></i>
+                                        <span style="font-weight: 600; color: var(--dark);">Não</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SERVIÇOS SOLICITADOS -->
+                    <div style="background: linear-gradient(135deg, #fff, #fafbfc); border: none; border-radius: 20px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 8px 25px rgba(0,0,0,0.08); position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary), #ff6b8b); border-radius: 20px 20px 0 0;"></div>
+                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+                            <div style="background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 1rem; border-radius: 50%; margin-right: 1rem; box-shadow: 0 4px 15px rgba(255, 133, 162, 0.3);">
+                                <i class="fas fa-spa" style="font-size: 1.5rem; color: white;"></i>
+                            </div>
+                            <h3 style="color: var(--dark); margin: 0; font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                                SERVIÇOS SOLICITADOS
+                            </h3>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 15px; padding: 1.2rem; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden;">
+                                <input type="checkbox" name="services" value="banho" id="service-banho" style="position: absolute; opacity: 0;">
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; text-align: center;">
+                                    <i class="fas fa-shower" style="font-size: 2rem; color: var(--primary);"></i>
+                                    <span style="font-weight: 600; color: var(--dark); font-size: 1rem;">Banho</span>
+                                    <span style="font-size: 0.8rem; color: #6c757d;">Limpeza completa</span>
+                                </div>
+                            </label>
+                            <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 15px; padding: 1.2rem; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden;">
+                                <input type="checkbox" name="services" value="tosa-higienica" id="service-tosa-higienica" style="position: absolute; opacity: 0;">
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; text-align: center;">
+                                    <i class="fas fa-cut" style="font-size: 2rem; color: var(--accent);"></i>
+                                    <span style="font-weight: 600; color: var(--dark); font-size: 1rem;">Tosa Higiênica</span>
+                                    <span style="font-size: 0.8rem; color: #6c757d;">Áreas íntimas</span>
+                                </div>
+                            </label>
+                            <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 15px; padding: 1.2rem; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden;">
+                                <input type="checkbox" name="services" value="tosa-baixa" id="service-tosa-baixa" style="position: absolute; opacity: 0;">
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; text-align: center;">
+                                    <i class="fas fa-scissors" style="font-size: 2rem; color: var(--primary);"></i>
+                                    <span style="font-weight: 600; color: var(--dark); font-size: 1rem;">Tosa Baixa</span>
+                                    <span style="font-size: 0.8rem; color: #6c757d;">Pelo bem curto</span>
+                                </div>
+                            </label>
+                            <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 15px; padding: 1.2rem; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden;">
+                                <input type="checkbox" name="services" value="tosa-media" id="service-tosa-media" style="position: absolute; opacity: 0;">
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; text-align: center;">
+                                    <i class="fas fa-cut" style="font-size: 2rem; color: var(--accent);"></i>
+                                    <span style="font-weight: 600; color: var(--dark); font-size: 1rem;">Tosa Média</span>
+                                    <span style="font-size: 0.8rem; color: #6c757d;">Pelo médio</span>
+                                </div>
+                            </label>
+                            <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 15px; padding: 1.2rem; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden;">
+                                <input type="checkbox" name="services" value="corte-unhas" id="service-corte-unhas" style="position: absolute; opacity: 0;">
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; text-align: center;">
+                                    <i class="fas fa-hand-paper" style="font-size: 2rem; color: var(--success);"></i>
+                                    <span style="font-weight: 600; color: var(--dark); font-size: 1rem;">Corte de Unhas</span>
+                                    <span style="font-size: 0.8rem; color: #6c757d;">Cuidado das patas</span>
+                                </div>
+                            </label>
+                            <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 15px; padding: 1.2rem; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden;">
+                                <input type="checkbox" name="services" value="limpeza-ouvido" id="service-limpeza-ouvido" style="position: absolute; opacity: 0;">
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; text-align: center;">
+                                    <i class="fas fa-assistive-listening-systems" style="font-size: 2rem; color: #6f42c1;"></i>
+                                    <span style="font-weight: 600; color: var(--dark); font-size: 1rem;">Limpeza de Ouvido</span>
+                                    <span style="font-size: 0.8rem; color: #6c757d;">Higiene auricular</span>
+                                </div>
+                            </label>
+                            <label style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 15px; padding: 1.2rem; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden;">
+                                <input type="checkbox" name="services" value="hidratacao" id="service-hidratacao" style="position: absolute; opacity: 0;">
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; text-align: center;">
+                                    <i class="fas fa-tint" style="font-size: 2rem; color: #17a2b8;"></i>
+                                    <span style="font-weight: 600; color: var(--dark); font-size: 1rem;">Hidratação</span>
+                                    <span style="font-size: 0.8rem; color: #6c757d;">Cuidado especial</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                        <div class="form-group">
+                            <label for="pet-vaccinated">Vacinação em Dia?</label>
+                            <select id="pet-vaccinated">
+                                <option value="">Selecione</option>
+                                <option value="sim">Sim</option>
+                                <option value="nao">Não</option>
+                                <option value="parcial">Parcialmente</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pet-last-vaccine">Última Vacina</label>
+                            <input type="date" id="pet-last-vaccine">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pet-vet">Veterinário</label>
+                            <input type="text" id="pet-vet" placeholder="Nome do veterinário">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pet-vet-phone">Telefone do Veterinário</label>
+                            <input type="tel" id="pet-vet-phone" placeholder="(14) 99999-9999">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pet-allergies">Alergias ou Sensibilidades</label>
+                        <textarea id="pet-allergies" rows="2" placeholder="Descreva qualquer alergia ou sensibilidade do pet..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pet-medications">Medicamentos em Uso</label>
+                        <textarea id="pet-medications" rows="2" placeholder="Liste os medicamentos que o pet está tomando..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pet-behavior">Comportamento/Temperamento</label>
+                        <textarea id="pet-behavior" rows="2" placeholder="Descreva o comportamento do pet (dócil, agitado, medroso, etc.)..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pet-observations">Observações Gerais</label>
+                        <textarea id="pet-observations" rows="3" placeholder="Qualquer informação adicional importante sobre seu pet..."></textarea>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--primary); margin-bottom: 1rem;">
+                            <i class="fas fa-shield-alt"></i> Política de Privacidade
+                        </h4>
+                        <p style="font-size: 0.9rem; margin-bottom: 1rem;">
+                            Todas as informações fornecidas são confidenciais e utilizadas exclusivamente para o cuidado do seu pet. 
+                            Não compartilhamos dados com terceiros e seguimos rigorosos padrões de segurança.
+                        </p>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: normal;">
+                            <input type="checkbox" id="privacy-consent" required>
+                            Concordo com a política de privacidade e autorizo o uso dos dados para cuidados veterinários *
+                        </label>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <button type="submit" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 1.2rem 3rem; font-size: 1.2rem; font-weight: 600; border: none; border-radius: 50px; color: white; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(255, 133, 162, 0.3); position: relative; overflow: hidden;">
+                            <span style="position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 0.8rem;">
+                                <i class="fas fa-save" style="font-size: 1.3rem;"></i>
+                                Salvar Ficha de Atendimento
+                            </span>
+                            <div style="position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s ease;"></div>
+                        </button>
+                    </div>
+                </form>
+
+                <div style="background: white; padding: 2rem; border-radius: 15px; border-left: 5px solid var(--success);">
+                    <h4 style="color: var(--success); margin-bottom: 1rem;">
+                        <i class="fas fa-info-circle"></i> Informações Importantes
+                    </h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i> Ficha completa para melhor atendimento</li>
+                        <li style="margin-bottom: 0.5rem;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i> Dados seguros e protegidos</li>
+                        <li style="margin-bottom: 0.5rem;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i> Histórico de serviços</li>
+                        <li style="margin-bottom: 0.5rem;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i> Cuidados personalizados</li>
+                        <li style="margin-bottom: 0.5rem;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i> Agendamentos mais rápidos</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Seção de Agendamento do Cliente -->
+            <section id="client-booking">
+                <h2><i class="fas fa-calendar-plus"></i> Agendar Serviço</h2>
+                
+                <div style="background: linear-gradient(135deg, var(--secondary), var(--light)); padding: 2rem; border-radius: 15px; margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">
+                        <i class="fas fa-calendar-check"></i> Agendamento Online
+                    </h3>
+                    <p style="margin-bottom: 1.5rem;">Agende seu serviço de forma rápida e prática! Após o agendamento, você receberá uma confirmação via WhatsApp.</p>
+                </div>
+
+                <!-- Formulário de Agendamento -->
+                <form id="booking-form" style="background: white; padding: 2rem; border-radius: 15px; margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1.5rem;">
+                        <i class="fas fa-paw"></i> Dados do Pet
+                    </h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                        <div class="form-group">
+                            <label for="pet-name">Nome do Pet *</label>
+                            <input type="text" id="pet-name" required placeholder="Ex: Rex, Mimi, Bolinha">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pet-breed">Raça *</label>
+                            <input type="text" id="pet-breed" required placeholder="Ex: Golden Retriever, Poodle">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pet-size">Porte do Animal *</label>
+                            <select id="pet-size" required>
+                                <option value="">Selecione o porte</option>
+                                <option value="pequeno">Pequeno (até 10kg)</option>
+                                <option value="medio">Médio (10kg a 25kg)</option>
+                                <option value="grande">Grande (acima de 25kg)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pet-age">Idade</label>
+                            <input type="text" id="pet-age" placeholder="Ex: 2 anos, 6 meses">
+                        </div>
+                    </div>
+
+                    <h3 style="color: var(--primary); margin-bottom: 1.5rem;">
+                        <i class="fas fa-user"></i> Dados do Tutor
+                    </h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                        <div class="form-group">
+                            <label for="owner-name">Nome Completo *</label>
+                            <input type="text" id="owner-name" required placeholder="Seu nome completo">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="owner-phone">WhatsApp *</label>
+                            <input type="tel" id="owner-phone" required placeholder="(14) 99999-9999">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="owner-email">E-mail</label>
+                            <input type="email" id="owner-email" placeholder="seu@email.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="owner-address">Endereço</label>
+                            <input type="text" id="owner-address" placeholder="Rua, número, bairro">
+                        </div>
+                    </div>
+
+                    <h3 style="color: var(--primary); margin-bottom: 1.5rem;">
+                        <i class="fas fa-cut"></i> Serviços Desejados
+                    </h3>
+                    
+                    <div class="services-grid" style="margin-bottom: 1.5rem;">
+                        <div class="service-card" onclick="toggleService(this, 'banho-completo')">
+                            <input type="checkbox" id="banho-completo" name="services" value="banho-completo">
+                            <div class="service-icon">
+                                <i class="fas fa-bath"></i>
+                            </div>
+                            <div class="service-title">Banho Completo</div>
+                            <div class="service-description">Banho com shampoo especial, condicionador, secagem e perfume</div>
+                            <div class="service-price" id="price-banho-completo">A partir de R$ 25,00</div>
+                        </div>
+
+                        <div class="service-card" onclick="toggleService(this, 'tosa-completa')">
+                            <input type="checkbox" id="tosa-completa" name="services" value="tosa-completa">
+                            <div class="service-icon">
+                                <i class="fas fa-cut"></i>
+                            </div>
+                            <div class="service-title">Tosa Completa</div>
+                            <div class="service-description">Banho + tosa estética personalizada + acabamento</div>
+                            <div class="service-price" id="price-tosa-completa">A partir de R$ 40,00</div>
+                        </div>
+
+                        <div class="service-card" onclick="toggleService(this, 'tosa-higienica')">
+                            <input type="checkbox" id="tosa-higienica" name="services" value="tosa-higienica">
+                            <div class="service-icon">
+                                <i class="fas fa-scissors"></i>
+                            </div>
+                            <div class="service-title">Tosa Higiênica</div>
+                            <div class="service-description">Limpeza das áreas íntimas e patas para higiene</div>
+                            <div class="service-price" id="price-tosa-higienica">A partir de R$ 20,00</div>
+                        </div>
+
+                        <div class="service-card" onclick="toggleService(this, 'corte-unhas')">
+                            <input type="checkbox" id="corte-unhas" name="services" value="corte-unhas">
+                            <div class="service-icon">
+                                <i class="fas fa-hand-paper"></i>
+                            </div>
+                            <div class="service-title">Corte de Unhas</div>
+                            <div class="service-description">Corte seguro das unhas com equipamentos adequados</div>
+                            <div class="service-price" id="price-corte-unhas">R$ 10,00</div>
+                        </div>
+
+                        <div class="service-card" onclick="toggleService(this, 'limpeza-ouvido')">
+                            <input type="checkbox" id="limpeza-ouvido" name="services" value="limpeza-ouvido">
+                            <div class="service-icon">
+                                <i class="fas fa-ear-listen"></i>
+                            </div>
+                            <div class="service-title">Limpeza de Ouvido</div>
+                            <div class="service-description">Limpeza cuidadosa dos ouvidos com produtos específicos</div>
+                            <div class="service-price" id="price-limpeza-ouvido">R$ 15,00</div>
+                        </div>
+
+                        <div class="service-card" onclick="toggleService(this, 'hidratacao')">
+                            <input type="checkbox" id="hidratacao" name="services" value="hidratacao">
+                            <div class="service-icon">
+                                <i class="fas fa-spa"></i>
+                            </div>
+                            <div class="service-title">Hidratação</div>
+                            <div class="service-description">Tratamento hidratante para pelos ressecados</div>
+                            <div class="service-price" id="price-hidratacao">R$ 20,00</div>
+                        </div>
+                    </div>
+
+                    <h3 style="color: var(--primary); margin-bottom: 1.5rem;">
+                        <i class="fas fa-calendar"></i> Data e Horário
+                    </h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                        <div class="form-group">
+                            <label for="booking-date">Data Preferida *</label>
+                            <input type="date" id="booking-date" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="booking-time">Horário Preferido *</label>
+                            <select id="booking-time" required>
+                                <option value="">Selecione o horário</option>
+                                <option value="08:00">08:00</option>
+                                <option value="08:30">08:30</option>
+                                <option value="09:00">09:00</option>
+                                <option value="09:30">09:30</option>
+                                <option value="10:00">10:00</option>
+                                <option value="10:30">10:30</option>
+                                <option value="11:00">11:00</option>
+                                <option value="11:30">11:30</option>
+                                <option value="13:00">13:00</option>
+                                <option value="13:30">13:30</option>
+                                <option value="14:00">14:00</option>
+                                <option value="14:30">14:30</option>
+                                <option value="15:00">15:00</option>
+                                <option value="15:30">15:30</option>
+                                <option value="16:00">16:00</option>
+                                <option value="16:30">16:30</option>
+                                <option value="17:00">17:00</option>
+                                <option value="17:30">17:30</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="booking-notes">Observações</label>
+                        <textarea id="booking-notes" rows="3" placeholder="Alguma observação especial sobre seu pet ou preferências para o serviço..."></textarea>
+                    </div>
+
+                    <!-- Resumo do Agendamento -->
+                    <div id="booking-summary" style="background: var(--light); padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; display: none;">
+                        <h4 style="color: var(--primary); margin-bottom: 1rem;">
+                            <i class="fas fa-receipt"></i> Resumo do Agendamento
+                        </h4>
+                        <div id="summary-content"></div>
+                        <div style="border-top: 2px solid var(--primary); padding-top: 1rem; margin-top: 1rem;">
+                            <strong style="font-size: 1.2rem; color: var(--primary);">
+                                Total Estimado: <span id="total-price">R$ 0,00</span>
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <button type="submit" style="background: var(--primary); padding: 1rem 2rem; font-size: 1.1rem;">
+                            <i class="fas fa-calendar-check"></i> Confirmar Agendamento
+                        </button>
+                    </div>
+                </form>
+
+                <div style="background: white; padding: 2rem; border-radius: 15px; border-left: 5px solid var(--primary);">
+                    <h4 style="color: var(--primary); margin-bottom: 1rem;">
+                        <i class="fas fa-info-circle"></i> Informações Importantes
+                    </h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i> Funcionamos de Segunda a Sábado, das 8h às 18h</li>
+                        <li style="margin-bottom: 0.5rem;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i> Agendamento com antecedência mínima de 24h</li>
+                        <li style="margin-bottom: 0.5rem;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i> Traga a carteira de vacinação atualizada</li>
+                        <li style="margin-bottom: 0.5rem;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i> Pagamento em dinheiro, PIX ou cartão</li>
+                        <li style="margin-bottom: 0.5rem;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i> Confirmação será enviada via WhatsApp</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Seção de Serviços do Cliente -->
+            <section id="client-services">
+                <h2><i class="fas fa-cut"></i> Nossos Serviços</h2>
+                
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-bath"></i>
+                        </div>
+                        <div class="service-title">Banho Completo</div>
+                        <div class="service-description">Banho com shampoo especial, condicionador, secagem e perfume</div>
+                        <div class="service-price">A partir de R$ 25,00</div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-cut"></i>
+                        </div>
+                        <div class="service-title">Tosa Completa</div>
+                        <div class="service-description">Banho + tosa estética personalizada + acabamento</div>
+                        <div class="service-price">A partir de R$ 40,00</div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-scissors"></i>
+                        </div>
+                        <div class="service-title">Tosa Higiênica</div>
+                        <div class="service-description">Limpeza das áreas íntimas e patas para higiene</div>
+                        <div class="service-price">A partir de R$ 20,00</div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-hand-paper"></i>
+                        </div>
+                        <div class="service-title">Corte de Unhas</div>
+                        <div class="service-description">Corte seguro das unhas com equipamentos adequados</div>
+                        <div class="service-price">R$ 10,00</div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-ear-listen"></i>
+                        </div>
+                        <div class="service-title">Limpeza de Ouvido</div>
+                        <div class="service-description">Limpeza cuidadosa dos ouvidos com produtos específicos</div>
+                        <div class="service-price">R$ 15,00</div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <div class="service-title">Hidratação</div>
+                        <div class="service-description">Tratamento hidratante para pelos ressecados</div>
+                        <div class="service-price">R$ 20,00</div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="https://wa.me/5514998545722?text=Olá! Gostaria de saber mais sobre os serviços e fazer um orçamento." class="whatsapp-btn whatsapp-style" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Solicitar Orçamento
+                    </a>
+                </div>
+            </section>
+
+            <!-- Seção de Preços do Cliente -->
+            <section id="client-prices">
+                <h2><i class="fas fa-tags"></i> Tabela de Preços</h2>
+                
+                <div style="background: linear-gradient(135deg, var(--secondary), var(--light)); padding: 2rem; border-radius: 15px; margin-bottom: 2rem; text-align: center;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">
+                        <i class="fas fa-info-circle"></i> Preços por Porte do Animal
+                    </h3>
+                    <p>Os preços variam de acordo com o porte e tipo de pelo do seu pet. Entre em contato para um orçamento personalizado!</p>
+                </div>
+
+                <table class="price-table">
+                    <thead>
+                        <tr>
+                            <th>Serviço</th>
+                            <th>Porte Pequeno</th>
+                            <th>Porte Médio</th>
+                            <th>Porte Grande</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><i class="fas fa-bath"></i> Banho Completo</td>
+                            <td>R$ 25,00</td>
+                            <td>R$ 35,00</td>
+                            <td>R$ 45,00</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fas fa-cut"></i> Tosa Completa</td>
+                            <td>R$ 40,00</td>
+                            <td>R$ 55,00</td>
+                            <td>R$ 70,00</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fas fa-scissors"></i> Tosa Higiênica</td>
+                            <td>R$ 20,00</td>
+                            <td>R$ 25,00</td>
+                            <td>R$ 30,00</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fas fa-hand-paper"></i> Corte de Unhas</td>
+                            <td>R$ 10,00</td>
+                            <td>R$ 10,00</td>
+                            <td>R$ 15,00</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fas fa-ear-listen"></i> Limpeza de Ouvido</td>
+                            <td>R$ 15,00</td>
+                            <td>R$ 15,00</td>
+                            <td>R$ 20,00</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fas fa-spa"></i> Hidratação</td>
+                            <td>R$ 20,00</td>
+                            <td>R$ 25,00</td>
+                            <td>R$ 30,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="background: white; padding: 2rem; border-radius: 15px; border-left: 5px solid var(--success);">
+                    <h4 style="color: var(--success); margin-bottom: 1rem;">
+                        <i class="fas fa-percent"></i> Promoções Especiais
+                    </h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.5rem;"><i class="fas fa-star" style="color: var(--primary); margin-right: 0.5rem;"></i> <strong>Combo Completo:</strong> Banho + Tosa + Unhas + Ouvido = 15% de desconto</li>
+                        <li style="margin-bottom: 0.5rem;"><i class="fas fa-star" style="color: var(--primary); margin-right: 0.5rem;"></i> <strong>Cliente Fiel:</strong> A cada 10 banhos, ganhe 1 grátis</li>
+                        <li style="margin-bottom: 0.5rem;"><i class="fas fa-star" style="color: var(--primary); margin-right: 0.5rem;"></i> <strong>Primeira Visita:</strong> 10% de desconto para novos clientes</li>
+                    </ul>
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="https://wa.me/5514998545722?text=Olá! Gostaria de saber sobre as promoções disponíveis." class="whatsapp-btn whatsapp-style" target="_blank">
+                        <i class="fas fa-percent"></i> Consultar Promoções
+                    </a>
+                </div>
+            </section>
+
+            <!-- Seção de Galeria do Cliente -->
+            <section id="client-gallery">
+                <h2><i class="far fa-images"></i> Galeria de Trabalhos</h2>
+                
+                <div style="background: linear-gradient(135deg, var(--secondary), var(--light)); padding: 2rem; border-radius: 15px; margin-bottom: 2rem; text-align: center;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">
+                        <i class="fas fa-camera"></i> Nossos Trabalhos
+                    </h3>
+                    <p>Veja alguns dos nossos trabalhos e transformações incríveis! Cada pet sai daqui ainda mais lindo e cheiroso.</p>
+                </div>
+
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">
+                            <i class="fas fa-dog"></i>
+                        </div>
+                        <h4 style="color: var(--primary);">Tosa Poodle</h4>
+                        <p>Tosa estética em poodle toy com acabamento perfeito</p>
+                    </div>
+
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">
+                            <i class="fas fa-cat"></i>
+                        </div>
+                        <h4 style="color: var(--primary);">Banho em Gato</h4>
+                        <p>Banho relaxante com produtos específicos para felinos</p>
+                    </div>
+
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h4 style="color: var(--primary);">Tosa Criativa</h4>
+                        <p>Tosa temática especial para datas comemorativas</p>
+                    </div>
+
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">
+                            <i class="fas fa-paw"></i>
+                        </div>
+                        <h4 style="color: var(--primary);">Cuidados Especiais</h4>
+                        <p>Hidratação e tratamento para pelos ressecados</p>
+                    </div>
+
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">
+                            <i class="fas fa-scissors"></i>
+                        </div>
+                        <h4 style="color: var(--primary);">Tosa Higiênica</h4>
+                        <p>Limpeza e cuidados nas áreas mais sensíveis</p>
+                    </div>
+
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h4 style="color: var(--primary);">Resultado Final</h4>
+                        <p>Pets felizes e lindos após nossos cuidados</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="https://wa.me/5514998545722?text=Olá! Vi a galeria e gostaria de agendar um serviço para meu pet." class="whatsapp-btn whatsapp-style" target="_blank">
+                        <i class="fas fa-calendar-plus"></i> Quero Agendar Agora
+                    </a>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Área Administrativa -->
+    <div class="admin-area" id="admin-area">
+        <!-- Header Administrativo -->
+        <div class="admin-header">
+            <div class="admin-title">
+                <i class="fas fa-user-shield"></i> Painel Administrativo
+            </div>
+            <div class="admin-user-info">
+                <span id="admin-user-name">Administrador</span>
+                <button class="back-btn" onclick="adminLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+            </div>
+        </div>
+
+        <!-- Navegação Administrativa -->
+        <nav class="admin-nav">
+            <div class="admin-nav-buttons">
+                <button class="admin-nav-btn active" data-section="admin-dashboard">
+                    <i class="fas fa-chart-bar"></i> Dashboard
+                </button>
+                <button class="admin-nav-btn" data-section="admin-appointments">
+                    <i class="fas fa-calendar"></i> Agendamentos
+                </button>
+                <button class="admin-nav-btn" data-section="admin-pets">
+                    <i class="fas fa-paw"></i> Pets
+                </button>
+                <button class="admin-nav-btn" data-section="admin-payments">
+                    <i class="fas fa-dollar-sign"></i> Pagamentos
+                </button>
+                <button class="admin-nav-btn" data-section="admin-staff">
+                    <i class="fas fa-users"></i> Funcionários
+                </button>
+                <button class="admin-nav-btn" data-section="admin-promotions">
+                    <i class="fas fa-percent"></i> Promoções
+                </button>
+                <button class="admin-nav-btn" data-section="admin-loyalty">
+                    <i class="fas fa-star"></i> Fidelidade
+                </button>
+                <button class="admin-nav-btn" data-section="admin-social">
+                    <i class="fas fa-share-alt"></i> Redes Sociais
+                </button>
+                <button class="admin-nav-btn" data-section="admin-reminders">
+                    <i class="far fa-bell"></i> Lembretes
+                </button>
+                <button class="admin-nav-btn" data-section="admin-pricing">
+                    <i class="fas fa-tags"></i> Preços
+                </button>
+            </div>
+        </nav>
+
+        <!-- Menu Mobile Admin -->
+        <button class="admin-mobile-menu-toggle" id="admin-mobile-menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="admin-mobile-menu-overlay" id="admin-mobile-menu-overlay"></div>
+        
+        <div class="admin-mobile-menu" id="admin-mobile-menu">
+            <div class="admin-mobile-menu-header">
+                <div class="admin-mobile-menu-title">
+                    <i class="fas fa-cog"></i> Menu Admin
+                </div>
+                <button class="admin-mobile-menu-close" id="admin-mobile-menu-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="admin-mobile-menu-buttons">
+                <button class="admin-mobile-menu-btn active" data-section="admin-dashboard">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button class="admin-mobile-menu-btn" data-section="admin-appointments">
+                    <i class="fas fa-calendar"></i>
+                    <span>Agendamentos</span>
+                </button>
+                <button class="admin-mobile-menu-btn" data-section="admin-pets">
+                    <i class="fas fa-paw"></i>
+                    <span>Pets</span>
+                </button>
+                <button class="admin-mobile-menu-btn" data-section="admin-payments">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>Pagamentos</span>
+                </button>
+                <button class="admin-mobile-menu-btn" data-section="admin-staff">
+                    <i class="fas fa-users"></i>
+                    <span>Funcionários</span>
+                </button>
+                <button class="admin-mobile-menu-btn" data-section="admin-promotions">
+                    <i class="fas fa-percent"></i>
+                    <span>Promoções</span>
+                </button>
+                <button class="admin-mobile-menu-btn" data-section="admin-loyalty">
+                    <i class="fas fa-star"></i>
+                    <span>Fidelidade</span>
+                </button>
+                <button class="admin-mobile-menu-btn" data-section="admin-social">
+                    <i class="fas fa-share-alt"></i>
+                    <span>Redes Sociais</span>
+                </button>
+                <button class="admin-mobile-menu-btn" data-section="admin-reminders">
+                    <i class="far fa-bell"></i>
+                    <span>Lembretes</span>
+                </button>
+                <button class="admin-mobile-menu-btn" data-section="admin-pricing">
+                    <i class="fas fa-tags"></i>
+                    <span>Preços</span>
+                </button>
+                <button class="admin-mobile-menu-btn" onclick="adminLogout(); closeAdminMobileMenu();">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Dashboard Administrativo -->
+            <section id="admin-dashboard" class="active">
+                <h2><i class="fas fa-chart-bar"></i> Dashboard</h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                    <div style="background: linear-gradient(135deg, var(--admin), #8b5cf6); color: white; padding: 2rem; border-radius: 15px; text-align: center;">
+                        <i class="fas fa-calendar-check" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <h3>Agendamentos Hoje</h3>
+                        <div style="font-size: 2rem; font-weight: bold;" id="appointments-today">0</div>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, var(--success), #20c997); color: white; padding: 2rem; border-radius: 15px; text-align: center;">
+                        <i class="fas fa-dollar-sign" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <h3>Faturamento Mensal</h3>
+                        <div style="font-size: 2rem; font-weight: bold;" id="monthly-revenue">R$ 0,00</div>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, var(--primary), #ff6b8b); color: white; padding: 2rem; border-radius: 15px; text-align: center;">
+                        <i class="fas fa-paw" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <h3>Pets Cadastrados</h3>
+                        <div style="font-size: 2rem; font-weight: bold;" id="total-pets">0</div>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, var(--accent), #8bd3c1); color: white; padding: 2rem; border-radius: 15px; text-align: center;">
+                        <i class="fas fa-star" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <h3>Clientes VIP</h3>
+                        <div style="font-size: 2rem; font-weight: bold;" id="vip-clients">0</div>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 2rem; border-radius: 15px; margin-bottom: 2rem;">
+                    <h3 style="color: var(--admin); margin-bottom: 1rem;">
+                        <i class="fas fa-clock"></i> Próximos Agendamentos
+                    </h3>
+                    <div id="upcoming-appointments">
+                        <p style="text-align: center; color: #666;">Nenhum agendamento próximo.</p>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 2rem; border-radius: 15px;">
+                    <h3 style="color: var(--admin); margin-bottom: 1rem;">
+                        <i class="fas fa-history"></i> Atividades Recentes
+                    </h3>
+                    <div id="recent-activities">
+                        <p style="text-align: center; color: #666;">Nenhuma atividade recente.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Outras seções administrativas serão implementadas aqui -->
+            <section id="admin-appointments">
+                <h2><i class="fas fa-calendar"></i> Gestão de Agendamentos</h2>
+                <p>Seção em desenvolvimento...</p>
+            </section>
+
+            <section id="admin-pets">
+                <h2><i class="fas fa-paw"></i> Gestão de Pets</h2>
+                <p>Seção em desenvolvimento...</p>
+            </section>
+
+            <section id="admin-payments">
+                <h2><i class="fas fa-dollar-sign"></i> Controle de Pagamentos</h2>
+                <p>Seção em desenvolvimento...</p>
+            </section>
+
+            <section id="admin-staff">
+                <h2><i class="fas fa-users"></i> Gestão de Funcionários</h2>
+                <p>Seção em desenvolvimento...</p>
+            </section>
+
+            <section id="admin-promotions">
+                <h2><i class="fas fa-percent"></i> Sistema de Promoções</h2>
+                <p>Seção em desenvolvimento...</p>
+            </section>
+
+            <section id="admin-loyalty">
+                <h2><i class="fas fa-star"></i> Programa de Fidelidade</h2>
+                <p>Seção em desenvolvimento...</p>
+            </section>
+
+            <section id="admin-social">
+                <h2><i class="fas fa-share-alt"></i> Redes Sociais</h2>
+                <p>Seção em desenvolvimento...</p>
+            </section>
+
+            <section id="admin-reminders">
+                <h2><i class="far fa-bell"></i> Sistema de Lembretes</h2>
+                <p>Seção em desenvolvimento...</p>
+            </section>
+
+            <section id="admin-pricing">
+                <h2><i class="fas fa-tags"></i> Gestão de Preços</h2>
+                <p>Seção em desenvolvimento...</p>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Sistema de usuários administrativos
+        const adminUsers = [
+            { username: 'admin', password: 'admin123', name: 'Administrador', role: 'admin' }
+        ];
+
+        let currentAdminUser = null;
+
+        // Funções de interface
+        function showInterfaceSelector() {
+            document.getElementById('interface-selector').style.display = 'block';
+            document.getElementById('client-area').style.display = 'none';
+            document.getElementById('admin-area').style.display = 'none';
+            document.getElementById('login-modal').classList.remove('show');
+        }
+
+        function showClientArea() {
+            document.getElementById('interface-selector').style.display = 'none';
+            document.getElementById('client-area').style.display = 'block';
+            document.getElementById('admin-area').style.display = 'none';
+            
+            // Ativa a primeira seção
+            showClientSection('client-welcome');
+        }
+
+        function showAdminLogin() {
+            document.getElementById('login-modal').classList.add('show');
+        }
+
+        function hideAdminLogin() {
+            document.getElementById('login-modal').classList.remove('show');
+        }
+
+        function showAdminArea() {
+            document.getElementById('interface-selector').style.display = 'none';
+            document.getElementById('client-area').style.display = 'none';
+            document.getElementById('admin-area').style.display = 'block';
+            
+            // Ativa a primeira seção
+            showAdminSection('admin-dashboard');
+            updateDashboard();
+        }
+
+        function adminLogout() {
+            currentAdminUser = null;
+            showInterfaceSelector();
+        }
+
+        // Sistema de navegação do cliente
+        function showClientSection(sectionId) {
+            // Remove active de todas as seções do cliente
+            document.querySelectorAll('.client-area section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active de todos os botões de navegação do cliente
+            document.querySelectorAll('.client-nav-btn, .mobile-menu-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Ativa a seção selecionada
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Ativa o botão correspondente (desktop e mobile)
+            document.querySelectorAll(`[data-section="${sectionId}"]`).forEach(btn => {
+                btn.classList.add('active');
+            });
+        }
+
+        // Funções do menu mobile
+        function openMobileMenu() {
+            document.getElementById('mobile-menu-overlay').style.display = 'block';
+            document.getElementById('mobile-menu').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('mobile-menu').classList.add('show');
+            }, 10);
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobile-menu').classList.remove('show');
+            setTimeout(() => {
+                document.getElementById('mobile-menu-overlay').style.display = 'none';
+                document.getElementById('mobile-menu').style.display = 'none';
+            }, 300);
+        }
+
+        // Funções do menu mobile admin
+        function openAdminMobileMenu() {
+            document.getElementById('admin-mobile-menu-overlay').style.display = 'block';
+            document.getElementById('admin-mobile-menu').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('admin-mobile-menu').classList.add('show');
+            }, 10);
+        }
+
+        function closeAdminMobileMenu() {
+            document.getElementById('admin-mobile-menu').classList.remove('show');
+            setTimeout(() => {
+                document.getElementById('admin-mobile-menu-overlay').style.display = 'none';
+                document.getElementById('admin-mobile-menu').style.display = 'none';
+            }, 300);
+        }
+
+        // Auto-hide menu on scroll (desktop only)
+        let lastScrollTop = 0;
+        let scrollTimeout;
+        
+        function handleScroll() {
+            if (window.innerWidth <= 768) return; // Só funciona no desktop
+            
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            const clientNav = document.querySelector('.client-nav');
+            const adminNav = document.querySelector('.admin-nav');
+            
+            if (currentScroll > lastScrollTop && currentScroll > 100) {
+                // Scrolling down
+                if (clientNav) clientNav.classList.add('hidden');
+                if (adminNav) adminNav.classList.add('hidden');
+            } else {
+                // Scrolling up
+                if (clientNav) clientNav.classList.remove('hidden');
+                if (adminNav) adminNav.classList.remove('hidden');
+            }
+            
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+            
+            // Clear timeout and set a new one
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                if (clientNav) clientNav.classList.remove('hidden');
+                if (adminNav) adminNav.classList.remove('hidden');
+            }, 2000); // Show menu after 2 seconds of no scrolling
+        }
+
+        // Sistema de navegação administrativa
+        function showAdminSection(sectionId) {
+            // Remove active de todas as seções administrativas
+            document.querySelectorAll('.admin-area section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active de todos os botões de navegação administrativa
+            document.querySelectorAll('.admin-nav-btn, .admin-mobile-menu-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Ativa a seção selecionada
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Ativa o botão correspondente (desktop e mobile)
+            document.querySelectorAll(`[data-section="${sectionId}"]`).forEach(btn => {
+                btn.classList.add('active');
+            });
+        }
+
+        // Login administrativo
+        document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+            
+            const user = adminUsers.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                currentAdminUser = user;
+                document.getElementById('admin-user-name').textContent = user.name;
+                hideAdminLogin();
+                showAdminArea();
+            } else {
+                alert('Usuário ou senha incorretos!');
+            }
+        });
+
+        // Event listeners para navegação do cliente
+        document.querySelectorAll('.client-nav-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const section = this.getAttribute('data-section');
+                if (section) {
+                    showClientSection(section);
+                }
+            });
+        });
+
+        // Event listeners para menu mobile
+        document.getElementById('mobile-menu-toggle').addEventListener('click', openMobileMenu);
+        document.getElementById('mobile-menu-close').addEventListener('click', closeMobileMenu);
+        document.getElementById('mobile-menu-overlay').addEventListener('click', closeMobileMenu);
+
+        // Event listeners para botões do menu mobile
+        document.querySelectorAll('.mobile-menu-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const section = this.getAttribute('data-section');
+                if (section) {
+                    showClientSection(section);
+                    closeMobileMenu();
+                }
+            });
+        });
+
+        // Event listener para scroll (auto-hide menu)
+        window.addEventListener('scroll', handleScroll);
+
+        // Event listeners para navegação administrativa
+        document.querySelectorAll('.admin-nav-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const section = this.getAttribute('data-section');
+                if (section) {
+                    showAdminSection(section);
+                }
+            });
+        });
+
+        // Event listeners para menu mobile admin
+        document.getElementById('admin-mobile-menu-toggle').addEventListener('click', openAdminMobileMenu);
+        document.getElementById('admin-mobile-menu-close').addEventListener('click', closeAdminMobileMenu);
+        document.getElementById('admin-mobile-menu-overlay').addEventListener('click', closeAdminMobileMenu);
+
+        // Event listeners para botões do menu mobile admin
+        document.querySelectorAll('.admin-mobile-menu-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const section = this.getAttribute('data-section');
+                if (section) {
+                    showAdminSection(section);
+                    closeAdminMobileMenu();
+                }
+            });
+        });
+
+        // Função para atualizar dashboard (placeholder)
+        function updateDashboard() {
+            // Aqui você integraria com os dados reais do sistema
+            document.getElementById('appointments-today').textContent = '0';
+            document.getElementById('monthly-revenue').textContent = 'R$ 0,00';
+            document.getElementById('total-pets').textContent = '0';
+            document.getElementById('vip-clients').textContent = '0';
+        }
+
+        // Sistema de dados
+        let pets = JSON.parse(localStorage.getItem('pets')) || [];
+        let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+
+        // Tabela de preços por porte
+        const servicePrices = {
+            'banho-completo': { pequeno: 25, medio: 35, grande: 45 },
+            'tosa-completa': { pequeno: 40, medio: 55, grande: 70 },
+            'tosa-higienica': { pequeno: 20, medio: 25, grande: 30 },
+            'corte-unhas': { pequeno: 10, medio: 10, grande: 15 },
+            'limpeza-ouvido': { pequeno: 15, medio: 15, grande: 20 },
+            'hidratacao': { pequeno: 20, medio: 25, grande: 30 }
+        };
+
+        const serviceNames = {
+            'banho-completo': 'Banho Completo',
+            'tosa-completa': 'Tosa Completa',
+            'tosa-higienica': 'Tosa Higiênica',
+            'corte-unhas': 'Corte de Unhas',
+            'limpeza-ouvido': 'Limpeza de Ouvido',
+            'hidratacao': 'Hidratação'
+        };
+
+        // Função para salvar dados
+        function savePets() {
+            localStorage.setItem('pets', JSON.stringify(pets));
+        }
+
+        function saveAppointments() {
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+        }
+
+        // Função para alternar seleção de serviços
+        function toggleService(card, serviceId) {
+            const checkbox = card.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            
+            if (checkbox.checked) {
+                card.classList.add('selected');
+            } else {
+                card.classList.remove('selected');
+            }
+            
+            updateBookingSummary();
+        }
+
+        // Função para atualizar preços baseado no porte
+        function updateServicePrices(size) {
+            if (!size) return;
+            
+            Object.keys(servicePrices).forEach(serviceId => {
+                const priceElement = document.getElementById(`price-${serviceId}`);
+                if (priceElement) {
+                    const price = servicePrices[serviceId][size];
+                    priceElement.textContent = `R$ ${price.toFixed(2).replace('.', ',')}`;
+                }
+            });
+        }
+
+        // Função para atualizar resumo do agendamento
+        function updateBookingSummary() {
+            const selectedServices = document.querySelectorAll('input[name="services"]:checked');
+            const petSize = document.getElementById('pet-size').value;
+            const summaryDiv = document.getElementById('booking-summary');
+            const summaryContent = document.getElementById('summary-content');
+            const totalPriceElement = document.getElementById('total-price');
+            
+            if (selectedServices.length === 0) {
+                summaryDiv.style.display = 'none';
+                return;
+            }
+            
+            let total = 0;
+            let summaryHTML = '';
+            
+            selectedServices.forEach(service => {
+                const serviceId = service.value;
+                const serviceName = serviceNames[serviceId];
+                let price = 0;
+                
+                if (petSize && servicePrices[serviceId]) {
+                    price = servicePrices[serviceId][petSize];
+                }
+                
+                total += price;
+                summaryHTML += `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>${serviceName}</span>
+                        <span>R$ ${price.toFixed(2).replace('.', ',')}</span>
+                    </div>
+                `;
+            });
+            
+            summaryContent.innerHTML = summaryHTML;
+            totalPriceElement.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+            summaryDiv.style.display = 'block';
+        }
+
+        // Event listener para mudança de porte
+        document.addEventListener('DOMContentLoaded', function() {
+            const petSizeSelect = document.getElementById('pet-size');
+            if (petSizeSelect) {
+                petSizeSelect.addEventListener('change', function() {
+                    updateServicePrices(this.value);
+                    updateBookingSummary();
+                });
+            }
+        });
+
+        // Formulário de cadastro de pet
+        document.addEventListener('DOMContentLoaded', function() {
+            const petForm = document.getElementById('pet-form');
+            if (petForm) {
+                petForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const newPet = {
+                        id: Date.now(),
+                        name: document.getElementById('pet-form-name').value,
+                        breed: document.getElementById('pet-form-breed').value,
+                        size: document.getElementById('pet-form-size').value,
+                        age: document.getElementById('pet-form-age').value,
+                        weight: document.getElementById('pet-form-weight').value,
+                        gender: document.getElementById('pet-form-gender').value,
+                        color: document.getElementById('pet-form-color').value,
+                        castrated: document.getElementById('pet-form-castrated').value,
+                        owner: {
+                            name: document.getElementById('pet-owner-name').value,
+                            phone: document.getElementById('pet-owner-phone').value,
+                            email: document.getElementById('pet-owner-email').value,
+                            address: document.getElementById('pet-owner-address').value,
+                            cpf: document.getElementById('pet-owner-cpf').value,
+                            birth: document.getElementById('pet-owner-birth').value
+                        },
+                        health: {
+                            vaccinated: document.getElementById('pet-vaccinated').value,
+                            lastVaccine: document.getElementById('pet-last-vaccine').value,
+                            vet: document.getElementById('pet-vet').value,
+                            vetPhone: document.getElementById('pet-vet-phone').value,
+                            allergies: document.getElementById('pet-allergies').value,
+                            medications: document.getElementById('pet-medications').value,
+                            behavior: document.getElementById('pet-behavior').value,
+                            observations: document.getElementById('pet-observations').value
+                        },
+                        registeredAt: new Date().toISOString()
+                    };
+                    
+                    pets.push(newPet);
+                    savePets();
+                    
+                    alert(`Pet ${newPet.name} cadastrado com sucesso!\n\nAgora você pode fazer agendamentos mais rapidamente.`);
+                    
+                    // Limpa o formulário
+                    petForm.reset();
+                    
+                    // Opcional: redireciona para agendamento
+                    if (confirm('Deseja fazer um agendamento agora?')) {
+                        showClientSection('client-booking');
+                    }
+                });
+            }
+        });
+
+        // Formulário de agendamento
+        document.addEventListener('DOMContentLoaded', function() {
+            const bookingForm = document.getElementById('booking-form');
+            if (bookingForm) {
+                bookingForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const selectedServices = Array.from(document.querySelectorAll('input[name="services"]:checked'))
+                        .map(input => input.value);
+                    
+                    if (selectedServices.length === 0) {
+                        alert('Por favor, selecione pelo menos um serviço.');
+                        return;
+                    }
+                    
+                    const petSize = document.getElementById('pet-size').value;
+                    let totalPrice = 0;
+                    
+                    selectedServices.forEach(serviceId => {
+                        if (servicePrices[serviceId] && petSize) {
+                            totalPrice += servicePrices[serviceId][petSize];
+                        }
+                    });
+                    
+                    const newAppointment = {
+                        id: Date.now(),
+                        pet: {
+                            name: document.getElementById('pet-name').value,
+                            breed: document.getElementById('pet-breed').value,
+                            size: document.getElementById('pet-size').value,
+                            age: document.getElementById('pet-age').value
+                        },
+                        owner: {
+                            name: document.getElementById('owner-name').value,
+                            phone: document.getElementById('owner-phone').value,
+                            email: document.getElementById('owner-email').value,
+                            address: document.getElementById('owner-address').value
+                        },
+                        services: selectedServices.map(serviceId => ({
+                            id: serviceId,
+                            name: serviceNames[serviceId],
+                            price: servicePrices[serviceId][petSize]
+                        })),
+                        date: document.getElementById('booking-date').value,
+                        time: document.getElementById('booking-time').value,
+                        notes: document.getElementById('booking-notes').value,
+                        totalPrice: totalPrice,
+                        status: 'pendente',
+                        createdAt: new Date().toISOString()
+                    };
+                    
+                    appointments.push(newAppointment);
+                    saveAppointments();
+                    
+                    // Simula envio de WhatsApp
+                    const whatsappMessage = `🐾 *AGENDAMENTO CONFIRMADO* 🐾
+
+*Pet:* ${newAppointment.pet.name} (${newAppointment.pet.breed})
+*Tutor:* ${newAppointment.owner.name}
+*Data:* ${new Date(newAppointment.date).toLocaleDateString('pt-BR')}
+*Horário:* ${newAppointment.time}
+*Serviços:* ${newAppointment.services.map(s => s.name).join(', ')}
+*Total:* R$ ${totalPrice.toFixed(2).replace('.', ',')}
+
+Seu agendamento foi confirmado! Chegue 10 minutos antes do horário.
+
+*Pingo de Fofura - Banho e Tosa*
+📍 Rua Raul Torres N 213
+📞 (14) 99854-5722`;
+                    
+                    alert('Agendamento realizado com sucesso!\n\nVocê receberá uma confirmação via WhatsApp em breve.');
+                    
+                    // Simula envio do WhatsApp (em um sistema real, isso seria feito pelo backend)
+                    if (confirm('Deseja enviar a confirmação via WhatsApp agora?')) {
+                        const whatsappUrl = `https://wa.me/55${newAppointment.owner.phone.replace(/\D/g, '')}?text=${encodeURIComponent(whatsappMessage)}`;
+                        window.open(whatsappUrl, '_blank');
+                    }
+                    
+                    // Limpa o formulário
+                    bookingForm.reset();
+                    document.getElementById('booking-summary').style.display = 'none';
+                    
+                    // Remove seleção dos serviços
+                    document.querySelectorAll('.service-card.selected').forEach(card => {
+                        card.classList.remove('selected');
+                    });
+                });
+            }
+        });
+
+        // Função para definir data mínima (amanhã)
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateInput = document.getElementById('booking-date');
+            if (dateInput) {
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                dateInput.min = tomorrow.toISOString().split('T')[0];
+            }
+        });
+
+        // Definir data atual na ficha de atendimento
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentDateElement = document.getElementById('current-date');
+            if (currentDateElement) {
+                const today = new Date();
+                const formattedDate = today.toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+                currentDateElement.textContent = formattedDate;
+            }
+        });
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            showInterfaceSelector();
+        });
+    </script>
+</body>
+</html>
