@@ -130,6 +130,11 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .client-nav.hidden {
+            transform: translateY(-100%);
         }
 
         .client-nav-buttons {
@@ -137,6 +142,122 @@
             justify-content: center;
             gap: 1rem;
             flex-wrap: wrap;
+        }
+
+        /* Menu Mobile */
+        .mobile-menu-toggle {
+            display: none;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 50%;
+            cursor: pointer;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-size: 1.2rem;
+            width: 60px;
+            height: 60px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-toggle:hover {
+            background: #ff6b8b;
+            transform: scale(1.1);
+        }
+
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 1.5rem;
+            z-index: 1001;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.show {
+            transform: translateY(0);
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .mobile-menu-title {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .mobile-menu-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark);
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+        }
+
+        .mobile-menu-btn {
+            background: none;
+            border: 2px solid var(--secondary);
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            text-align: center;
+        }
+
+        .mobile-menu-btn:hover, .mobile-menu-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .mobile-menu-btn i {
+            font-size: 1.5rem;
+        }
+
+        .mobile-menu-btn span {
+            font-size: 0.9rem;
         }
 
         .client-nav-btn {
@@ -192,6 +313,11 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .admin-nav.hidden {
+            transform: translateY(-100%);
         }
 
         .admin-nav-buttons {
@@ -199,6 +325,122 @@
             justify-content: center;
             gap: 0.5rem;
             flex-wrap: wrap;
+        }
+
+        /* Menu Mobile Admin */
+        .admin-mobile-menu-toggle {
+            display: none;
+            background: var(--admin);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 50%;
+            cursor: pointer;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-size: 1.2rem;
+            width: 60px;
+            height: 60px;
+            transition: all 0.3s ease;
+        }
+
+        .admin-mobile-menu-toggle:hover {
+            background: #5a3ba3;
+            transform: scale(1.1);
+        }
+
+        .admin-mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .admin-mobile-menu {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 1.5rem;
+            z-index: 1001;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .admin-mobile-menu.show {
+            transform: translateY(0);
+        }
+
+        .admin-mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e0cffc;
+        }
+
+        .admin-mobile-menu-title {
+            color: var(--admin);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .admin-mobile-menu-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark);
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .admin-mobile-menu-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+        }
+
+        .admin-mobile-menu-btn {
+            background: none;
+            border: 2px solid #e0cffc;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            text-align: center;
+        }
+
+        .admin-mobile-menu-btn:hover, .admin-mobile-menu-btn.active {
+            background-color: var(--admin);
+            color: white;
+            border-color: var(--admin);
+        }
+
+        .admin-mobile-menu-btn i {
+            font-size: 1.5rem;
+        }
+
+        .admin-mobile-menu-btn span {
+            font-size: 0.9rem;
         }
 
         .admin-nav-btn {
@@ -499,14 +741,40 @@
                 gap: 1rem;
             }
 
-            .client-nav-buttons, .admin-nav-buttons {
-                justify-content: flex-start;
-                overflow-x: auto;
-                padding-bottom: 0.5rem;
+            /* Esconder menu desktop no mobile */
+            .client-nav,
+            .admin-nav {
+                display: none;
+            }
+
+            /* Mostrar menu mobile */
+            .mobile-menu-toggle,
+            .admin-mobile-menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .mobile-menu-overlay,
+            .mobile-menu,
+            .admin-mobile-menu-overlay,
+            .admin-mobile-menu {
+                display: block;
             }
 
             .services-grid {
                 grid-template-columns: 1fr;
+            }
+
+            /* Ajustar container para mobile */
+            .container {
+                margin: 1rem auto;
+                padding: 0 0.5rem;
+            }
+
+            section {
+                padding: 1.5rem;
+                margin-bottom: 1rem;
             }
         }
 
@@ -684,6 +952,54 @@
                 </button>
             </div>
         </nav>
+
+        <!-- Menu Mobile -->
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+        
+        <div class="mobile-menu" id="mobile-menu">
+            <div class="mobile-menu-header">
+                <div class="mobile-menu-title">
+                    <i class="fas fa-paw"></i> Menu
+                </div>
+                <button class="mobile-menu-close" id="mobile-menu-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mobile-menu-buttons">
+                <button class="mobile-menu-btn active" data-section="client-welcome">
+                    <i class="fas fa-home"></i>
+                    <span>Início</span>
+                </button>
+                <button class="mobile-menu-btn" data-section="client-pet-form">
+                    <i class="fas fa-paw"></i>
+                    <span>Cadastrar Pet</span>
+                </button>
+                <button class="mobile-menu-btn" data-section="client-booking">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span>Agendar</span>
+                </button>
+                <button class="mobile-menu-btn" data-section="client-services">
+                    <i class="fas fa-cut"></i>
+                    <span>Serviços</span>
+                </button>
+                <button class="mobile-menu-btn" data-section="client-prices">
+                    <i class="fas fa-tags"></i>
+                    <span>Preços</span>
+                </button>
+                <button class="mobile-menu-btn" data-section="client-gallery">
+                    <i class="far fa-images"></i>
+                    <span>Galeria</span>
+                </button>
+                <button class="mobile-menu-btn" onclick="showInterfaceSelector(); closeMobileMenu();">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Voltar</span>
+                </button>
+            </div>
+        </div>
 
         <div class="container">
             <!-- Seção de Boas-vindas do Cliente -->
@@ -1390,6 +1706,70 @@
             </div>
         </nav>
 
+        <!-- Menu Mobile Admin -->
+        <button class="admin-mobile-menu-toggle" id="admin-mobile-menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="admin-mobile-menu-overlay" id="admin-mobile-menu-overlay"></div>
+        
+        <div class="admin-mobile-menu" id="admin-mobile-menu">
+            <div class="admin-mobile-menu-header">
+                <div class="admin-mobile-menu-title">
+                    <i class="fas fa-cog"></i> Menu Admin
+                </div>
+                <button class="admin-mobile-menu-close" id="admin-mobile-menu-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="admin-mobile-menu-buttons">
+                <button class="admin-mobile-menu-btn active" data-section="admin-dashboard">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button class="admin-mobile-menu-btn" data-section="admin-appointments">
+                    <i class="fas fa-calendar"></i>
+                    <span>Agendamentos</span>
+                </button>
+                <button class="admin-mobile-menu-btn" data-section="admin-pets">
+                    <i class="fas fa-paw"></i>
+                    <span>Pets</span>
+                </button>
+                <button class="admin-mobile-menu-btn" data-section="admin-payments">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>Pagamentos</span>
+                </button>
+                <button class="admin-mobile-menu-btn" data-section="admin-staff">
+                    <i class="fas fa-users"></i>
+                    <span>Funcionários</span>
+                </button>
+                <button class="admin-mobile-menu-btn" data-section="admin-promotions">
+                    <i class="fas fa-percent"></i>
+                    <span>Promoções</span>
+                </button>
+                <button class="admin-mobile-menu-btn" data-section="admin-loyalty">
+                    <i class="fas fa-star"></i>
+                    <span>Fidelidade</span>
+                </button>
+                <button class="admin-mobile-menu-btn" data-section="admin-social">
+                    <i class="fas fa-share-alt"></i>
+                    <span>Redes Sociais</span>
+                </button>
+                <button class="admin-mobile-menu-btn" data-section="admin-reminders">
+                    <i class="far fa-bell"></i>
+                    <span>Lembretes</span>
+                </button>
+                <button class="admin-mobile-menu-btn" data-section="admin-pricing">
+                    <i class="fas fa-tags"></i>
+                    <span>Preços</span>
+                </button>
+                <button class="admin-mobile-menu-btn" onclick="adminLogout(); closeAdminMobileMenu();">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>
+
         <div class="container">
             <!-- Dashboard Administrativo -->
             <section id="admin-dashboard" class="active">
@@ -1544,15 +1924,82 @@
             });
             
             // Remove active de todos os botões de navegação do cliente
-            document.querySelectorAll('.client-nav-btn').forEach(btn => {
+            document.querySelectorAll('.client-nav-btn, .mobile-menu-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             
             // Ativa a seção selecionada
             document.getElementById(sectionId).classList.add('active');
             
-            // Ativa o botão correspondente
-            document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+            // Ativa o botão correspondente (desktop e mobile)
+            document.querySelectorAll(`[data-section="${sectionId}"]`).forEach(btn => {
+                btn.classList.add('active');
+            });
+        }
+
+        // Funções do menu mobile
+        function openMobileMenu() {
+            document.getElementById('mobile-menu-overlay').style.display = 'block';
+            document.getElementById('mobile-menu').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('mobile-menu').classList.add('show');
+            }, 10);
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobile-menu').classList.remove('show');
+            setTimeout(() => {
+                document.getElementById('mobile-menu-overlay').style.display = 'none';
+                document.getElementById('mobile-menu').style.display = 'none';
+            }, 300);
+        }
+
+        // Funções do menu mobile admin
+        function openAdminMobileMenu() {
+            document.getElementById('admin-mobile-menu-overlay').style.display = 'block';
+            document.getElementById('admin-mobile-menu').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('admin-mobile-menu').classList.add('show');
+            }, 10);
+        }
+
+        function closeAdminMobileMenu() {
+            document.getElementById('admin-mobile-menu').classList.remove('show');
+            setTimeout(() => {
+                document.getElementById('admin-mobile-menu-overlay').style.display = 'none';
+                document.getElementById('admin-mobile-menu').style.display = 'none';
+            }, 300);
+        }
+
+        // Auto-hide menu on scroll (desktop only)
+        let lastScrollTop = 0;
+        let scrollTimeout;
+        
+        function handleScroll() {
+            if (window.innerWidth <= 768) return; // Só funciona no desktop
+            
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            const clientNav = document.querySelector('.client-nav');
+            const adminNav = document.querySelector('.admin-nav');
+            
+            if (currentScroll > lastScrollTop && currentScroll > 100) {
+                // Scrolling down
+                if (clientNav) clientNav.classList.add('hidden');
+                if (adminNav) adminNav.classList.add('hidden');
+            } else {
+                // Scrolling up
+                if (clientNav) clientNav.classList.remove('hidden');
+                if (adminNav) adminNav.classList.remove('hidden');
+            }
+            
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+            
+            // Clear timeout and set a new one
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                if (clientNav) clientNav.classList.remove('hidden');
+                if (adminNav) adminNav.classList.remove('hidden');
+            }, 2000); // Show menu after 2 seconds of no scrolling
         }
 
         // Sistema de navegação administrativa
@@ -1563,15 +2010,17 @@
             });
             
             // Remove active de todos os botões de navegação administrativa
-            document.querySelectorAll('.admin-nav-btn').forEach(btn => {
+            document.querySelectorAll('.admin-nav-btn, .admin-mobile-menu-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             
             // Ativa a seção selecionada
             document.getElementById(sectionId).classList.add('active');
             
-            // Ativa o botão correspondente
-            document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+            // Ativa o botão correspondente (desktop e mobile)
+            document.querySelectorAll(`[data-section="${sectionId}"]`).forEach(btn => {
+                btn.classList.add('active');
+            });
         }
 
         // Login administrativo
@@ -1603,12 +2052,47 @@
             });
         });
 
+        // Event listeners para menu mobile
+        document.getElementById('mobile-menu-toggle').addEventListener('click', openMobileMenu);
+        document.getElementById('mobile-menu-close').addEventListener('click', closeMobileMenu);
+        document.getElementById('mobile-menu-overlay').addEventListener('click', closeMobileMenu);
+
+        // Event listeners para botões do menu mobile
+        document.querySelectorAll('.mobile-menu-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const section = this.getAttribute('data-section');
+                if (section) {
+                    showClientSection(section);
+                    closeMobileMenu();
+                }
+            });
+        });
+
+        // Event listener para scroll (auto-hide menu)
+        window.addEventListener('scroll', handleScroll);
+
         // Event listeners para navegação administrativa
         document.querySelectorAll('.admin-nav-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const section = this.getAttribute('data-section');
                 if (section) {
                     showAdminSection(section);
+                }
+            });
+        });
+
+        // Event listeners para menu mobile admin
+        document.getElementById('admin-mobile-menu-toggle').addEventListener('click', openAdminMobileMenu);
+        document.getElementById('admin-mobile-menu-close').addEventListener('click', closeAdminMobileMenu);
+        document.getElementById('admin-mobile-menu-overlay').addEventListener('click', closeAdminMobileMenu);
+
+        // Event listeners para botões do menu mobile admin
+        document.querySelectorAll('.admin-mobile-menu-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const section = this.getAttribute('data-section');
+                if (section) {
+                    showAdminSection(section);
+                    closeAdminMobileMenu();
                 }
             });
         });
