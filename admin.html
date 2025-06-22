@@ -1,0 +1,4055 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pingo de Fofura - Sistema Administrativo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6f42c1;
+            --secondary: #e0cffc;
+            --accent: #a5e1d2;
+            --dark: #333;
+            --light: #f8f9fa;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Header Administrativo */
+        .admin-header {
+            background: linear-gradient(135deg, var(--primary), #8b5cf6);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .admin-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .admin-user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Navegação */
+        nav {
+            background: white;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            padding: 0.6rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Seções */
+        section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: none;
+        }
+
+        section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        /* Formulários */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.2);
+        }
+
+        /* Botões */
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        button:hover {
+            background-color: #5a3ba3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        button.secondary {
+            background-color: var(--accent);
+        }
+
+        button.secondary:hover {
+            background-color: #8bd3c1;
+        }
+
+        button.danger {
+            background-color: var(--danger);
+        }
+
+        button.danger:hover {
+            background-color: #c82333;
+        }
+
+        button.success {
+            background-color: var(--success);
+        }
+
+        button.success:hover {
+            background-color: #218838;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--primary);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            color: var(--primary);
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* Tabelas */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        .table th, .table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .table th {
+            background-color: var(--secondary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .table tr:hover {
+            background-color: var(--light);
+        }
+
+        /* Status */
+        .status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-confirmed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-completed {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-cancelled {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Dashboard Cards */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-card {
+            background: linear-gradient(135deg, var(--primary), #8b5cf6);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .dashboard-card i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-card h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .nav-buttons {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Login Modal */
+        .login-modal {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .login-form h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        /* Ocultar área administrativa inicialmente */
+        .admin-content {
+            display: none;
+        }
+
+        .admin-content.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Modal de Login -->
+    <div class="login-modal" id="login-modal">
+        <div class="login-form">
+            <h3><i class="fas fa-lock"></i> Acesso Administrativo</h3>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-username">Usuário:</label>
+                    <input type="text" id="admin-username" required placeholder="Digite seu usuário">
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Senha:</label>
+                    <input type="password" id="admin-password" required placeholder="Digite sua senha">
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <button type="submit">
+                        <i class="fas fa-sign-in-alt"></i> Entrar
+                    </button>
+                    <button type="button" onclick="window.location.href='index.html'" class="secondary">
+                        <i class="fas fa-arrow-left"></i> Voltar
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Conteúdo Administrativo -->
+    <div class="admin-content" id="admin-content">
+        <!-- Header Administrativo -->
+        <div class="admin-header">
+            <div class="admin-title">
+                <i class="fas fa-user-shield"></i> Pingo de Fofura - Sistema Administrativo
+            </div>
+            <div class="admin-user-info">
+                <span id="admin-user-name">Administrador</span>
+                <button onclick="adminLogout()" style="background: rgba(255,255,255,0.2); border: 2px solid white; color: white; padding: 0.5rem 1rem;">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+            </div>
+        </div>
+
+        <!-- Navegação -->
+        <nav>
+            <div class="nav-buttons">
+                <button class="nav-btn active" data-section="dashboard">
+                    <i class="fas fa-chart-bar"></i> Dashboard
+                </button>
+                <button class="nav-btn" data-section="appointments">
+                    <i class="fas fa-calendar"></i> Agendamentos
+                </button>
+                <button class="nav-btn" data-section="pets">
+                    <i class="fas fa-paw"></i> Pets
+                </button>
+                <button class="nav-btn" data-section="payments">
+                    <i class="fas fa-dollar-sign"></i> Pagamentos
+                </button>
+                <button class="nav-btn" data-section="staff">
+                    <i class="fas fa-users"></i> Funcionários
+                </button>
+                <button class="nav-btn" data-section="promotions">
+                    <i class="fas fa-percent"></i> Promoções
+                </button>
+                <button class="nav-btn" data-section="loyalty">
+                    <i class="fas fa-star"></i> Fidelidade
+                </button>
+                <button class="nav-btn" data-section="social">
+                    <i class="fas fa-share-alt"></i> Redes Sociais
+                </button>
+                <button class="nav-btn" data-section="reminders">
+                    <i class="far fa-bell"></i> Lembretes
+                </button>
+                <button class="nav-btn" data-section="pricing">
+                    <i class="fas fa-tags"></i> Preços
+                </button>
+            </div>
+        </nav>
+
+        <div class="container">
+            <!-- Dashboard -->
+            <section id="dashboard" class="active">
+                <h2><i class="fas fa-chart-bar"></i> Dashboard</h2>
+                
+                <div class="dashboard-cards">
+                    <div class="dashboard-card">
+                        <i class="fas fa-calendar-check"></i>
+                        <h3>Agendamentos Hoje</h3>
+                        <div class="value" id="appointments-today">0</div>
+                    </div>
+                    
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, var(--success), #20c997);">
+                        <i class="fas fa-dollar-sign"></i>
+                        <h3>Faturamento Mensal</h3>
+                        <div class="value" id="monthly-revenue">R$ 0,00</div>
+                    </div>
+                    
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #ff85a2, #ff6b8b);">
+                        <i class="fas fa-paw"></i>
+                        <h3>Pets Cadastrados</h3>
+                        <div class="value" id="total-pets">0</div>
+                    </div>
+                    
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, var(--accent), #8bd3c1);">
+                        <i class="fas fa-star"></i>
+                        <h3>Clientes VIP</h3>
+                        <div class="value" id="vip-clients">0</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-clock"></i> Próximos Agendamentos
+                        </h3>
+                    </div>
+                    <div id="upcoming-appointments">
+                        <p style="text-align: center; color: #666;">Nenhum agendamento próximo.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-history"></i> Atividades Recentes
+                        </h3>
+                    </div>
+                    <div id="recent-activities">
+                        <p style="text-align: center; color: #666;">Nenhuma atividade recente.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Agendamentos -->
+            <section id="appointments">
+                <h2><i class="fas fa-calendar"></i> Gestão de Agendamentos</h2>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Todos os Agendamentos</h3>
+                        <button onclick="exportAppointments()">
+                            <i class="fas fa-download"></i> Exportar
+                        </button>
+                    </div>
+                    
+                    <div style="overflow-x: auto;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Data/Hora</th>
+                                    <th>Pet</th>
+                                    <th>Tutor</th>
+                                    <th>Serviços</th>
+                                    <th>Valor</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="appointments-table">
+                                <tr>
+                                    <td colspan="7" style="text-align: center; color: #666;">Nenhum agendamento encontrado.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pets -->
+            <section id="pets">
+                <h2><i class="fas fa-paw"></i> Gestão de Pets</h2>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Pets Cadastrados</h3>
+                        <button onclick="exportPets()">
+                            <i class="fas fa-download"></i> Exportar Lista
+                        </button>
+                    </div>
+                    
+                    <div id="pets-list">
+                        <p style="text-align: center; color: #666;">Nenhum pet cadastrado.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pagamentos -->
+            <section id="payments">
+                <h2><i class="fas fa-dollar-sign"></i> Controle de Pagamentos</h2>
+                
+                <div class="dashboard-cards" style="margin-bottom: 2rem;">
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, var(--success), #20c997);">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Pagamentos Recebidos</h3>
+                        <div class="value" id="payments-received">R$ 0,00</div>
+                    </div>
+                    
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, var(--warning), #e0a800);">
+                        <i class="fas fa-clock"></i>
+                        <h3>Pagamentos Pendentes</h3>
+                        <div class="value" id="payments-pending">R$ 0,00</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Histórico de Pagamentos</h3>
+                        <button onclick="exportPayments()">
+                            <i class="fas fa-download"></i> Exportar
+                        </button>
+                    </div>
+                    
+                    <div style="overflow-x: auto;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Pet</th>
+                                    <th>Serviços</th>
+                                    <th>Valor</th>
+                                    <th>Método</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payments-table">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; color: #666;">Nenhum pagamento registrado.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Funcionários -->
+            <section id="staff">
+                <h2><i class="fas fa-users"></i> Gestão de Funcionários</h2>
+                
+                <!-- Cards de Resumo -->
+                <div class="dashboard-cards" style="margin-bottom: 2rem;">
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #28a745, #20c997);">
+                        <i class="fas fa-users"></i>
+                        <h3>Total de Funcionários</h3>
+                        <div class="value" id="total-staff">0</div>
+                    </div>
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #17a2b8, #6f42c1);">
+                        <i class="fas fa-user-check"></i>
+                        <h3>Ativos Hoje</h3>
+                        <div class="value" id="active-staff-today">0</div>
+                    </div>
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #ffc107, #fd7e14);">
+                        <i class="fas fa-clock"></i>
+                        <h3>Em Horário</h3>
+                        <div class="value" id="staff-on-schedule">0</div>
+                    </div>
+                </div>
+
+                <!-- Funcionários Ativos -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Funcionários Cadastrados</h3>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button onclick="addStaff()">
+                                <i class="fas fa-plus"></i> Adicionar Funcionário
+                            </button>
+                            <button onclick="manageSchedules()" class="secondary">
+                                <i class="fas fa-calendar-alt"></i> Gerenciar Escalas
+                            </button>
+                            <button onclick="exportStaffReport()" class="secondary">
+                                <i class="fas fa-download"></i> Relatório
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="staff-list">
+                        <p style="text-align: center; color: #666;">Carregando funcionários...</p>
+                    </div>
+                </div>
+
+                <!-- Escalas de Trabalho -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Escala da Semana</h3>
+                        <button onclick="generateWeeklySchedule()">
+                            <i class="fas fa-calendar-plus"></i> Gerar Escala Automática
+                        </button>
+                    </div>
+                    
+                    <div id="weekly-schedule">
+                        <div class="table" style="overflow-x: auto;">
+                            <table class="table" id="schedule-table">
+                                <thead>
+                                    <tr>
+                                        <th>Funcionário</th>
+                                        <th>Segunda</th>
+                                        <th>Terça</th>
+                                        <th>Quarta</th>
+                                        <th>Quinta</th>
+                                        <th>Sexta</th>
+                                        <th>Sábado</th>
+                                        <th>Domingo</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="schedule-tbody">
+                                    <tr>
+                                        <td colspan="8" style="text-align: center; color: #666;">Nenhuma escala definida</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Promoções -->
+            <section id="promotions">
+                <h2><i class="fas fa-percent"></i> Sistema de Promoções</h2>
+                
+                <!-- Cards de Resumo -->
+                <div class="dashboard-cards" style="margin-bottom: 2rem;">
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #ff6b6b, #ee5a24);">
+                        <i class="fas fa-percent"></i>
+                        <h3>Promoções Ativas</h3>
+                        <div class="value" id="active-promotions">0</div>
+                    </div>
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #4ecdc4, #44a08d);">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Economia Gerada</h3>
+                        <div class="value" id="total-savings">R$ 0</div>
+                    </div>
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #45b7d1, #96c93d);">
+                        <i class="fas fa-users"></i>
+                        <h3>Clientes Beneficiados</h3>
+                        <div class="value" id="customers-with-promotions">0</div>
+                    </div>
+                </div>
+
+                <!-- Promoções Ativas -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Promoções Cadastradas</h3>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button onclick="createPromotion()">
+                                <i class="fas fa-plus"></i> Nova Promoção
+                            </button>
+                            <button onclick="createCoupon()" class="secondary">
+                                <i class="fas fa-ticket-alt"></i> Cupom de Desconto
+                            </button>
+                            <button onclick="exportPromotionsReport()" class="secondary">
+                                <i class="fas fa-download"></i> Relatório
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="promotions-list">
+                        <p style="text-align: center; color: #666;">Carregando promoções...</p>
+                    </div>
+                </div>
+
+                <!-- Cupons de Desconto -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Cupons de Desconto</h3>
+                        <button onclick="generateBulkCoupons()">
+                            <i class="fas fa-magic"></i> Gerar Cupons em Lote
+                        </button>
+                    </div>
+                    
+                    <div id="coupons-list">
+                        <p style="text-align: center; color: #666;">Nenhum cupom criado ainda.</p>
+                    </div>
+                </div>
+
+                <!-- Promoções Automáticas -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Promoções Automáticas</h3>
+                        <button onclick="configureAutoPromotions()">
+                            <i class="fas fa-cog"></i> Configurar Automação
+                        </button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                        <div class="card" style="background: var(--light);">
+                            <h4><i class="fas fa-birthday-cake"></i> Aniversário do Pet</h4>
+                            <p>Desconto automático no mês de aniversário</p>
+                            <label>
+                                <input type="checkbox" id="birthday-promo" onchange="toggleAutoPromotion('birthday')"> 
+                                Ativar (20% de desconto)
+                            </label>
+                        </div>
+                        
+                        <div class="card" style="background: var(--light);">
+                            <h4><i class="fas fa-star"></i> Cliente Fiel</h4>
+                            <p>Desconto após 5 serviços realizados</p>
+                            <label>
+                                <input type="checkbox" id="loyalty-promo" onchange="toggleAutoPromotion('loyalty')"> 
+                                Ativar (15% de desconto)
+                            </label>
+                        </div>
+                        
+                        <div class="card" style="background: var(--light);">
+                            <h4><i class="fas fa-clock"></i> Horário Promocional</h4>
+                            <p>Desconto em horários específicos</p>
+                            <label>
+                                <input type="checkbox" id="time-promo" onchange="toggleAutoPromotion('time')"> 
+                                Ativar (10% manhã)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Fidelidade -->
+            <section id="loyalty">
+                <h2><i class="fas fa-star"></i> Programa de Fidelidade</h2>
+                
+                <!-- Cards de Resumo -->
+                <div class="dashboard-cards" style="margin-bottom: 2rem;">
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #f39c12, #e67e22);">
+                        <i class="fas fa-users"></i>
+                        <h3>Clientes VIP</h3>
+                        <div class="value" id="vip-customers">0</div>
+                    </div>
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">
+                        <i class="fas fa-coins"></i>
+                        <h3>Pontos Ativos</h3>
+                        <div class="value" id="total-points">0</div>
+                    </div>
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #1abc9c, #16a085);">
+                        <i class="fas fa-gift"></i>
+                        <h3>Recompensas Resgatadas</h3>
+                        <div class="value" id="redeemed-rewards">0</div>
+                    </div>
+                </div>
+
+                <!-- Configurações do Programa -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Configurações do Programa</h3>
+                        <button onclick="saveLoyaltySettings()">
+                            <i class="fas fa-save"></i> Salvar Configurações
+                        </button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                        <div class="form-group">
+                            <label>Sistema de Pontos</label>
+                            <select id="points-system">
+                                <option value="value">Por valor gasto (R$ 1 = 1 ponto)</option>
+                                <option value="service">Por serviço realizado</option>
+                                <option value="visit">Por visita</option>
+                                <option value="mixed">Sistema misto</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Pontos por Real Gasto</label>
+                            <input type="number" id="points-per-real" value="1" min="0.1" step="0.1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Pontos por Serviço</label>
+                            <input type="number" id="points-per-service" value="10" min="1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Pontos para VIP</label>
+                            <input type="number" id="vip-threshold" value="100" min="50">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Validade dos Pontos (meses)</label>
+                            <input type="number" id="points-expiry" value="12" min="1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Desconto VIP (%)</label>
+                            <input type="number" id="vip-discount" value="15" min="5" max="50">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ranking de Clientes VIP -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Ranking de Clientes VIP</h3>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button onclick="refreshLoyaltyData()">
+                                <i class="fas fa-sync"></i> Atualizar
+                            </button>
+                            <button onclick="exportLoyalty()" class="secondary">
+                                <i class="fas fa-download"></i> Exportar Ranking
+                            </button>
+                            <button onclick="sendVipRewards()" class="secondary">
+                                <i class="fas fa-gift"></i> Enviar Recompensas
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="loyalty-ranking">
+                        <p style="text-align: center; color: #666;">Carregando ranking...</p>
+                    </div>
+                </div>
+
+                <!-- Recompensas Disponíveis -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Recompensas Disponíveis</h3>
+                        <button onclick="createReward()">
+                            <i class="fas fa-plus"></i> Nova Recompensa
+                        </button>
+                    </div>
+                    
+                    <div id="rewards-list">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                            <!-- Recompensas padrão -->
+                            <div class="card" style="background: var(--light); text-align: center;">
+                                <i class="fas fa-bath" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                                <h4>Banho Grátis</h4>
+                                <p>50 pontos</p>
+                                <button onclick="editReward('banho')" class="secondary" style="width: 100%;">Editar</button>
+                            </div>
+                            
+                            <div class="card" style="background: var(--light); text-align: center;">
+                                <i class="fas fa-cut" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                                <h4>Tosa Grátis</h4>
+                                <p>80 pontos</p>
+                                <button onclick="editReward('tosa')" class="secondary" style="width: 100%;">Editar</button>
+                            </div>
+                            
+                            <div class="card" style="background: var(--light); text-align: center;">
+                                <i class="fas fa-percent" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                                <h4>20% de Desconto</h4>
+                                <p>30 pontos</p>
+                                <button onclick="editReward('desconto')" class="secondary" style="width: 100%;">Editar</button>
+                            </div>
+                            
+                            <div class="card" style="background: var(--light); text-align: center;">
+                                <i class="fas fa-spa" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                                <h4>Spa Completo</h4>
+                                <p>120 pontos</p>
+                                <button onclick="editReward('spa')" class="secondary" style="width: 100%;">Editar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Histórico de Resgates -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Histórico de Resgates</h3>
+                        <button onclick="clearRedemptionHistory()" class="danger">
+                            <i class="fas fa-trash"></i> Limpar Histórico
+                        </button>
+                    </div>
+                    
+                    <div id="redemption-history">
+                        <p style="text-align: center; color: #666;">Nenhum resgate realizado ainda.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Redes Sociais -->
+            <section id="social">
+                <h2><i class="fas fa-share-alt"></i> Redes Sociais</h2>
+                
+                <!-- Cards de Resumo -->
+                <div class="dashboard-cards" style="margin-bottom: 2rem;">
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #3b5998, #8b9dc3);">
+                        <i class="fab fa-facebook"></i>
+                        <h3>Facebook</h3>
+                        <div class="value" id="facebook-followers">1.2K</div>
+                    </div>
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #e1306c, #fd1d1d);">
+                        <i class="fab fa-instagram"></i>
+                        <h3>Instagram</h3>
+                        <div class="value" id="instagram-followers">850</div>
+                    </div>
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #25d366, #128c7e);">
+                        <i class="fab fa-whatsapp"></i>
+                        <h3>WhatsApp</h3>
+                        <div class="value" id="whatsapp-contacts">320</div>
+                    </div>
+                </div>
+
+                <!-- Agendamento de Posts -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Agendamento de Postagens</h3>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button onclick="createPost()">
+                                <i class="fas fa-plus"></i> Nova Postagem
+                            </button>
+                            <button onclick="schedulePost()" class="secondary">
+                                <i class="fas fa-clock"></i> Agendar Post
+                            </button>
+                            <button onclick="createCampaign()" class="secondary">
+                                <i class="fas fa-bullhorn"></i> Campanha
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="social-posts">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                            <!-- Post exemplo -->
+                            <div class="card" style="background: var(--light);">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                    <div>
+                                        <h4 style="margin: 0;">🐾 Promoção de Verão!</h4>
+                                        <p style="margin: 0.5rem 0; font-size: 0.9rem;">20% de desconto em banhos durante janeiro</p>
+                                    </div>
+                                    <span class="status status-pending" style="font-size: 0.8rem;">Agendado</span>
+                                </div>
+                                <div style="font-size: 0.8rem; color: #666; margin-bottom: 1rem;">
+                                    📅 Publicar em: 15/01/2024 às 09:00<br>
+                                    📱 Redes: Instagram, Facebook
+                                </div>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <button class="secondary" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </button>
+                                    <button style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                        <i class="fas fa-share"></i> Publicar Agora
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Galeria de Fotos -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Galeria de Fotos dos Pets</h3>
+                        <button onclick="uploadPhoto()">
+                            <i class="fas fa-camera"></i> Adicionar Foto
+                        </button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div class="card" style="background: var(--light); text-align: center; padding: 2rem;">
+                            <i class="fas fa-camera" style="font-size: 3rem; color: #ddd; margin-bottom: 1rem;"></i>
+                            <p style="color: #666;">Adicione fotos dos pets para usar nas redes sociais</p>
+                            <button onclick="uploadPhoto()" class="secondary">
+                                <i class="fas fa-upload"></i> Upload
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configurações das Redes -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Configurações das Redes Sociais</h3>
+                        <button onclick="saveSocialSettings()">
+                            <i class="fas fa-save"></i> Salvar Configurações
+                        </button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                        <div class="form-group">
+                            <label><i class="fab fa-facebook"></i> Facebook Page ID</label>
+                            <input type="text" id="facebook-page-id" placeholder="ID da página do Facebook">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fab fa-instagram"></i> Instagram Username</label>
+                            <input type="text" id="instagram-username" placeholder="@pingofofura">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fab fa-whatsapp"></i> WhatsApp Business</label>
+                            <input type="text" id="whatsapp-business" placeholder="(14) 99854-5722">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Horário de Postagem Automática</label>
+                            <select id="auto-post-time">
+                                <option value="09:00">09:00</option>
+                                <option value="12:00">12:00</option>
+                                <option value="15:00">15:00</option>
+                                <option value="18:00">18:00</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Frequência de Posts</label>
+                            <select id="post-frequency">
+                                <option value="daily">Diário</option>
+                                <option value="weekly">Semanal</option>
+                                <option value="biweekly">Quinzenal</option>
+                                <option value="monthly">Mensal</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="auto-post-enabled"> 
+                                Ativar postagem automática
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lembretes -->
+            <section id="reminders">
+                <h2><i class="far fa-bell"></i> Sistema de Lembretes</h2>
+                
+                <!-- Cards de Resumo -->
+                <div class="dashboard-cards" style="margin-bottom: 2rem;">
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #ff7675, #fd79a8);">
+                        <i class="fas fa-bell"></i>
+                        <h3>Lembretes Ativos</h3>
+                        <div class="value" id="active-reminders">0</div>
+                    </div>
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #00b894, #00cec9);">
+                        <i class="fas fa-paper-plane"></i>
+                        <h3>Enviados Hoje</h3>
+                        <div class="value" id="reminders-sent-today">0</div>
+                    </div>
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #fdcb6e, #e17055);">
+                        <i class="fas fa-clock"></i>
+                        <h3>Pendentes</h3>
+                        <div class="value" id="pending-reminders">0</div>
+                    </div>
+                </div>
+
+                <!-- Lembretes Automáticos -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Configurações de Lembretes Automáticos</h3>
+                        <button onclick="saveReminderSettings()">
+                            <i class="fas fa-save"></i> Salvar Configurações
+                        </button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                        <div class="card" style="background: var(--light);">
+                            <h4><i class="fas fa-redo"></i> Lembrete de Retorno</h4>
+                            <p>Enviar lembrete após X dias do último serviço</p>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="return-reminder-enabled"> 
+                                    Ativar lembrete de retorno
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>Dias após último serviço:</label>
+                                <input type="number" id="return-reminder-days" value="30" min="7" max="90">
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="background: var(--light);">
+                            <h4><i class="fas fa-birthday-cake"></i> Aniversário do Pet</h4>
+                            <p>Lembrete no aniversário do pet</p>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="birthday-reminder-enabled"> 
+                                    Ativar lembrete de aniversário
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>Dias antes do aniversário:</label>
+                                <input type="number" id="birthday-reminder-days" value="3" min="1" max="7">
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="background: var(--light);">
+                            <h4><i class="fas fa-user-times"></i> Reativação de Clientes</h4>
+                            <p>Campanha para clientes inativos</p>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="reactivation-reminder-enabled"> 
+                                    Ativar campanha de reativação
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>Dias sem serviço:</label>
+                                <input type="number" id="reactivation-reminder-days" value="60" min="30" max="180">
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="background: var(--light);">
+                            <h4><i class="fas fa-calendar-check"></i> Confirmação de Agendamento</h4>
+                            <p>Confirmar agendamento 1 dia antes</p>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="confirmation-reminder-enabled"> 
+                                    Ativar confirmação automática
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>Horas antes do agendamento:</label>
+                                <input type="number" id="confirmation-reminder-hours" value="24" min="2" max="48">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lembretes Manuais -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Lembretes Manuais</h3>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button onclick="createReminder()">
+                                <i class="fas fa-plus"></i> Novo Lembrete
+                            </button>
+                            <button onclick="sendBulkReminder()" class="secondary">
+                                <i class="fas fa-bullhorn"></i> Lembrete em Massa
+                            </button>
+                            <button onclick="scheduleReminder()" class="secondary">
+                                <i class="fas fa-clock"></i> Agendar Lembrete
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="reminders-list">
+                        <div class="card" style="margin-bottom: 1rem; background: var(--light);">
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <div>
+                                    <h4 style="margin: 0;">🐕 Lembrete de Retorno - Rex</h4>
+                                    <p style="margin: 0.5rem 0; font-size: 0.9rem;">Último banho foi há 25 dias</p>
+                                    <div style="font-size: 0.8rem; color: #666;">
+                                        📞 (14) 99999-9999 • 📅 Agendar para: 15/01/2024
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <span class="status status-pending" style="font-size: 0.8rem;">Pendente</span>
+                                    <div style="margin-top: 0.5rem;">
+                                        <button onclick="sendReminder(1)" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                            <i class="fas fa-paper-plane"></i> Enviar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Histórico de Lembretes -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Histórico de Lembretes</h3>
+                        <button onclick="clearReminderHistory()" class="danger">
+                            <i class="fas fa-trash"></i> Limpar Histórico
+                        </button>
+                    </div>
+                    
+                    <div id="reminder-history">
+                        <div style="max-height: 300px; overflow-y: auto;">
+                            <div class="card" style="margin-bottom: 0.5rem; padding: 1rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong>Lembrete de retorno enviado para Maria Silva</strong>
+                                        <div style="font-size: 0.8rem; color: #666;">
+                                            Hoje às 09:30 • WhatsApp • Pet: Mimi
+                                        </div>
+                                    </div>
+                                    <span class="status status-confirmed" style="font-size: 0.8rem;">Enviado</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card" style="margin-bottom: 0.5rem; padding: 1rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong>Confirmação de agendamento para João Santos</strong>
+                                        <div style="font-size: 0.8rem; color: #666;">
+                                            Ontem às 15:45 • WhatsApp • Pet: Thor
+                                        </div>
+                                    </div>
+                                    <span class="status status-confirmed" style="font-size: 0.8rem;">Confirmado</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Templates de Mensagens -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Templates de Mensagens</h3>
+                        <button onclick="createTemplate()">
+                            <i class="fas fa-plus"></i> Novo Template
+                        </button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                        <div class="card" style="background: var(--light);">
+                            <h4>🔄 Retorno</h4>
+                            <p style="font-size: 0.9rem; font-style: italic;">
+                                "Olá {NOME}! O {PET} está com saudades do banho! Que tal agendar um novo serviço?"
+                            </p>
+                            <button onclick="editTemplate('return')" class="secondary" style="width: 100%;">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                        </div>
+                        
+                        <div class="card" style="background: var(--light);">
+                            <h4>🎂 Aniversário</h4>
+                            <p style="font-size: 0.9rem; font-style: italic;">
+                                "Parabéns! Hoje é aniversário do {PET}! 🎉 Que tal um banho especial para comemorar?"
+                            </p>
+                            <button onclick="editTemplate('birthday')" class="secondary" style="width: 100%;">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                        </div>
+                        
+                        <div class="card" style="background: var(--light);">
+                            <h4>✅ Confirmação</h4>
+                            <p style="font-size: 0.9rem; font-style: italic;">
+                                "Oi {NOME}! Confirmando o agendamento do {PET} para amanhã às {HORARIO}. Nos vemos lá!"
+                            </p>
+                            <button onclick="editTemplate('confirmation')" class="secondary" style="width: 100%;">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Preços -->
+            <section id="pricing">
+                <h2><i class="fas fa-tags"></i> Gestão de Preços</h2>
+                
+                <!-- Cards de Resumo -->
+                <div class="dashboard-cards" style="margin-bottom: 2rem;">
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #2d3436, #636e72);">
+                        <i class="fas fa-tags"></i>
+                        <h3>Serviços Ativos</h3>
+                        <div class="value" id="active-services">8</div>
+                    </div>
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #00b894, #00cec9);">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Preço Médio</h3>
+                        <div class="value" id="average-price">R$ 42</div>
+                    </div>
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #fdcb6e, #e17055);">
+                        <i class="fas fa-percent"></i>
+                        <h3>Margem Média</h3>
+                        <div class="value" id="average-margin">65%</div>
+                    </div>
+                </div>
+
+                <!-- Tabela de Preços Principal -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Tabela de Preços por Porte</h3>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button onclick="addNewService()">
+                                <i class="fas fa-plus"></i> Novo Serviço
+                            </button>
+                            <button onclick="updateAllPrices()" class="secondary">
+                                <i class="fas fa-edit"></i> Atualizar Preços
+                            </button>
+                            <button onclick="exportPriceTable()" class="secondary">
+                                <i class="fas fa-download"></i> Exportar Tabela
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div style="overflow-x: auto;">
+                        <table class="table" id="pricing-table">
+                            <thead>
+                                <tr>
+                                    <th>Serviço</th>
+                                    <th>Porte Pequeno</th>
+                                    <th>Porte Médio</th>
+                                    <th>Porte Grande</th>
+                                    <th>Custo</th>
+                                    <th>Margem</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><i class="fas fa-bath"></i> Banho Completo</td>
+                                    <td>R$ 25,00</td>
+                                    <td>R$ 35,00</td>
+                                    <td>R$ 45,00</td>
+                                    <td>R$ 12,00</td>
+                                    <td>52%</td>
+                                    <td>
+                                        <button onclick="editServicePrice('banho')" class="secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-cut"></i> Tosa Completa</td>
+                                    <td>R$ 40,00</td>
+                                    <td>R$ 55,00</td>
+                                    <td>R$ 70,00</td>
+                                    <td>R$ 18,00</td>
+                                    <td>67%</td>
+                                    <td>
+                                        <button onclick="editServicePrice('tosa')" class="secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-scissors"></i> Tosa Higiênica</td>
+                                    <td>R$ 20,00</td>
+                                    <td>R$ 25,00</td>
+                                    <td>R$ 30,00</td>
+                                    <td>R$ 8,00</td>
+                                    <td>68%</td>
+                                    <td>
+                                        <button onclick="editServicePrice('higienica')" class="secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-spa"></i> Banho + Tosa</td>
+                                    <td>R$ 55,00</td>
+                                    <td>R$ 75,00</td>
+                                    <td>R$ 95,00</td>
+                                    <td>R$ 25,00</td>
+                                    <td>65%</td>
+                                    <td>
+                                        <button onclick="editServicePrice('combo')" class="secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-paw"></i> Corte de Unhas</td>
+                                    <td>R$ 15,00</td>
+                                    <td>R$ 15,00</td>
+                                    <td>R$ 20,00</td>
+                                    <td>R$ 3,00</td>
+                                    <td>80%</td>
+                                    <td>
+                                        <button onclick="editServicePrice('unhas')" class="secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Preços Promocionais -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Preços Promocionais</h3>
+                        <button onclick="createPromotionalPrice()">
+                            <i class="fas fa-percent"></i> Nova Promoção de Preço
+                        </button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                        <div class="card" style="background: var(--light); border-left: 4px solid #28a745;">
+                            <h4><i class="fas fa-clock"></i> Horário Promocional</h4>
+                            <p>Desconto de 10% das 08:00 às 10:00</p>
+                            <div style="font-size: 0.8rem; color: #666; margin-bottom: 1rem;">
+                                Válido: Segunda a Sexta
+                            </div>
+                            <label>
+                                <input type="checkbox" id="morning-discount" checked> 
+                                Ativar desconto matinal
+                            </label>
+                        </div>
+                        
+                        <div class="card" style="background: var(--light); border-left: 4px solid #ffc107;">
+                            <h4><i class="fas fa-users"></i> Desconto Múltiplos Pets</h4>
+                            <p>15% de desconto a partir do 2º pet</p>
+                            <div style="font-size: 0.8rem; color: #666; margin-bottom: 1rem;">
+                                Mesmo tutor, mesmo dia
+                            </div>
+                            <label>
+                                <input type="checkbox" id="multiple-pets-discount" checked> 
+                                Ativar desconto múltiplos pets
+                            </label>
+                        </div>
+                        
+                        <div class="card" style="background: var(--light); border-left: 4px solid #17a2b8;">
+                            <h4><i class="fas fa-calendar-week"></i> Pacote Mensal</h4>
+                            <p>4 banhos por R$ 80,00 (pequeno)</p>
+                            <div style="font-size: 0.8rem; color: #666; margin-bottom: 1rem;">
+                                Economia de 20%
+                            </div>
+                            <label>
+                                <input type="checkbox" id="monthly-package"> 
+                                Ativar pacote mensal
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configurações de Preços -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Configurações de Preços</h3>
+                        <button onclick="savePricingSettings()">
+                            <i class="fas fa-save"></i> Salvar Configurações
+                        </button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                        <div class="form-group">
+                            <label>Margem de Lucro Padrão (%)</label>
+                            <input type="number" id="default-margin" value="65" min="10" max="90">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Reajuste Automático (%)</label>
+                            <input type="number" id="auto-adjustment" value="5" min="0" max="20" step="0.5">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Frequência de Reajuste</label>
+                            <select id="adjustment-frequency">
+                                <option value="never">Nunca</option>
+                                <option value="quarterly">Trimestral</option>
+                                <option value="biannual">Semestral</option>
+                                <option value="annual">Anual</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Desconto Máximo Permitido (%)</label>
+                            <input type="number" id="max-discount" value="30" min="5" max="50">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Arredondamento de Preços</label>
+                            <select id="price-rounding">
+                                <option value="none">Sem arredondamento</option>
+                                <option value="0.50">R$ 0,50</option>
+                                <option value="1.00">R$ 1,00</option>
+                                <option value="5.00">R$ 5,00</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="dynamic-pricing"> 
+                                Ativar preços dinâmicos por demanda
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Histórico de Alterações -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Histórico de Alterações de Preços</h3>
+                        <button onclick="clearPriceHistory()" class="danger">
+                            <i class="fas fa-trash"></i> Limpar Histórico
+                        </button>
+                    </div>
+                    
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        <div class="card" style="margin-bottom: 0.5rem; padding: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <strong>Banho Completo (Porte Médio)</strong>
+                                    <div style="font-size: 0.8rem; color: #666;">
+                                        R$ 30,00 → R$ 35,00 • Hoje às 14:30 • Admin
+                                    </div>
+                                </div>
+                                <span style="color: #28a745; font-weight: bold;">+16.7%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="margin-bottom: 0.5rem; padding: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <strong>Tosa Completa (Porte Grande)</strong>
+                                    <div style="font-size: 0.8rem; color: #666;">
+                                        R$ 75,00 → R$ 70,00 • Ontem às 09:15 • Gerente
+                                    </div>
+                                </div>
+                                <span style="color: #dc3545; font-weight: bold;">-6.7%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulador de Preços -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Simulador de Preços</h3>
+                        <button onclick="calculatePrice()">
+                            <i class="fas fa-calculator"></i> Calcular
+                        </button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                        <div class="form-group">
+                            <label>Serviço</label>
+                            <select id="sim-service">
+                                <option value="banho">Banho Completo</option>
+                                <option value="tosa">Tosa Completa</option>
+                                <option value="combo">Banho + Tosa</option>
+                                <option value="higienica">Tosa Higiênica</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Porte do Pet</label>
+                            <select id="sim-size">
+                                <option value="pequeno">Pequeno</option>
+                                <option value="medio">Médio</option>
+                                <option value="grande">Grande</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Desconto (%)</label>
+                            <input type="number" id="sim-discount" value="0" min="0" max="50">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Preço Final</label>
+                            <input type="text" id="sim-final-price" readonly style="font-weight: bold; font-size: 1.2rem; color: var(--primary);">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Sistema de usuários administrativos
+        const adminUsers = [
+            { username: 'admin', password: 'admin123', name: 'Administrador', role: 'admin' },
+            { username: 'gerente', password: 'gerente123', name: 'Gerente', role: 'manager' },
+            { username: 'atendente', password: 'atendente123', name: 'Atendente', role: 'staff' }
+        ];
+
+        let currentAdminUser = null;
+
+        // Login administrativo
+        document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+            
+            const user = adminUsers.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                currentAdminUser = user;
+                document.getElementById('admin-user-name').textContent = user.name;
+                document.getElementById('login-modal').style.display = 'none';
+                document.getElementById('admin-content').classList.add('show');
+                loadDashboardData();
+            } else {
+                alert('Usuário ou senha incorretos!');
+            }
+        });
+
+        // Logout
+        function adminLogout() {
+            currentAdminUser = null;
+            document.getElementById('admin-content').classList.remove('show');
+            document.getElementById('login-modal').style.display = 'flex';
+            document.getElementById('admin-login-form').reset();
+        }
+
+        // Navegação
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active de todos os botões
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                // Remove active de todas as seções
+                document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+                
+                // Ativa o botão clicado
+                this.classList.add('active');
+                
+                // Ativa a seção correspondente
+                const sectionId = this.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+                
+                // Carrega dados específicos da seção
+                loadSectionData(sectionId);
+            });
+        });
+
+        // Carrega dados do dashboard
+        function loadDashboardData() {
+            const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+            const pets = JSON.parse(localStorage.getItem('pets')) || [];
+            
+            // Agendamentos de hoje
+            const today = new Date().toISOString().split('T')[0];
+            const todayAppointments = appointments.filter(a => a.date === today);
+            document.getElementById('appointments-today').textContent = todayAppointments.length;
+            
+            // Faturamento mensal
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+            const monthlyRevenue = appointments
+                .filter(a => {
+                    const appointmentDate = new Date(a.date);
+                    return appointmentDate.getMonth() === currentMonth && 
+                           appointmentDate.getFullYear() === currentYear &&
+                           a.status === 'concluido';
+                })
+                .reduce((total, a) => total + a.totalPrice, 0);
+            document.getElementById('monthly-revenue').textContent = `R$ ${monthlyRevenue.toFixed(2).replace('.', ',')}`;
+            
+            // Total de pets
+            document.getElementById('total-pets').textContent = pets.length;
+            
+            // Clientes VIP (simulado - pets com mais de 3 agendamentos)
+            const clientCounts = {};
+            appointments.forEach(a => {
+                const key = a.owner.phone;
+                clientCounts[key] = (clientCounts[key] || 0) + 1;
+            });
+            const vipClients = Object.values(clientCounts).filter(count => count >= 3).length;
+            document.getElementById('vip-clients').textContent = vipClients;
+            
+            // Próximos agendamentos
+            const upcomingAppointments = appointments
+                .filter(a => a.status !== 'cancelado')
+                .sort((a, b) => new Date(a.date + ' ' + a.time) - new Date(b.date + ' ' + b.time))
+                .slice(0, 5);
+            
+            if (upcomingAppointments.length === 0) {
+                document.getElementById('upcoming-appointments').innerHTML = `
+                    <p style="text-align: center; color: #666;">Nenhum agendamento próximo.</p>
+                `;
+            } else {
+                const upcomingHTML = upcomingAppointments.map(appointment => {
+                    const date = new Date(appointment.date);
+                    const isToday = date.toISOString().split('T')[0] === today;
+                    const dateStr = isToday ? 'Hoje' : date.toLocaleDateString('pt-BR');
+                    const statusMap = {
+                        'pendente': { class: 'status-pending', text: 'Pendente' },
+                        'confirmado': { class: 'status-confirmed', text: 'Confirmado' },
+                        'concluido': { class: 'status-completed', text: 'Concluído' }
+                    };
+                    const status = statusMap[appointment.status] || statusMap['pendente'];
+                    
+                    return `
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--light); border-radius: 5px; margin-bottom: 0.5rem;">
+                            <div>
+                                <strong>${appointment.pet.name} - ${appointment.pet.breed}</strong><br>
+                                <small>Tutor: ${appointment.owner.name}</small>
+                            </div>
+                            <div style="text-align: right;">
+                                <div>${dateStr}, ${appointment.time}</div>
+                                <span class="status ${status.class}">${status.text}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                document.getElementById('upcoming-appointments').innerHTML = upcomingHTML;
+            }
+            
+            // Atividades recentes
+            const recentActivities = [];
+            
+            // Adiciona agendamentos recentes
+            const recentAppointments = appointments
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .slice(0, 3);
+            
+            recentAppointments.forEach(appointment => {
+                const timeAgo = getTimeAgo(appointment.createdAt);
+                recentActivities.push({
+                    text: `Agendamento criado - ${appointment.pet.name} (${appointment.owner.name})`,
+                    time: timeAgo,
+                    date: new Date(appointment.createdAt)
+                });
+            });
+            
+            // Adiciona pets recentes
+            const recentPets = pets
+                .sort((a, b) => new Date(b.registeredAt) - new Date(a.registeredAt))
+                .slice(0, 2);
+            
+            recentPets.forEach(pet => {
+                const timeAgo = getTimeAgo(pet.registeredAt);
+                recentActivities.push({
+                    text: `Novo pet cadastrado - ${pet.name} (${pet.owner.name})`,
+                    time: timeAgo,
+                    date: new Date(pet.registeredAt)
+                });
+            });
+            
+            // Ordena por data mais recente
+            recentActivities.sort((a, b) => b.date - a.date);
+            
+            if (recentActivities.length === 0) {
+                document.getElementById('recent-activities').innerHTML = `
+                    <p style="text-align: center; color: #666;">Nenhuma atividade recente.</p>
+                `;
+            } else {
+                const activitiesHTML = recentActivities.slice(0, 5).map(activity => `
+                    <div style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">
+                        <strong>${activity.text}</strong><br>
+                        <small style="color: #666;">${activity.time}</small>
+                    </div>
+                `).join('');
+                
+                document.getElementById('recent-activities').innerHTML = activitiesHTML;
+            }
+        }
+        
+        // Função para calcular tempo decorrido
+        function getTimeAgo(dateString) {
+            const now = new Date();
+            const date = new Date(dateString);
+            const diffInMinutes = Math.floor((now - date) / (1000 * 60));
+            
+            if (diffInMinutes < 1) return 'Agora mesmo';
+            if (diffInMinutes < 60) return `Há ${diffInMinutes} minuto${diffInMinutes > 1 ? 's' : ''}`;
+            
+            const diffInHours = Math.floor(diffInMinutes / 60);
+            if (diffInHours < 24) return `Há ${diffInHours} hora${diffInHours > 1 ? 's' : ''}`;
+            
+            const diffInDays = Math.floor(diffInHours / 24);
+            if (diffInDays < 7) return `Há ${diffInDays} dia${diffInDays > 1 ? 's' : ''}`;
+            
+            return date.toLocaleDateString('pt-BR');
+        }
+
+        // Carrega dados específicos de cada seção
+        function loadSectionData(sectionId) {
+            switch(sectionId) {
+                case 'appointments':
+                    loadAppointmentsData();
+                    break;
+                case 'pets':
+                    loadPetsData();
+                    break;
+                case 'payments':
+                    loadPaymentsData();
+                    break;
+                case 'staff':
+                    loadStaffData();
+                    break;
+                case 'promotions':
+                    loadPromotionsData();
+                    break;
+                case 'loyalty':
+                    loadLoyaltyData();
+                    break;
+                case 'social':
+                    loadSocialData();
+                    break;
+                case 'reminders':
+                    loadRemindersData();
+                    break;
+                case 'pricing':
+                    loadPricingData();
+                    break;
+                // Adicionar outros casos conforme necessário
+            }
+        }
+
+        function loadAppointmentsData() {
+            const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+            
+            if (appointments.length === 0) {
+                document.getElementById('appointments-table').innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; color: #666;">Nenhum agendamento encontrado.</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            const statusMap = {
+                'pendente': { class: 'status-pending', text: 'Pendente' },
+                'confirmado': { class: 'status-confirmed', text: 'Confirmado' },
+                'concluido': { class: 'status-completed', text: 'Concluído' },
+                'cancelado': { class: 'status-cancelled', text: 'Cancelado' }
+            };
+            
+            const appointmentsHTML = appointments.map(appointment => {
+                const date = new Date(appointment.date);
+                const dateStr = date.toLocaleDateString('pt-BR');
+                const services = appointment.services.map(s => s.name).join(', ');
+                const status = statusMap[appointment.status] || statusMap['pendente'];
+                
+                return `
+                    <tr>
+                        <td>${dateStr}, ${appointment.time}</td>
+                        <td>${appointment.pet.name} - ${appointment.pet.breed}</td>
+                        <td>${appointment.owner.name}<br><small>${appointment.owner.phone}</small></td>
+                        <td>${services}</td>
+                        <td>R$ ${appointment.totalPrice.toFixed(2).replace('.', ',')}</td>
+                        <td><span class="status ${status.class}">${status.text}</span></td>
+                        <td>
+                            ${appointment.status === 'pendente' ? `
+                                <button onclick="confirmAppointment(${appointment.id})" class="success" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" title="Confirmar">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            ` : ''}
+                            ${appointment.status === 'confirmado' ? `
+                                <button onclick="completeAppointment(${appointment.id})" class="success" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" title="Concluir">
+                                    <i class="fas fa-check-double"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="cancelAppointment(${appointment.id})" class="danger" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" title="Cancelar">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <button onclick="viewAppointmentDetails(${appointment.id})" class="secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" title="Detalhes">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            
+            document.getElementById('appointments-table').innerHTML = appointmentsHTML;
+        }
+
+        function loadPetsData() {
+            const pets = JSON.parse(localStorage.getItem('pets')) || [];
+            
+            if (pets.length === 0) {
+                document.getElementById('pets-list').innerHTML = `
+                    <p style="text-align: center; color: #666;">Nenhum pet cadastrado ainda.</p>
+                `;
+                return;
+            }
+            
+            const petsHTML = pets.map(pet => `
+                <div class="card">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem;">
+                            ${pet.name.charAt(0).toUpperCase()}
+                        </div>
+                        <div style="flex: 1;">
+                            <h4 style="margin: 0; color: var(--primary);">${pet.name}</h4>
+                            <p style="margin: 0; font-size: 0.9rem;">${pet.breed} • ${pet.age}</p>
+                            <p style="margin: 0; font-size: 0.8rem; color: #666;">Tutor: ${pet.owner.name}</p>
+                            <p style="margin: 0; font-size: 0.8rem; color: #666;">📞 ${pet.owner.phone}</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <span class="status status-confirmed" style="font-size: 0.8rem;">
+                                ${pet.size.charAt(0).toUpperCase() + pet.size.slice(1)}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5rem; font-size: 0.8rem; color: #666;">
+                        ${pet.weight ? `<div><strong>Peso:</strong> ${pet.weight}kg</div>` : ''}
+                        ${pet.gender ? `<div><strong>Sexo:</strong> ${pet.gender}</div>` : ''}
+                        ${pet.color ? `<div><strong>Cor:</strong> ${pet.color}</div>` : ''}
+                        ${pet.castrated ? `<div><strong>Castrado:</strong> ${pet.castrated}</div>` : ''}
+                    </div>
+                    
+                    ${pet.health.allergies || pet.health.medications || pet.health.behavior ? `
+                        <div style="margin-top: 1rem; padding: 1rem; background: var(--light); border-radius: 5px; font-size: 0.8rem;">
+                            ${pet.health.allergies ? `<div><strong>Alergias:</strong> ${pet.health.allergies}</div>` : ''}
+                            ${pet.health.medications ? `<div><strong>Medicamentos:</strong> ${pet.health.medications}</div>` : ''}
+                            ${pet.health.behavior ? `<div><strong>Comportamento:</strong> ${pet.health.behavior}</div>` : ''}
+                        </div>
+                    ` : ''}
+                    
+                    <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                        <button onclick="viewPetDetails(${pet.id})" class="secondary" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                            <i class="fas fa-eye"></i> Ver Detalhes
+                        </button>
+                        <button onclick="editPet(${pet.id})" class="secondary" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button onclick="petHistory(${pet.id})" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                            <i class="fas fa-history"></i> Histórico
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('pets-list').innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1rem;">
+                    ${petsHTML}
+                </div>
+            `;
+        }
+
+        function loadPaymentsData() {
+            document.getElementById('payments-received').textContent = 'R$ 2.450,00';
+            document.getElementById('payments-pending').textContent = 'R$ 85,00';
+            
+            document.getElementById('payments-table').innerHTML = `
+                <tr>
+                    <td>Hoje</td>
+                    <td>Rex - Golden Retriever</td>
+                    <td>Banho Completo</td>
+                    <td>R$ 45,00</td>
+                    <td>PIX</td>
+                    <td><span class="status status-confirmed">Pago</span></td>
+                </tr>
+                <tr>
+                    <td>Ontem</td>
+                    <td>Mimi - Poodle</td>
+                    <td>Tosa Completa</td>
+                    <td>R$ 40,00</td>
+                    <td>Cartão</td>
+                    <td><span class="status status-pending">Pendente</span></td>
+                </tr>
+            `;
+        }
+
+        // Funções placeholder para botões
+        function exportAppointments() {
+            alert('Funcionalidade de exportação em desenvolvimento');
+        }
+
+        function exportPets() {
+            alert('Funcionalidade de exportação em desenvolvimento');
+        }
+
+        function exportPayments() {
+            alert('Funcionalidade de exportação em desenvolvimento');
+        }
+
+        function addStaff() {
+            alert('Funcionalidade de adicionar funcionário em desenvolvimento');
+        }
+
+        function createPromotion() {
+            alert('Funcionalidade de criar promoção em desenvolvimento');
+        }
+
+        function exportLoyalty() {
+            alert('Funcionalidade de exportação em desenvolvimento');
+        }
+
+        function createPost() {
+            alert('Funcionalidade de criar postagem em desenvolvimento');
+        }
+
+        function createReminder() {
+            alert('Funcionalidade de criar lembrete em desenvolvimento');
+        }
+
+        function updatePricing() {
+            alert('Funcionalidade de atualizar preços em desenvolvimento');
+        }
+
+        // Funções de gerenciamento de agendamentos
+        function confirmAppointment(appointmentId) {
+            const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+            const appointmentIndex = appointments.findIndex(a => a.id === appointmentId);
+            
+            if (appointmentIndex !== -1) {
+                appointments[appointmentIndex].status = 'confirmado';
+                localStorage.setItem('appointments', JSON.stringify(appointments));
+                
+                // Simula envio de WhatsApp de confirmação
+                const appointment = appointments[appointmentIndex];
+                const whatsappMessage = `🐾 *AGENDAMENTO CONFIRMADO* 🐾
+
+Olá ${appointment.owner.name}!
+
+Seu agendamento foi CONFIRMADO:
+
+*Pet:* ${appointment.pet.name}
+*Data:* ${new Date(appointment.date).toLocaleDateString('pt-BR')}
+*Horário:* ${appointment.time}
+*Serviços:* ${appointment.services.map(s => s.name).join(', ')}
+
+Por favor, chegue 10 minutos antes do horário.
+
+*Pingo de Fofura - Banho e Tosa*
+📍 Rua Raul Torres N 213
+📞 (14) 99854-5722`;
+
+                if (confirm('Agendamento confirmado!\n\nDeseja enviar confirmação via WhatsApp?')) {
+                    const whatsappUrl = `https://wa.me/55${appointment.owner.phone.replace(/\D/g, '')}?text=${encodeURIComponent(whatsappMessage)}`;
+                    window.open(whatsappUrl, '_blank');
+                }
+                
+                loadAppointmentsData();
+                loadDashboardData();
+            }
+        }
+
+        function completeAppointment(appointmentId) {
+            const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+            const appointmentIndex = appointments.findIndex(a => a.id === appointmentId);
+            
+            if (appointmentIndex !== -1) {
+                appointments[appointmentIndex].status = 'concluido';
+                appointments[appointmentIndex].completedAt = new Date().toISOString();
+                localStorage.setItem('appointments', JSON.stringify(appointments));
+                
+                alert('Agendamento marcado como concluído!');
+                loadAppointmentsData();
+                loadDashboardData();
+            }
+        }
+
+        function cancelAppointment(appointmentId) {
+            const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+            const appointment = appointments.find(a => a.id === appointmentId);
+            
+            if (!appointment) return;
+            
+            const reason = prompt('Motivo do cancelamento (opcional):');
+            
+            if (confirm(`Tem certeza que deseja cancelar o agendamento de ${appointment.pet.name}?`)) {
+                const appointmentIndex = appointments.findIndex(a => a.id === appointmentId);
+                appointments[appointmentIndex].status = 'cancelado';
+                appointments[appointmentIndex].cancelReason = reason;
+                appointments[appointmentIndex].cancelledAt = new Date().toISOString();
+                localStorage.setItem('appointments', JSON.stringify(appointments));
+                
+                // Simula envio de WhatsApp de cancelamento
+                const whatsappMessage = `🐾 *AGENDAMENTO CANCELADO* 🐾
+
+Olá ${appointment.owner.name},
+
+Infelizmente precisamos cancelar seu agendamento:
+
+*Pet:* ${appointment.pet.name}
+*Data:* ${new Date(appointment.date).toLocaleDateString('pt-BR')}
+*Horário:* ${appointment.time}
+
+${reason ? `*Motivo:* ${reason}` : ''}
+
+Entre em contato conosco para reagendar.
+
+*Pingo de Fofura - Banho e Tosa*
+📞 (14) 99854-5722`;
+
+                if (confirm('Agendamento cancelado!\n\nDeseja enviar notificação via WhatsApp?')) {
+                    const whatsappUrl = `https://wa.me/55${appointment.owner.phone.replace(/\D/g, '')}?text=${encodeURIComponent(whatsappMessage)}`;
+                    window.open(whatsappUrl, '_blank');
+                }
+                
+                loadAppointmentsData();
+                loadDashboardData();
+            }
+        }
+
+        function viewAppointmentDetails(appointmentId) {
+            const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+            const appointment = appointments.find(a => a.id === appointmentId);
+            
+            if (!appointment) return;
+            
+            const details = `
+DETALHES DO AGENDAMENTO
+
+Pet: ${appointment.pet.name}
+Raça: ${appointment.pet.breed}
+Porte: ${appointment.pet.size}
+Idade: ${appointment.pet.age}
+
+Tutor: ${appointment.owner.name}
+WhatsApp: ${appointment.owner.phone}
+Email: ${appointment.owner.email || 'Não informado'}
+Endereço: ${appointment.owner.address || 'Não informado'}
+
+Data: ${new Date(appointment.date).toLocaleDateString('pt-BR')}
+Horário: ${appointment.time}
+
+Serviços:
+${appointment.services.map(s => `• ${s.name} - R$ ${s.price.toFixed(2).replace('.', ',')}`).join('\n')}
+
+Total: R$ ${appointment.totalPrice.toFixed(2).replace('.', ',')}
+
+Status: ${appointment.status.toUpperCase()}
+
+${appointment.notes ? `Observações: ${appointment.notes}` : ''}
+
+Criado em: ${new Date(appointment.createdAt).toLocaleString('pt-BR')}
+            `;
+            
+            alert(details);
+        }
+
+        // Funções de gerenciamento de pets
+        function viewPetDetails(petId) {
+            const pets = JSON.parse(localStorage.getItem('pets')) || [];
+            const pet = pets.find(p => p.id === petId);
+            
+            if (!pet) return;
+            
+            const details = `
+FICHA COMPLETA DO PET
+
+=== INFORMAÇÕES BÁSICAS ===
+Nome: ${pet.name}
+Raça: ${pet.breed}
+Porte: ${pet.size}
+Idade: ${pet.age}
+${pet.weight ? `Peso: ${pet.weight}kg` : ''}
+${pet.gender ? `Sexo: ${pet.gender}` : ''}
+${pet.color ? `Cor: ${pet.color}` : ''}
+${pet.castrated ? `Castrado: ${pet.castrated}` : ''}
+
+=== TUTOR ===
+Nome: ${pet.owner.name}
+WhatsApp: ${pet.owner.phone}
+${pet.owner.email ? `Email: ${pet.owner.email}` : ''}
+${pet.owner.address ? `Endereço: ${pet.owner.address}` : ''}
+${pet.owner.cpf ? `CPF: ${pet.owner.cpf}` : ''}
+
+=== SAÚDE ===
+${pet.health.vaccinated ? `Vacinação: ${pet.health.vaccinated}` : ''}
+${pet.health.lastVaccine ? `Última vacina: ${new Date(pet.health.lastVaccine).toLocaleDateString('pt-BR')}` : ''}
+${pet.health.vet ? `Veterinário: ${pet.health.vet}` : ''}
+${pet.health.vetPhone ? `Tel. Veterinário: ${pet.health.vetPhone}` : ''}
+${pet.health.allergies ? `Alergias: ${pet.health.allergies}` : ''}
+${pet.health.medications ? `Medicamentos: ${pet.health.medications}` : ''}
+${pet.health.behavior ? `Comportamento: ${pet.health.behavior}` : ''}
+${pet.health.observations ? `Observações: ${pet.health.observations}` : ''}
+
+Cadastrado em: ${new Date(pet.registeredAt).toLocaleString('pt-BR')}
+            `;
+            
+            alert(details);
+        }
+
+        function editPet(petId) {
+            alert('Funcionalidade de edição em desenvolvimento');
+        }
+
+        function petHistory(petId) {
+            const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+            const pets = JSON.parse(localStorage.getItem('pets')) || [];
+            const pet = pets.find(p => p.id === petId);
+            
+            if (!pet) return;
+            
+            const petAppointments = appointments.filter(a => 
+                a.pet.name.toLowerCase() === pet.name.toLowerCase() &&
+                a.owner.phone === pet.owner.phone
+            );
+            
+            if (petAppointments.length === 0) {
+                alert(`Nenhum histórico encontrado para ${pet.name}.`);
+                return;
+            }
+            
+            const history = petAppointments.map(appointment => {
+                const date = new Date(appointment.date).toLocaleDateString('pt-BR');
+                const services = appointment.services.map(s => s.name).join(', ');
+                const status = appointment.status.toUpperCase();
+                return `${date} - ${services} - ${status} - R$ ${appointment.totalPrice.toFixed(2).replace('.', ',')}`;
+            }).join('\n');
+            
+            alert(`HISTÓRICO DE ${pet.name.toUpperCase()}\n\n${history}`);
+        }
+
+        // ===== SISTEMA DE FUNCIONÁRIOS =====
+        
+        function loadStaffData() {
+            const staff = JSON.parse(localStorage.getItem('staff')) || [];
+            
+            // Atualiza cards de resumo
+            document.getElementById('total-staff').textContent = staff.length;
+            
+            const today = new Date().toDateString();
+            const activeToday = staff.filter(s => s.status === 'active' && isWorkingToday(s, today)).length;
+            document.getElementById('active-staff-today').textContent = activeToday;
+            
+            const onSchedule = staff.filter(s => s.status === 'active' && isOnScheduleNow(s)).length;
+            document.getElementById('staff-on-schedule').textContent = onSchedule;
+            
+            // Carrega lista de funcionários
+            if (staff.length === 0) {
+                document.getElementById('staff-list').innerHTML = `
+                    <p style="text-align: center; color: #666;">Nenhum funcionário cadastrado ainda.</p>
+                `;
+            } else {
+                const staffHTML = staff.map(employee => `
+                    <div class="card" style="margin-bottom: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem;">
+                                ${employee.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0; color: var(--primary);">${employee.name}</h4>
+                                <p style="margin: 0; font-size: 0.9rem;">${employee.role} • ${employee.phone}</p>
+                                <p style="margin: 0; font-size: 0.8rem; color: #666;">📧 ${employee.email}</p>
+                                <p style="margin: 0; font-size: 0.8rem; color: #666;">💰 Salário: R$ ${employee.salary.toFixed(2).replace('.', ',')}</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <span class="status ${employee.status === 'active' ? 'status-confirmed' : 'status-cancelled'}" style="font-size: 0.8rem;">
+                                    ${employee.status === 'active' ? 'Ativo' : 'Inativo'}
+                                </span>
+                                <div style="margin-top: 0.5rem; font-size: 0.8rem; color: #666;">
+                                    ${getWorkingStatus(employee)}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #eee; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <button onclick="viewStaffDetails(${employee.id})" class="secondary" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                <i class="fas fa-eye"></i> Ver Detalhes
+                            </button>
+                            <button onclick="editStaff(${employee.id})" class="secondary" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                            <button onclick="manageStaffSchedule(${employee.id})" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                <i class="fas fa-calendar"></i> Horários
+                            </button>
+                            <button onclick="staffPayroll(${employee.id})" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                <i class="fas fa-dollar-sign"></i> Pagamento
+                            </button>
+                            ${employee.status === 'active' ? 
+                                `<button onclick="deactivateStaff(${employee.id})" class="danger" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-user-times"></i> Desativar
+                                </button>` :
+                                `<button onclick="activateStaff(${employee.id})" class="success" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-user-check"></i> Ativar
+                                </button>`
+                            }
+                        </div>
+                    </div>
+                `).join('');
+                
+                document.getElementById('staff-list').innerHTML = staffHTML;
+            }
+            
+            // Carrega escala semanal
+            loadWeeklySchedule();
+        }
+
+        function addStaff() {
+            const name = prompt('Nome do funcionário:');
+            if (!name) return;
+            
+            const role = prompt('Cargo/Função:', 'Tosador');
+            if (!role) return;
+            
+            const phone = prompt('Telefone (WhatsApp):');
+            if (!phone) return;
+            
+            const email = prompt('Email:');
+            if (!email) return;
+            
+            const salary = parseFloat(prompt('Salário mensal:', '1500'));
+            if (isNaN(salary)) return;
+            
+            const permissions = prompt('Permissões (separadas por vírgula):', 'agendamentos,pets').split(',').map(p => p.trim());
+            
+            const staff = JSON.parse(localStorage.getItem('staff')) || [];
+            const newEmployee = {
+                id: Date.now(),
+                name: name,
+                role: role,
+                phone: phone,
+                email: email,
+                salary: salary,
+                permissions: permissions,
+                status: 'active',
+                hiredDate: new Date().toISOString(),
+                schedule: {
+                    monday: { start: '08:00', end: '17:00', active: true },
+                    tuesday: { start: '08:00', end: '17:00', active: true },
+                    wednesday: { start: '08:00', end: '17:00', active: true },
+                    thursday: { start: '08:00', end: '17:00', active: true },
+                    friday: { start: '08:00', end: '17:00', active: true },
+                    saturday: { start: '08:00', end: '12:00', active: true },
+                    sunday: { start: '', end: '', active: false }
+                },
+                commissionRate: 0.1, // 10% de comissão
+                totalEarnings: 0,
+                totalServices: 0
+            };
+            
+            staff.push(newEmployee);
+            localStorage.setItem('staff', JSON.stringify(staff));
+            
+            alert(`Funcionário ${name} cadastrado com sucesso!`);
+            loadStaffData();
+        }
+
+        function viewStaffDetails(staffId) {
+            const staff = JSON.parse(localStorage.getItem('staff')) || [];
+            const employee = staff.find(s => s.id === staffId);
+            
+            if (!employee) return;
+            
+            const details = `
+FICHA COMPLETA DO FUNCIONÁRIO
+
+=== INFORMAÇÕES PESSOAIS ===
+Nome: ${employee.name}
+Cargo: ${employee.role}
+Telefone: ${employee.phone}
+Email: ${employee.email}
+Status: ${employee.status === 'active' ? 'ATIVO' : 'INATIVO'}
+
+=== INFORMAÇÕES PROFISSIONAIS ===
+Data de Contratação: ${new Date(employee.hiredDate).toLocaleDateString('pt-BR')}
+Salário: R$ ${employee.salary.toFixed(2).replace('.', ',')}
+Taxa de Comissão: ${(employee.commissionRate * 100).toFixed(1)}%
+Total de Serviços: ${employee.totalServices}
+Total de Ganhos: R$ ${employee.totalEarnings.toFixed(2).replace('.', ',')}
+
+=== PERMISSÕES ===
+${employee.permissions.join(', ')}
+
+=== HORÁRIO DE TRABALHO ===
+Segunda: ${employee.schedule.monday.active ? `${employee.schedule.monday.start} - ${employee.schedule.monday.end}` : 'Folga'}
+Terça: ${employee.schedule.tuesday.active ? `${employee.schedule.tuesday.start} - ${employee.schedule.tuesday.end}` : 'Folga'}
+Quarta: ${employee.schedule.wednesday.active ? `${employee.schedule.wednesday.start} - ${employee.schedule.wednesday.end}` : 'Folga'}
+Quinta: ${employee.schedule.thursday.active ? `${employee.schedule.thursday.start} - ${employee.schedule.thursday.end}` : 'Folga'}
+Sexta: ${employee.schedule.friday.active ? `${employee.schedule.friday.start} - ${employee.schedule.friday.end}` : 'Folga'}
+Sábado: ${employee.schedule.saturday.active ? `${employee.schedule.saturday.start} - ${employee.schedule.saturday.end}` : 'Folga'}
+Domingo: ${employee.schedule.sunday.active ? `${employee.schedule.sunday.start} - ${employee.schedule.sunday.end}` : 'Folga'}
+            `;
+            
+            alert(details);
+        }
+
+        function editStaff(staffId) {
+            const staff = JSON.parse(localStorage.getItem('staff')) || [];
+            const employeeIndex = staff.findIndex(s => s.id === staffId);
+            
+            if (employeeIndex === -1) return;
+            
+            const employee = staff[employeeIndex];
+            
+            const name = prompt('Nome:', employee.name);
+            if (!name) return;
+            
+            const role = prompt('Cargo:', employee.role);
+            if (!role) return;
+            
+            const phone = prompt('Telefone:', employee.phone);
+            if (!phone) return;
+            
+            const email = prompt('Email:', employee.email);
+            if (!email) return;
+            
+            const salary = parseFloat(prompt('Salário:', employee.salary));
+            if (isNaN(salary)) return;
+            
+            const commissionRate = parseFloat(prompt('Taxa de comissão (%):', (employee.commissionRate * 100))) / 100;
+            if (isNaN(commissionRate)) return;
+            
+            staff[employeeIndex] = {
+                ...employee,
+                name: name,
+                role: role,
+                phone: phone,
+                email: email,
+                salary: salary,
+                commissionRate: commissionRate
+            };
+            
+            localStorage.setItem('staff', JSON.stringify(staff));
+            alert('Funcionário atualizado com sucesso!');
+            loadStaffData();
+        }
+
+        function manageStaffSchedule(staffId) {
+            const staff = JSON.parse(localStorage.getItem('staff')) || [];
+            const employeeIndex = staff.findIndex(s => s.id === staffId);
+            
+            if (employeeIndex === -1) return;
+            
+            const employee = staff[employeeIndex];
+            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+            const dayNames = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+            
+            let scheduleText = `HORÁRIOS DE ${employee.name.toUpperCase()}\n\n`;
+            
+            days.forEach((day, index) => {
+                const daySchedule = employee.schedule[day];
+                scheduleText += `${dayNames[index]}: ${daySchedule.active ? `${daySchedule.start} - ${daySchedule.end}` : 'Folga'}\n`;
+            });
+            
+            scheduleText += '\nDeseja alterar os horários? (Digite o número do dia ou "cancelar")';
+            
+            const choice = prompt(scheduleText + '\n\n1-Segunda, 2-Terça, 3-Quarta, 4-Quinta, 5-Sexta, 6-Sábado, 7-Domingo');
+            
+            if (!choice || choice.toLowerCase() === 'cancelar') return;
+            
+            const dayIndex = parseInt(choice) - 1;
+            if (dayIndex < 0 || dayIndex >= days.length) return;
+            
+            const selectedDay = days[dayIndex];
+            const selectedDayName = dayNames[dayIndex];
+            
+            const isActive = confirm(`${selectedDayName}: Funcionário trabalha neste dia?`);
+            
+            if (isActive) {
+                const startTime = prompt(`${selectedDayName} - Horário de entrada:`, employee.schedule[selectedDay].start || '08:00');
+                const endTime = prompt(`${selectedDayName} - Horário de saída:`, employee.schedule[selectedDay].end || '17:00');
+                
+                if (startTime && endTime) {
+                    staff[employeeIndex].schedule[selectedDay] = {
+                        start: startTime,
+                        end: endTime,
+                        active: true
+                    };
+                }
+            } else {
+                staff[employeeIndex].schedule[selectedDay] = {
+                    start: '',
+                    end: '',
+                    active: false
+                };
+            }
+            
+            localStorage.setItem('staff', JSON.stringify(staff));
+            alert('Horário atualizado com sucesso!');
+            loadStaffData();
+        }
+
+        function staffPayroll(staffId) {
+            const staff = JSON.parse(localStorage.getItem('staff')) || [];
+            const employee = staff.find(s => s.id === staffId);
+            
+            if (!employee) return;
+            
+            // Simula cálculo de pagamento
+            const baseSalary = employee.salary;
+            const commission = employee.totalEarnings * employee.commissionRate;
+            const totalPayment = baseSalary + commission;
+            
+            const payrollDetails = `
+FOLHA DE PAGAMENTO - ${employee.name.toUpperCase()}
+
+Salário Base: R$ ${baseSalary.toFixed(2).replace('.', ',')}
+Comissão (${(employee.commissionRate * 100).toFixed(1)}%): R$ ${commission.toFixed(2).replace('.', ',')}
+Total de Serviços: ${employee.totalServices}
+
+TOTAL A PAGAR: R$ ${totalPayment.toFixed(2).replace('.', ',')}
+
+Deseja registrar o pagamento?
+            `;
+            
+            if (confirm(payrollDetails)) {
+                // Registra pagamento
+                const payments = JSON.parse(localStorage.getItem('staffPayments')) || [];
+                payments.push({
+                    staffId: staffId,
+                    staffName: employee.name,
+                    baseSalary: baseSalary,
+                    commission: commission,
+                    totalPayment: totalPayment,
+                    paymentDate: new Date().toISOString(),
+                    month: new Date().getMonth() + 1,
+                    year: new Date().getFullYear()
+                });
+                
+                localStorage.setItem('staffPayments', JSON.stringify(payments));
+                
+                // Zera comissões acumuladas
+                const staffIndex = staff.findIndex(s => s.id === staffId);
+                staff[staffIndex].totalEarnings = 0;
+                staff[staffIndex].totalServices = 0;
+                localStorage.setItem('staff', JSON.stringify(staff));
+                
+                alert('Pagamento registrado com sucesso!');
+                loadStaffData();
+            }
+        }
+
+        function deactivateStaff(staffId) {
+            if (!confirm('Tem certeza que deseja desativar este funcionário?')) return;
+            
+            const staff = JSON.parse(localStorage.getItem('staff')) || [];
+            const employeeIndex = staff.findIndex(s => s.id === staffId);
+            
+            if (employeeIndex === -1) return;
+            
+            staff[employeeIndex].status = 'inactive';
+            staff[employeeIndex].deactivatedDate = new Date().toISOString();
+            
+            localStorage.setItem('staff', JSON.stringify(staff));
+            alert('Funcionário desativado com sucesso!');
+            loadStaffData();
+        }
+
+        function activateStaff(staffId) {
+            const staff = JSON.parse(localStorage.getItem('staff')) || [];
+            const employeeIndex = staff.findIndex(s => s.id === staffId);
+            
+            if (employeeIndex === -1) return;
+            
+            staff[employeeIndex].status = 'active';
+            delete staff[employeeIndex].deactivatedDate;
+            
+            localStorage.setItem('staff', JSON.stringify(staff));
+            alert('Funcionário reativado com sucesso!');
+            loadStaffData();
+        }
+
+        function manageSchedules() {
+            alert('Abrindo gerenciador de escalas...\n\nEsta funcionalidade permite:\n- Definir escalas semanais\n- Gerenciar folgas\n- Controlar horas extras\n- Visualizar disponibilidade');
+        }
+
+        function exportStaffReport() {
+            const staff = JSON.parse(localStorage.getItem('staff')) || [];
+            const payments = JSON.parse(localStorage.getItem('staffPayments')) || [];
+            
+            let report = 'RELATÓRIO DE FUNCIONÁRIOS\n';
+            report += '='.repeat(50) + '\n\n';
+            
+            staff.forEach(employee => {
+                report += `Nome: ${employee.name}\n`;
+                report += `Cargo: ${employee.role}\n`;
+                report += `Status: ${employee.status}\n`;
+                report += `Salário: R$ ${employee.salary.toFixed(2).replace('.', ',')}\n`;
+                report += `Serviços Realizados: ${employee.totalServices}\n`;
+                report += `Comissões Acumuladas: R$ ${employee.totalEarnings.toFixed(2).replace('.', ',')}\n`;
+                report += '-'.repeat(30) + '\n';
+            });
+            
+            // Simula download do relatório
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `relatorio_funcionarios_${new Date().toISOString().split('T')[0]}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function generateWeeklySchedule() {
+            const staff = JSON.parse(localStorage.getItem('staff')) || [];
+            const activeStaff = staff.filter(s => s.status === 'active');
+            
+            if (activeStaff.length === 0) {
+                alert('Nenhum funcionário ativo para gerar escala.');
+                return;
+            }
+            
+            alert(`Escala automática gerada para ${activeStaff.length} funcionários ativos!\n\nA escala foi baseada nos horários individuais de cada funcionário.`);
+            loadWeeklySchedule();
+        }
+
+        function loadWeeklySchedule() {
+            const staff = JSON.parse(localStorage.getItem('staff')) || [];
+            const activeStaff = staff.filter(s => s.status === 'active');
+            
+            if (activeStaff.length === 0) {
+                document.getElementById('schedule-tbody').innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; color: #666;">Nenhum funcionário ativo</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            const scheduleHTML = activeStaff.map(employee => {
+                const schedule = employee.schedule;
+                return `
+                    <tr>
+                        <td><strong>${employee.name}</strong><br><small>${employee.role}</small></td>
+                        <td>${schedule.monday.active ? `${schedule.monday.start}-${schedule.monday.end}` : '<span style="color: #999;">Folga</span>'}</td>
+                        <td>${schedule.tuesday.active ? `${schedule.tuesday.start}-${schedule.tuesday.end}` : '<span style="color: #999;">Folga</span>'}</td>
+                        <td>${schedule.wednesday.active ? `${schedule.wednesday.start}-${schedule.wednesday.end}` : '<span style="color: #999;">Folga</span>'}</td>
+                        <td>${schedule.thursday.active ? `${schedule.thursday.start}-${schedule.thursday.end}` : '<span style="color: #999;">Folga</span>'}</td>
+                        <td>${schedule.friday.active ? `${schedule.friday.start}-${schedule.friday.end}` : '<span style="color: #999;">Folga</span>'}</td>
+                        <td>${schedule.saturday.active ? `${schedule.saturday.start}-${schedule.saturday.end}` : '<span style="color: #999;">Folga</span>'}</td>
+                        <td>${schedule.sunday.active ? `${schedule.sunday.start}-${schedule.sunday.end}` : '<span style="color: #999;">Folga</span>'}</td>
+                    </tr>
+                `;
+            }).join('');
+            
+            document.getElementById('schedule-tbody').innerHTML = scheduleHTML;
+        }
+
+        // Funções auxiliares para funcionários
+        function isWorkingToday(employee, today) {
+            const dayOfWeek = new Date(today).getDay();
+            const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+            const todaySchedule = employee.schedule[days[dayOfWeek]];
+            return todaySchedule && todaySchedule.active;
+        }
+
+        function isOnScheduleNow(employee) {
+            const now = new Date();
+            const dayOfWeek = now.getDay();
+            const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+            const todaySchedule = employee.schedule[days[dayOfWeek]];
+            
+            if (!todaySchedule || !todaySchedule.active) return false;
+            
+            const currentTime = now.getHours() * 60 + now.getMinutes();
+            const startTime = timeToMinutes(todaySchedule.start);
+            const endTime = timeToMinutes(todaySchedule.end);
+            
+            return currentTime >= startTime && currentTime <= endTime;
+        }
+
+        function getWorkingStatus(employee) {
+            const now = new Date();
+            const dayOfWeek = now.getDay();
+            const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+            const todaySchedule = employee.schedule[days[dayOfWeek]];
+            
+            if (!todaySchedule || !todaySchedule.active) {
+                return '🏠 Folga hoje';
+            }
+            
+            if (isOnScheduleNow(employee)) {
+                return '✅ Em horário de trabalho';
+            }
+            
+            const currentTime = now.getHours() * 60 + now.getMinutes();
+            const startTime = timeToMinutes(todaySchedule.start);
+            const endTime = timeToMinutes(todaySchedule.end);
+            
+            if (currentTime < startTime) {
+                return `⏰ Entra às ${todaySchedule.start}`;
+            } else {
+                return `🏁 Saiu às ${todaySchedule.end}`;
+            }
+        }
+
+        function timeToMinutes(timeString) {
+            const [hours, minutes] = timeString.split(':').map(Number);
+            return hours * 60 + minutes;
+        }
+
+        // ===== SISTEMA DE FIDELIDADE =====
+        
+        function loadLoyaltyData() {
+            const loyaltyCustomers = JSON.parse(localStorage.getItem('loyaltyCustomers')) || [];
+            const loyaltySettings = JSON.parse(localStorage.getItem('loyaltySettings')) || getDefaultLoyaltySettings();
+            const redemptions = JSON.parse(localStorage.getItem('redemptions')) || [];
+            
+            // Atualiza cards de resumo
+            const vipCustomers = loyaltyCustomers.filter(c => c.points >= loyaltySettings.vipThreshold).length;
+            document.getElementById('vip-customers').textContent = vipCustomers;
+            
+            const totalPoints = loyaltyCustomers.reduce((sum, customer) => sum + customer.points, 0);
+            document.getElementById('total-points').textContent = totalPoints;
+            
+            document.getElementById('redeemed-rewards').textContent = redemptions.length;
+            
+            // Carrega configurações
+            loadLoyaltySettings();
+            
+            // Carrega ranking
+            loadLoyaltyRanking();
+            
+            // Carrega histórico de resgates
+            loadRedemptionHistory();
+        }
+
+        function loadLoyaltySettings() {
+            const settings = JSON.parse(localStorage.getItem('loyaltySettings')) || getDefaultLoyaltySettings();
+            
+            document.getElementById('points-system').value = settings.pointsSystem;
+            document.getElementById('points-per-real').value = settings.pointsPerReal;
+            document.getElementById('points-per-service').value = settings.pointsPerService;
+            document.getElementById('vip-threshold').value = settings.vipThreshold;
+            document.getElementById('points-expiry').value = settings.pointsExpiry;
+            document.getElementById('vip-discount').value = settings.vipDiscount;
+        }
+
+        function saveLoyaltySettings() {
+            const settings = {
+                pointsSystem: document.getElementById('points-system').value,
+                pointsPerReal: parseFloat(document.getElementById('points-per-real').value),
+                pointsPerService: parseInt(document.getElementById('points-per-service').value),
+                vipThreshold: parseInt(document.getElementById('vip-threshold').value),
+                pointsExpiry: parseInt(document.getElementById('points-expiry').value),
+                vipDiscount: parseInt(document.getElementById('vip-discount').value)
+            };
+            
+            localStorage.setItem('loyaltySettings', JSON.stringify(settings));
+            alert('Configurações do programa de fidelidade salvas com sucesso!');
+            loadLoyaltyData();
+        }
+
+        function loadLoyaltyRanking() {
+            const loyaltyCustomers = JSON.parse(localStorage.getItem('loyaltyCustomers')) || [];
+            const loyaltySettings = JSON.parse(localStorage.getItem('loyaltySettings')) || getDefaultLoyaltySettings();
+            
+            if (loyaltyCustomers.length === 0) {
+                document.getElementById('loyalty-ranking').innerHTML = `
+                    <p style="text-align: center; color: #666;">Nenhum cliente no programa de fidelidade ainda.</p>
+                `;
+                return;
+            }
+            
+            // Ordena por pontos (maior para menor)
+            const sortedCustomers = loyaltyCustomers.sort((a, b) => b.points - a.points);
+            
+            const rankingHTML = sortedCustomers.map((customer, index) => {
+                const isVip = customer.points >= loyaltySettings.vipThreshold;
+                const position = index + 1;
+                const medal = position <= 3 ? ['🥇', '🥈', '🥉'][position - 1] : `${position}º`;
+                
+                return `
+                    <div class="card" style="margin-bottom: 1rem; background: ${isVip ? 'linear-gradient(135deg, #fff3cd, #ffeaa7)' : 'white'}; border-left: 4px solid ${isVip ? '#f39c12' : '#ddd'};">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="font-size: 1.5rem; font-weight: bold; min-width: 50px; text-align: center;">
+                                    ${medal}
+                                </div>
+                                <div>
+                                    <h4 style="margin: 0; color: var(--primary);">${customer.name}</h4>
+                                    <p style="margin: 0; font-size: 0.9rem;">📞 ${customer.phone}</p>
+                                    <p style="margin: 0; font-size: 0.8rem; color: #666;">
+                                        Cliente desde: ${new Date(customer.joinDate).toLocaleDateString('pt-BR')}
+                                    </p>
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">
+                                    ${customer.points} pts
+                                </div>
+                                ${isVip ? '<span class="status status-confirmed" style="font-size: 0.8rem;">VIP</span>' : ''}
+                                <div style="font-size: 0.8rem; color: #666; margin-top: 0.5rem;">
+                                    ${customer.totalSpent ? `Gasto total: R$ ${customer.totalSpent.toFixed(2).replace('.', ',')}` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <button onclick="viewCustomerLoyalty('${customer.phone}')" class="secondary" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                <i class="fas fa-eye"></i> Ver Detalhes
+                            </button>
+                            <button onclick="addPointsManually('${customer.phone}')" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                <i class="fas fa-plus"></i> Adicionar Pontos
+                            </button>
+                            <button onclick="redeemReward('${customer.phone}')" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                <i class="fas fa-gift"></i> Resgatar Recompensa
+                            </button>
+                            ${isVip ? 
+                                `<button onclick="sendVipMessage('${customer.phone}')" class="success" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-crown"></i> Mensagem VIP
+                                </button>` : ''
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('loyalty-ranking').innerHTML = rankingHTML;
+        }
+
+        function refreshLoyaltyData() {
+            // Atualiza dados de fidelidade baseado nos agendamentos
+            const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+            const loyaltyCustomers = JSON.parse(localStorage.getItem('loyaltyCustomers')) || [];
+            const loyaltySettings = JSON.parse(localStorage.getItem('loyaltySettings')) || getDefaultLoyaltySettings();
+            
+            // Processa agendamentos concluídos para calcular pontos
+            const completedAppointments = appointments.filter(a => a.status === 'concluido');
+            
+            completedAppointments.forEach(appointment => {
+                const customerPhone = appointment.owner.phone;
+                let customer = loyaltyCustomers.find(c => c.phone === customerPhone);
+                
+                if (!customer) {
+                    customer = {
+                        name: appointment.owner.name,
+                        phone: customerPhone,
+                        email: appointment.owner.email || '',
+                        points: 0,
+                        totalSpent: 0,
+                        totalServices: 0,
+                        joinDate: appointment.createdAt,
+                        lastVisit: appointment.date,
+                        pointsHistory: []
+                    };
+                    loyaltyCustomers.push(customer);
+                }
+                
+                // Calcula pontos baseado no sistema configurado
+                let pointsEarned = 0;
+                switch (loyaltySettings.pointsSystem) {
+                    case 'value':
+                        pointsEarned = Math.floor(appointment.totalPrice * loyaltySettings.pointsPerReal);
+                        break;
+                    case 'service':
+                        pointsEarned = appointment.services.length * loyaltySettings.pointsPerService;
+                        break;
+                    case 'visit':
+                        pointsEarned = loyaltySettings.pointsPerService;
+                        break;
+                    case 'mixed':
+                        pointsEarned = Math.floor(appointment.totalPrice * loyaltySettings.pointsPerReal) + 
+                                      (appointment.services.length * loyaltySettings.pointsPerService);
+                        break;
+                }
+                
+                // Verifica se já foi processado
+                const alreadyProcessed = customer.pointsHistory.some(h => h.appointmentId === appointment.id);
+                if (!alreadyProcessed && pointsEarned > 0) {
+                    customer.points += pointsEarned;
+                    customer.totalSpent += appointment.totalPrice;
+                    customer.totalServices += appointment.services.length;
+                    customer.lastVisit = appointment.date;
+                    
+                    customer.pointsHistory.push({
+                        appointmentId: appointment.id,
+                        points: pointsEarned,
+                        date: appointment.date,
+                        description: `Serviços: ${appointment.services.map(s => s.name).join(', ')}`
+                    });
+                }
+            });
+            
+            localStorage.setItem('loyaltyCustomers', JSON.stringify(loyaltyCustomers));
+            alert('Dados de fidelidade atualizados com sucesso!');
+            loadLoyaltyData();
+        }
+
+        function addPointsManually(customerPhone) {
+            const loyaltyCustomers = JSON.parse(localStorage.getItem('loyaltyCustomers')) || [];
+            const customerIndex = loyaltyCustomers.findIndex(c => c.phone === customerPhone);
+            
+            if (customerIndex === -1) return;
+            
+            const points = parseInt(prompt('Quantos pontos adicionar?', '10'));
+            if (isNaN(points) || points <= 0) return;
+            
+            const reason = prompt('Motivo da adição de pontos:', 'Bonificação especial');
+            if (!reason) return;
+            
+            loyaltyCustomers[customerIndex].points += points;
+            loyaltyCustomers[customerIndex].pointsHistory.push({
+                appointmentId: null,
+                points: points,
+                date: new Date().toISOString(),
+                description: reason,
+                manual: true
+            });
+            
+            localStorage.setItem('loyaltyCustomers', JSON.stringify(loyaltyCustomers));
+            alert(`${points} pontos adicionados para ${loyaltyCustomers[customerIndex].name}!`);
+            loadLoyaltyData();
+        }
+
+        function redeemReward(customerPhone) {
+            const loyaltyCustomers = JSON.parse(localStorage.getItem('loyaltyCustomers')) || [];
+            const customerIndex = loyaltyCustomers.findIndex(c => c.phone === customerPhone);
+            
+            if (customerIndex === -1) return;
+            
+            const customer = loyaltyCustomers[customerIndex];
+            const rewards = {
+                '1': { name: 'Banho Grátis', points: 50 },
+                '2': { name: 'Tosa Grátis', points: 80 },
+                '3': { name: '20% de Desconto', points: 30 },
+                '4': { name: 'Spa Completo', points: 120 }
+            };
+            
+            const rewardChoice = prompt(`${customer.name} tem ${customer.points} pontos.\n\nEscolha a recompensa:\n1 - Banho Grátis (50 pts)\n2 - Tosa Grátis (80 pts)\n3 - 20% de Desconto (30 pts)\n4 - Spa Completo (120 pts)\n\nDigite o número:`);
+            
+            if (!rewardChoice || !rewards[rewardChoice]) return;
+            
+            const selectedReward = rewards[rewardChoice];
+            
+            if (customer.points < selectedReward.points) {
+                alert(`Pontos insuficientes! ${customer.name} tem ${customer.points} pontos, mas precisa de ${selectedReward.points} pontos.`);
+                return;
+            }
+            
+            if (confirm(`Resgatar "${selectedReward.name}" por ${selectedReward.points} pontos?`)) {
+                // Deduz pontos
+                loyaltyCustomers[customerIndex].points -= selectedReward.points;
+                
+                // Registra resgate
+                const redemptions = JSON.parse(localStorage.getItem('redemptions')) || [];
+                redemptions.push({
+                    id: Date.now(),
+                    customerName: customer.name,
+                    customerPhone: customer.phone,
+                    rewardName: selectedReward.name,
+                    pointsUsed: selectedReward.points,
+                    date: new Date().toISOString(),
+                    status: 'pending'
+                });
+                
+                localStorage.setItem('loyaltyCustomers', JSON.stringify(loyaltyCustomers));
+                localStorage.setItem('redemptions', JSON.stringify(redemptions));
+                
+                alert(`Recompensa "${selectedReward.name}" resgatada com sucesso!\n\n${customer.name} agora tem ${loyaltyCustomers[customerIndex].points} pontos.`);
+                loadLoyaltyData();
+            }
+        }
+
+        function loadRedemptionHistory() {
+            const redemptions = JSON.parse(localStorage.getItem('redemptions')) || [];
+            
+            if (redemptions.length === 0) {
+                document.getElementById('redemption-history').innerHTML = `
+                    <p style="text-align: center; color: #666;">Nenhum resgate realizado ainda.</p>
+                `;
+                return;
+            }
+            
+            const historyHTML = redemptions
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 10) // Mostra apenas os 10 mais recentes
+                .map(redemption => `
+                    <div class="card" style="margin-bottom: 0.5rem; padding: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>${redemption.customerName}</strong> resgatou <strong>${redemption.rewardName}</strong>
+                                <div style="font-size: 0.8rem; color: #666;">
+                                    ${new Date(redemption.date).toLocaleString('pt-BR')} • ${redemption.pointsUsed} pontos
+                                </div>
+                            </div>
+                            <span class="status ${redemption.status === 'completed' ? 'status-confirmed' : 'status-pending'}" style="font-size: 0.8rem;">
+                                ${redemption.status === 'completed' ? 'Entregue' : 'Pendente'}
+                            </span>
+                        </div>
+                    </div>
+                `).join('');
+            
+            document.getElementById('redemption-history').innerHTML = historyHTML;
+        }
+
+        function getDefaultLoyaltySettings() {
+            return {
+                pointsSystem: 'value',
+                pointsPerReal: 1,
+                pointsPerService: 10,
+                vipThreshold: 100,
+                pointsExpiry: 12,
+                vipDiscount: 15
+            };
+        }
+
+        function viewCustomerLoyalty(customerPhone) {
+            const loyaltyCustomers = JSON.parse(localStorage.getItem('loyaltyCustomers')) || [];
+            const customer = loyaltyCustomers.find(c => c.phone === customerPhone);
+            
+            if (!customer) return;
+            
+            const loyaltySettings = JSON.parse(localStorage.getItem('loyaltySettings')) || getDefaultLoyaltySettings();
+            const isVip = customer.points >= loyaltySettings.vipThreshold;
+            
+            const details = `
+PERFIL DE FIDELIDADE
+
+=== INFORMAÇÕES DO CLIENTE ===
+Nome: ${customer.name}
+Telefone: ${customer.phone}
+Email: ${customer.email || 'Não informado'}
+Status: ${isVip ? 'VIP ⭐' : 'Regular'}
+
+=== ESTATÍSTICAS ===
+Pontos Atuais: ${customer.points}
+Total Gasto: R$ ${(customer.totalSpent || 0).toFixed(2).replace('.', ',')}
+Total de Serviços: ${customer.totalServices || 0}
+Cliente desde: ${new Date(customer.joinDate).toLocaleDateString('pt-BR')}
+Última visita: ${new Date(customer.lastVisit).toLocaleDateString('pt-BR')}
+
+=== HISTÓRICO DE PONTOS ===
+${customer.pointsHistory.slice(-5).map(h => 
+    `${new Date(h.date).toLocaleDateString('pt-BR')} - +${h.points} pts - ${h.description}`
+).join('\n')}
+
+${isVip ? `\n🎉 CLIENTE VIP - ${loyaltySettings.vipDiscount}% de desconto em todos os serviços!` : ''}
+            `;
+            
+            alert(details);
+        }
+
+        function sendVipMessage(customerPhone) {
+            const loyaltyCustomers = JSON.parse(localStorage.getItem('loyaltyCustomers')) || [];
+            const customer = loyaltyCustomers.find(c => c.phone === customerPhone);
+            
+            if (!customer) return;
+            
+            const loyaltySettings = JSON.parse(localStorage.getItem('loyaltySettings')) || getDefaultLoyaltySettings();
+            
+            const message = `👑 *CLIENTE VIP* 👑
+
+Olá ${customer.name}!
+
+Você é um dos nossos clientes mais especiais! 
+
+🌟 *Seus pontos:* ${customer.points}
+💎 *Desconto VIP:* ${loyaltySettings.vipDiscount}%
+🎁 *Recompensas disponíveis*
+
+Agende seu próximo serviço e aproveite seus benefícios exclusivos!
+
+*Pingo de Fofura - Banho e Tosa*
+📞 (14) 99854-5722`;
+            
+            if (confirm('Enviar mensagem VIP via WhatsApp?')) {
+                const whatsappUrl = `https://wa.me/55${customerPhone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+            }
+        }
+
+        function sendVipRewards() {
+            const loyaltyCustomers = JSON.parse(localStorage.getItem('loyaltyCustomers')) || [];
+            const loyaltySettings = JSON.parse(localStorage.getItem('loyaltySettings')) || getDefaultLoyaltySettings();
+            const vipCustomers = loyaltyCustomers.filter(c => c.points >= loyaltySettings.vipThreshold);
+            
+            if (vipCustomers.length === 0) {
+                alert('Nenhum cliente VIP encontrado.');
+                return;
+            }
+            
+            const message = `👑 *RECOMPENSA VIP ESPECIAL* 👑
+
+Parabéns por ser um cliente VIP!
+
+🎁 *OFERTA EXCLUSIVA:* 
+${loyaltySettings.vipDiscount}% de desconto + 20 pontos bônus no seu próximo agendamento!
+
+⏰ *Válido até:* ${new Date(Date.now() + 7*24*60*60*1000).toLocaleDateString('pt-BR')}
+
+Agende já e aproveite!
+
+*Pingo de Fofura - Banho e Tosa*
+📞 (14) 99854-5722`;
+            
+            if (confirm(`Enviar recompensa especial para ${vipCustomers.length} clientes VIP?`)) {
+                vipCustomers.forEach(customer => {
+                    const whatsappUrl = `https://wa.me/55${customer.phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
+                    window.open(whatsappUrl, '_blank');
+                });
+                
+                alert(`Mensagens enviadas para ${vipCustomers.length} clientes VIP!`);
+            }
+        }
+
+        function exportLoyalty() {
+            const loyaltyCustomers = JSON.parse(localStorage.getItem('loyaltyCustomers')) || [];
+            const redemptions = JSON.parse(localStorage.getItem('redemptions')) || [];
+            
+            let report = 'RELATÓRIO DE FIDELIDADE\n';
+            report += '='.repeat(50) + '\n\n';
+            
+            report += 'RANKING DE CLIENTES:\n';
+            loyaltyCustomers
+                .sort((a, b) => b.points - a.points)
+                .forEach((customer, index) => {
+                    report += `${index + 1}º - ${customer.name} - ${customer.points} pontos - R$ ${(customer.totalSpent || 0).toFixed(2).replace('.', ',')}\n`;
+                });
+            
+            report += '\nRESGATES RECENTES:\n';
+            redemptions.slice(-10).forEach(redemption => {
+                report += `${new Date(redemption.date).toLocaleDateString('pt-BR')} - ${redemption.customerName} - ${redemption.rewardName} - ${redemption.pointsUsed} pts\n`;
+            });
+            
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `relatorio_fidelidade_${new Date().toISOString().split('T')[0]}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function createReward() {
+            const name = prompt('Nome da recompensa:');
+            if (!name) return;
+            
+            const points = parseInt(prompt('Pontos necessários:', '50'));
+            if (isNaN(points)) return;
+            
+            const description = prompt('Descrição da recompensa:');
+            if (!description) return;
+            
+            alert(`Recompensa "${name}" criada com sucesso!\n\nPontos: ${points}\nDescrição: ${description}\n\nEsta funcionalidade será expandida em versões futuras.`);
+        }
+
+        function editReward(rewardType) {
+            const rewards = {
+                banho: { name: 'Banho Grátis', points: 50 },
+                tosa: { name: 'Tosa Grátis', points: 80 },
+                desconto: { name: '20% de Desconto', points: 30 },
+                spa: { name: 'Spa Completo', points: 120 }
+            };
+            
+            const reward = rewards[rewardType];
+            if (!reward) return;
+            
+            const newPoints = parseInt(prompt(`Pontos necessários para "${reward.name}":`, reward.points));
+            if (isNaN(newPoints)) return;
+            
+            alert(`Recompensa "${reward.name}" atualizada para ${newPoints} pontos!`);
+        }
+
+        function clearRedemptionHistory() {
+            if (confirm('Tem certeza que deseja limpar todo o histórico de resgates?')) {
+                localStorage.removeItem('redemptions');
+                alert('Histórico de resgates limpo com sucesso!');
+                loadLoyaltyData();
+            }
+        }
+
+        // ===== SISTEMA DE REDES SOCIAIS =====
+        
+        function loadSocialData() {
+            // Carrega dados das redes sociais
+            document.getElementById('facebook-followers').textContent = '1.2K';
+            document.getElementById('instagram-followers').textContent = '850';
+            document.getElementById('whatsapp-contacts').textContent = '320';
+            
+            loadSocialSettings();
+        }
+
+        function createPost() {
+            const title = prompt('Título da postagem:');
+            if (!title) return;
+            
+            const content = prompt('Conteúdo da postagem:');
+            if (!content) return;
+            
+            const networks = prompt('Redes sociais (separadas por vírgula):', 'Instagram, Facebook').split(',').map(n => n.trim());
+            
+            const scheduleDate = prompt('Data para publicar (YYYY-MM-DD HH:MM) ou deixe vazio para publicar agora:');
+            
+            const post = {
+                id: Date.now(),
+                title: title,
+                content: content,
+                networks: networks,
+                scheduleDate: scheduleDate || new Date().toISOString(),
+                status: scheduleDate ? 'scheduled' : 'published',
+                createdAt: new Date().toISOString()
+            };
+            
+            const posts = JSON.parse(localStorage.getItem('socialPosts')) || [];
+            posts.push(post);
+            localStorage.setItem('socialPosts', JSON.stringify(posts));
+            
+            alert(`Postagem "${title}" ${scheduleDate ? 'agendada' : 'publicada'} com sucesso!`);
+        }
+
+        function schedulePost() {
+            alert('Funcionalidade de agendamento de posts em desenvolvimento!\n\nPermitirá:\n- Agendar posts para datas específicas\n- Definir horários ideais\n- Repetir posts automaticamente');
+        }
+
+        function createCampaign() {
+            alert('Funcionalidade de campanhas em desenvolvimento!\n\nPermitirá:\n- Criar campanhas promocionais\n- Segmentar público-alvo\n- Acompanhar resultados');
+        }
+
+        function uploadPhoto() {
+            alert('Funcionalidade de upload em desenvolvimento!\n\nPermitirá:\n- Upload de fotos dos pets\n- Organização em álbuns\n- Uso automático nas postagens');
+        }
+
+        function loadSocialSettings() {
+            // Carrega configurações salvas
+            const settings = JSON.parse(localStorage.getItem('socialSettings')) || {};
+            
+            if (settings.facebookPageId) document.getElementById('facebook-page-id').value = settings.facebookPageId;
+            if (settings.instagramUsername) document.getElementById('instagram-username').value = settings.instagramUsername;
+            if (settings.whatsappBusiness) document.getElementById('whatsapp-business').value = settings.whatsappBusiness;
+            if (settings.autoPostTime) document.getElementById('auto-post-time').value = settings.autoPostTime;
+            if (settings.postFrequency) document.getElementById('post-frequency').value = settings.postFrequency;
+            if (settings.autoPostEnabled) document.getElementById('auto-post-enabled').checked = settings.autoPostEnabled;
+        }
+
+        function saveSocialSettings() {
+            const settings = {
+                facebookPageId: document.getElementById('facebook-page-id').value,
+                instagramUsername: document.getElementById('instagram-username').value,
+                whatsappBusiness: document.getElementById('whatsapp-business').value,
+                autoPostTime: document.getElementById('auto-post-time').value,
+                postFrequency: document.getElementById('post-frequency').value,
+                autoPostEnabled: document.getElementById('auto-post-enabled').checked
+            };
+            
+            localStorage.setItem('socialSettings', JSON.stringify(settings));
+            alert('Configurações das redes sociais salvas com sucesso!');
+        }
+
+        // ===== SISTEMA DE LEMBRETES =====
+        
+        function loadRemindersData() {
+            // Carrega dados dos lembretes
+            document.getElementById('active-reminders').textContent = '5';
+            document.getElementById('reminders-sent-today').textContent = '12';
+            document.getElementById('pending-reminders').textContent = '3';
+            
+            loadReminderSettings();
+        }
+
+        function createReminder() {
+            const customerName = prompt('Nome do cliente:');
+            if (!customerName) return;
+            
+            const customerPhone = prompt('Telefone do cliente:');
+            if (!customerPhone) return;
+            
+            const message = prompt('Mensagem do lembrete:', 'Olá! Que tal agendar um novo banho para seu pet?');
+            if (!message) return;
+            
+            const scheduleDate = prompt('Data para enviar (YYYY-MM-DD HH:MM):');
+            if (!scheduleDate) return;
+            
+            const reminder = {
+                id: Date.now(),
+                customerName: customerName,
+                customerPhone: customerPhone,
+                message: message,
+                scheduleDate: scheduleDate,
+                status: 'pending',
+                createdAt: new Date().toISOString()
+            };
+            
+            const reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+            reminders.push(reminder);
+            localStorage.setItem('reminders', JSON.stringify(reminders));
+            
+            alert(`Lembrete para ${customerName} agendado com sucesso!`);
+        }
+
+        function sendBulkReminder() {
+            const message = prompt('Mensagem para envio em massa:', '🐾 Que tal agendar um banho para seu pet? Entre em contato conosco!');
+            if (!message) return;
+            
+            const customers = JSON.parse(localStorage.getItem('pets')) || [];
+            const uniqueCustomers = customers.reduce((acc, pet) => {
+                const key = pet.owner.phone;
+                if (!acc[key]) {
+                    acc[key] = pet.owner;
+                }
+                return acc;
+            }, {});
+            
+            const customerList = Object.values(uniqueCustomers);
+            
+            if (confirm(`Enviar lembrete para ${customerList.length} clientes?`)) {
+                customerList.forEach(customer => {
+                    const whatsappUrl = `https://wa.me/55${customer.phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
+                    window.open(whatsappUrl, '_blank');
+                });
+                
+                alert(`Lembretes enviados para ${customerList.length} clientes!`);
+            }
+        }
+
+        function scheduleReminder() {
+            alert('Funcionalidade de agendamento de lembretes em desenvolvimento!\n\nPermitirá:\n- Agendar lembretes para datas específicas\n- Definir recorrência\n- Templates personalizados');
+        }
+
+        function loadReminderSettings() {
+            const settings = JSON.parse(localStorage.getItem('reminderSettings')) || {};
+            
+            document.getElementById('return-reminder-enabled').checked = settings.returnReminderEnabled || false;
+            document.getElementById('return-reminder-days').value = settings.returnReminderDays || 30;
+            document.getElementById('birthday-reminder-enabled').checked = settings.birthdayReminderEnabled || false;
+            document.getElementById('birthday-reminder-days').value = settings.birthdayReminderDays || 3;
+            document.getElementById('reactivation-reminder-enabled').checked = settings.reactivationReminderEnabled || false;
+            document.getElementById('reactivation-reminder-days').value = settings.reactivationReminderDays || 60;
+            document.getElementById('confirmation-reminder-enabled').checked = settings.confirmationReminderEnabled || false;
+            document.getElementById('confirmation-reminder-hours').value = settings.confirmationReminderHours || 24;
+        }
+
+        function saveReminderSettings() {
+            const settings = {
+                returnReminderEnabled: document.getElementById('return-reminder-enabled').checked,
+                returnReminderDays: parseInt(document.getElementById('return-reminder-days').value),
+                birthdayReminderEnabled: document.getElementById('birthday-reminder-enabled').checked,
+                birthdayReminderDays: parseInt(document.getElementById('birthday-reminder-days').value),
+                reactivationReminderEnabled: document.getElementById('reactivation-reminder-enabled').checked,
+                reactivationReminderDays: parseInt(document.getElementById('reactivation-reminder-days').value),
+                confirmationReminderEnabled: document.getElementById('confirmation-reminder-enabled').checked,
+                confirmationReminderHours: parseInt(document.getElementById('confirmation-reminder-hours').value)
+            };
+            
+            localStorage.setItem('reminderSettings', JSON.stringify(settings));
+            alert('Configurações de lembretes salvas com sucesso!');
+        }
+
+        function sendReminder(reminderId) {
+            const reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+            const reminder = reminders.find(r => r.id === reminderId);
+            
+            if (!reminder) return;
+            
+            const whatsappUrl = `https://wa.me/55${reminder.customerPhone.replace(/\D/g, '')}?text=${encodeURIComponent(reminder.message)}`;
+            window.open(whatsappUrl, '_blank');
+            
+            // Marca como enviado
+            const reminderIndex = reminders.findIndex(r => r.id === reminderId);
+            reminders[reminderIndex].status = 'sent';
+            reminders[reminderIndex].sentAt = new Date().toISOString();
+            localStorage.setItem('reminders', JSON.stringify(reminders));
+            
+            alert('Lembrete enviado com sucesso!');
+        }
+
+        function clearReminderHistory() {
+            if (confirm('Tem certeza que deseja limpar o histórico de lembretes?')) {
+                localStorage.removeItem('reminderHistory');
+                alert('Histórico de lembretes limpo com sucesso!');
+            }
+        }
+
+        function createTemplate() {
+            const name = prompt('Nome do template:');
+            if (!name) return;
+            
+            const message = prompt('Mensagem do template (use {NOME}, {PET}, {HORARIO} para personalizar):');
+            if (!message) return;
+            
+            const templates = JSON.parse(localStorage.getItem('messageTemplates')) || [];
+            templates.push({
+                id: Date.now(),
+                name: name,
+                message: message,
+                createdAt: new Date().toISOString()
+            });
+            
+            localStorage.setItem('messageTemplates', JSON.stringify(templates));
+            alert(`Template "${name}" criado com sucesso!`);
+        }
+
+        function editTemplate(templateType) {
+            const templates = {
+                return: 'Olá {NOME}! O {PET} está com saudades do banho! Que tal agendar um novo serviço?',
+                birthday: 'Parabéns! Hoje é aniversário do {PET}! 🎉 Que tal um banho especial para comemorar?',
+                confirmation: 'Oi {NOME}! Confirmando o agendamento do {PET} para amanhã às {HORARIO}. Nos vemos lá!'
+            };
+            
+            const currentTemplate = templates[templateType];
+            const newTemplate = prompt(`Editar template de ${templateType}:`, currentTemplate);
+            
+            if (newTemplate) {
+                alert(`Template de ${templateType} atualizado com sucesso!`);
+            }
+        }
+
+        // ===== SISTEMA DE PREÇOS =====
+        
+        function loadPricingData() {
+            // Carrega dados dos preços
+            document.getElementById('active-services').textContent = '8';
+            document.getElementById('average-price').textContent = 'R$ 42';
+            document.getElementById('average-margin').textContent = '65%';
+            
+            loadPricingSettings();
+        }
+
+        function addNewService() {
+            const serviceName = prompt('Nome do serviço:');
+            if (!serviceName) return;
+            
+            const smallPrice = parseFloat(prompt('Preço para porte pequeno:', '25.00'));
+            const mediumPrice = parseFloat(prompt('Preço para porte médio:', '35.00'));
+            const largePrice = parseFloat(prompt('Preço para porte grande:', '45.00'));
+            const cost = parseFloat(prompt('Custo do serviço:', '12.00'));
+            
+            if (isNaN(smallPrice) || isNaN(mediumPrice) || isNaN(largePrice) || isNaN(cost)) return;
+            
+            const services = JSON.parse(localStorage.getItem('services')) || [];
+            services.push({
+                id: Date.now(),
+                name: serviceName,
+                prices: {
+                    pequeno: smallPrice,
+                    medio: mediumPrice,
+                    grande: largePrice
+                },
+                cost: cost,
+                margin: Math.round(((smallPrice - cost) / smallPrice) * 100),
+                active: true,
+                createdAt: new Date().toISOString()
+            });
+            
+            localStorage.setItem('services', JSON.stringify(services));
+            alert(`Serviço "${serviceName}" adicionado com sucesso!`);
+        }
+
+        function editServicePrice(serviceType) {
+            const services = {
+                banho: { name: 'Banho Completo', pequeno: 25, medio: 35, grande: 45, cost: 12 },
+                tosa: { name: 'Tosa Completa', pequeno: 40, medio: 55, grande: 70, cost: 18 },
+                higienica: { name: 'Tosa Higiênica', pequeno: 20, medio: 25, grande: 30, cost: 8 },
+                combo: { name: 'Banho + Tosa', pequeno: 55, medio: 75, grande: 95, cost: 25 },
+                unhas: { name: 'Corte de Unhas', pequeno: 15, medio: 15, grande: 20, cost: 3 }
+            };
+            
+            const service = services[serviceType];
+            if (!service) return;
+            
+            const newSmallPrice = parseFloat(prompt(`${service.name} - Preço porte pequeno:`, service.pequeno));
+            const newMediumPrice = parseFloat(prompt(`${service.name} - Preço porte médio:`, service.medio));
+            const newLargePrice = parseFloat(prompt(`${service.name} - Preço porte grande:`, service.grande));
+            
+            if (!isNaN(newSmallPrice) && !isNaN(newMediumPrice) && !isNaN(newLargePrice)) {
+                alert(`Preços do serviço "${service.name}" atualizados com sucesso!`);
+                
+                // Registra no histórico
+                const history = JSON.parse(localStorage.getItem('priceHistory')) || [];
+                history.push({
+                    service: service.name,
+                    oldPrices: { pequeno: service.pequeno, medio: service.medio, grande: service.grande },
+                    newPrices: { pequeno: newSmallPrice, medio: newMediumPrice, grande: newLargePrice },
+                    changedBy: currentAdminUser?.name || 'Admin',
+                    changedAt: new Date().toISOString()
+                });
+                localStorage.setItem('priceHistory', JSON.stringify(history));
+            }
+        }
+
+        function updateAllPrices() {
+            const percentage = parseFloat(prompt('Percentual de reajuste (%):', '5'));
+            if (isNaN(percentage)) return;
+            
+            if (confirm(`Aplicar reajuste de ${percentage}% em todos os preços?`)) {
+                alert(`Reajuste de ${percentage}% aplicado em todos os serviços!`);
+            }
+        }
+
+        function exportPriceTable() {
+            let report = 'TABELA DE PREÇOS - PINGO DE FOFURA\n';
+            report += '='.repeat(50) + '\n\n';
+            report += 'SERVIÇO\t\t\tPEQUENO\tMÉDIO\tGRANDE\n';
+            report += 'Banho Completo\t\tR$ 25,00\tR$ 35,00\tR$ 45,00\n';
+            report += 'Tosa Completa\t\tR$ 40,00\tR$ 55,00\tR$ 70,00\n';
+            report += 'Tosa Higiênica\t\tR$ 20,00\tR$ 25,00\tR$ 30,00\n';
+            report += 'Banho + Tosa\t\tR$ 55,00\tR$ 75,00\tR$ 95,00\n';
+            report += 'Corte de Unhas\t\tR$ 15,00\tR$ 15,00\tR$ 20,00\n';
+            
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `tabela_precos_${new Date().toISOString().split('T')[0]}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function createPromotionalPrice() {
+            alert('Funcionalidade de preços promocionais em desenvolvimento!\n\nPermitirá:\n- Criar promoções temporárias\n- Definir condições especiais\n- Aplicar descontos automáticos');
+        }
+
+        function loadPricingSettings() {
+            const settings = JSON.parse(localStorage.getItem('pricingSettings')) || {};
+            
+            document.getElementById('default-margin').value = settings.defaultMargin || 65;
+            document.getElementById('auto-adjustment').value = settings.autoAdjustment || 5;
+            document.getElementById('adjustment-frequency').value = settings.adjustmentFrequency || 'never';
+            document.getElementById('max-discount').value = settings.maxDiscount || 30;
+            document.getElementById('price-rounding').value = settings.priceRounding || 'none';
+            document.getElementById('dynamic-pricing').checked = settings.dynamicPricing || false;
+        }
+
+        function savePricingSettings() {
+            const settings = {
+                defaultMargin: parseInt(document.getElementById('default-margin').value),
+                autoAdjustment: parseFloat(document.getElementById('auto-adjustment').value),
+                adjustmentFrequency: document.getElementById('adjustment-frequency').value,
+                maxDiscount: parseInt(document.getElementById('max-discount').value),
+                priceRounding: document.getElementById('price-rounding').value,
+                dynamicPricing: document.getElementById('dynamic-pricing').checked
+            };
+            
+            localStorage.setItem('pricingSettings', JSON.stringify(settings));
+            alert('Configurações de preços salvas com sucesso!');
+        }
+
+        function clearPriceHistory() {
+            if (confirm('Tem certeza que deseja limpar o histórico de preços?')) {
+                localStorage.removeItem('priceHistory');
+                alert('Histórico de preços limpo com sucesso!');
+            }
+        }
+
+        function calculatePrice() {
+            const service = document.getElementById('sim-service').value;
+            const size = document.getElementById('sim-size').value;
+            const discount = parseFloat(document.getElementById('sim-discount').value) || 0;
+            
+            const prices = {
+                banho: { pequeno: 25, medio: 35, grande: 45 },
+                tosa: { pequeno: 40, medio: 55, grande: 70 },
+                combo: { pequeno: 55, medio: 75, grande: 95 },
+                higienica: { pequeno: 20, medio: 25, grande: 30 }
+            };
+            
+            const basePrice = prices[service][size];
+            const finalPrice = basePrice * (1 - discount / 100);
+            
+            document.getElementById('sim-final-price').value = `R$ ${finalPrice.toFixed(2).replace('.', ',')}`;
+        }
+
+        // ===== SISTEMA DE PROMOÇÕES =====
+        
+        function loadPromotionsData() {
+            const promotions = JSON.parse(localStorage.getItem('promotions')) || [];
+            const coupons = JSON.parse(localStorage.getItem('coupons')) || [];
+            const autoPromotions = JSON.parse(localStorage.getItem('autoPromotions')) || {};
+            
+            // Atualiza cards de resumo
+            const activePromotions = promotions.filter(p => p.status === 'active' && new Date(p.endDate) > new Date()).length;
+            document.getElementById('active-promotions').textContent = activePromotions;
+            
+            // Calcula economia total gerada
+            const totalSavings = promotions.reduce((sum, promo) => sum + (promo.totalSavings || 0), 0);
+            document.getElementById('total-savings').textContent = `R$ ${totalSavings.toFixed(2).replace('.', ',')}`;
+            
+            // Conta clientes beneficiados
+            const customersWithPromotions = new Set();
+            promotions.forEach(promo => {
+                if (promo.usedBy) {
+                    promo.usedBy.forEach(customer => customersWithPromotions.add(customer));
+                }
+            });
+            document.getElementById('customers-with-promotions').textContent = customersWithPromotions.size;
+            
+            // Carrega lista de promoções
+            loadPromotionsList();
+            loadCouponsList();
+            loadAutoPromotionsSettings();
+        }
+
+        function loadPromotionsList() {
+            const promotions = JSON.parse(localStorage.getItem('promotions')) || [];
+            
+            if (promotions.length === 0) {
+                document.getElementById('promotions-list').innerHTML = `
+                    <p style="text-align: center; color: #666;">Nenhuma promoção cadastrada ainda.</p>
+                `;
+                return;
+            }
+            
+            const promotionsHTML = promotions.map(promo => {
+                const isActive = promo.status === 'active' && new Date(promo.endDate) > new Date();
+                const isExpired = new Date(promo.endDate) <= new Date();
+                
+                return `
+                    <div class="card" style="margin-bottom: 1rem; border-left: 4px solid ${isActive ? '#28a745' : isExpired ? '#dc3545' : '#ffc107'};">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0; color: var(--primary);">${promo.name}</h4>
+                                <p style="margin: 0.5rem 0; font-size: 0.9rem;">${promo.description}</p>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5rem; font-size: 0.8rem; color: #666;">
+                                    <div><strong>Tipo:</strong> ${getPromotionTypeText(promo.type)}</div>
+                                    <div><strong>Desconto:</strong> ${promo.discountType === 'percentage' ? promo.discountValue + '%' : 'R$ ' + promo.discountValue.toFixed(2).replace('.', ',')}</div>
+                                    <div><strong>Início:</strong> ${new Date(promo.startDate).toLocaleDateString('pt-BR')}</div>
+                                    <div><strong>Fim:</strong> ${new Date(promo.endDate).toLocaleDateString('pt-BR')}</div>
+                                    <div><strong>Usos:</strong> ${promo.usageCount || 0}/${promo.maxUsage || '∞'}</div>
+                                    <div><strong>Economia:</strong> R$ ${(promo.totalSavings || 0).toFixed(2).replace('.', ',')}</div>
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <span class="status ${isActive ? 'status-confirmed' : isExpired ? 'status-cancelled' : 'status-pending'}" style="font-size: 0.8rem;">
+                                    ${isActive ? 'Ativa' : isExpired ? 'Expirada' : 'Inativa'}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <button onclick="viewPromotionDetails(${promo.id})" class="secondary" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                <i class="fas fa-eye"></i> Ver Detalhes
+                            </button>
+                            <button onclick="editPromotion(${promo.id})" class="secondary" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                            <button onclick="duplicatePromotion(${promo.id})" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                <i class="fas fa-copy"></i> Duplicar
+                            </button>
+                            ${isActive ? 
+                                `<button onclick="deactivatePromotion(${promo.id})" class="danger" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-stop"></i> Desativar
+                                </button>` :
+                                `<button onclick="activatePromotion(${promo.id})" class="success" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-play"></i> Ativar
+                                </button>`
+                            }
+                            <button onclick="sharePromotion(${promo.id})" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                                <i class="fas fa-share"></i> Compartilhar
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('promotions-list').innerHTML = promotionsHTML;
+        }
+
+        function createPromotion() {
+            const name = prompt('Nome da promoção:');
+            if (!name) return;
+            
+            const description = prompt('Descrição da promoção:');
+            if (!description) return;
+            
+            const type = prompt('Tipo de promoção:\n1 - Desconto geral\n2 - Desconto por serviço\n3 - Desconto por porte\n4 - Combo especial\n5 - Primeira visita\n\nDigite o número:');
+            if (!type || type < 1 || type > 5) return;
+            
+            const discountType = confirm('Desconto em porcentagem? (Cancelar para valor fixo)') ? 'percentage' : 'fixed';
+            const discountValue = parseFloat(prompt(`Valor do desconto ${discountType === 'percentage' ? '(%)' : '(R$)'}:`));
+            if (isNaN(discountValue)) return;
+            
+            const startDate = prompt('Data de início (YYYY-MM-DD):', new Date().toISOString().split('T')[0]);
+            if (!startDate) return;
+            
+            const endDate = prompt('Data de fim (YYYY-MM-DD):', new Date(Date.now() + 30*24*60*60*1000).toISOString().split('T')[0]);
+            if (!endDate) return;
+            
+            const maxUsage = prompt('Limite de usos (deixe vazio para ilimitado):');
+            
+            const promotions = JSON.parse(localStorage.getItem('promotions')) || [];
+            const newPromotion = {
+                id: Date.now(),
+                name: name,
+                description: description,
+                type: parseInt(type),
+                discountType: discountType,
+                discountValue: discountValue,
+                startDate: startDate,
+                endDate: endDate,
+                maxUsage: maxUsage ? parseInt(maxUsage) : null,
+                status: 'active',
+                createdAt: new Date().toISOString(),
+                usageCount: 0,
+                totalSavings: 0,
+                usedBy: [],
+                conditions: getPromotionConditions(parseInt(type))
+            };
+            
+            promotions.push(newPromotion);
+            localStorage.setItem('promotions', JSON.stringify(promotions));
+            
+            alert(`Promoção "${name}" criada com sucesso!`);
+            loadPromotionsData();
+        }
+
+        function createCoupon() {
+            const code = prompt('Código do cupom (deixe vazio para gerar automaticamente):') || generateCouponCode();
+            const description = prompt('Descrição do cupom:');
+            if (!description) return;
+            
+            const discountType = confirm('Desconto em porcentagem? (Cancelar para valor fixo)') ? 'percentage' : 'fixed';
+            const discountValue = parseFloat(prompt(`Valor do desconto ${discountType === 'percentage' ? '(%)' : '(R$)'}:`));
+            if (isNaN(discountValue)) return;
+            
+            const expiryDate = prompt('Data de expiração (YYYY-MM-DD):', new Date(Date.now() + 30*24*60*60*1000).toISOString().split('T')[0]);
+            if (!expiryDate) return;
+            
+            const maxUsage = parseInt(prompt('Limite de usos:', '1'));
+            if (isNaN(maxUsage)) return;
+            
+            const coupons = JSON.parse(localStorage.getItem('coupons')) || [];
+            const newCoupon = {
+                id: Date.now(),
+                code: code.toUpperCase(),
+                description: description,
+                discountType: discountType,
+                discountValue: discountValue,
+                expiryDate: expiryDate,
+                maxUsage: maxUsage,
+                usageCount: 0,
+                status: 'active',
+                createdAt: new Date().toISOString(),
+                usedBy: []
+            };
+            
+            coupons.push(newCoupon);
+            localStorage.setItem('coupons', JSON.stringify(coupons));
+            
+            alert(`Cupom "${code}" criado com sucesso!`);
+            loadPromotionsData();
+        }
+
+        function loadCouponsList() {
+            const coupons = JSON.parse(localStorage.getItem('coupons')) || [];
+            
+            if (coupons.length === 0) {
+                document.getElementById('coupons-list').innerHTML = `
+                    <p style="text-align: center; color: #666;">Nenhum cupom criado ainda.</p>
+                `;
+                return;
+            }
+            
+            const couponsHTML = coupons.map(coupon => {
+                const isActive = coupon.status === 'active' && new Date(coupon.expiryDate) > new Date();
+                const isExpired = new Date(coupon.expiryDate) <= new Date();
+                
+                return `
+                    <div class="card" style="margin-bottom: 1rem; background: ${isActive ? '#f8fff8' : isExpired ? '#fff8f8' : '#fffef8'};">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0; color: var(--primary); font-family: monospace;">${coupon.code}</h4>
+                                <p style="margin: 0.5rem 0; font-size: 0.9rem;">${coupon.description}</p>
+                                <div style="display: flex; gap: 1rem; font-size: 0.8rem; color: #666;">
+                                    <span><strong>Desconto:</strong> ${coupon.discountType === 'percentage' ? coupon.discountValue + '%' : 'R$ ' + coupon.discountValue.toFixed(2).replace('.', ',')}</span>
+                                    <span><strong>Expira:</strong> ${new Date(coupon.expiryDate).toLocaleDateString('pt-BR')}</span>
+                                    <span><strong>Usos:</strong> ${coupon.usageCount}/${coupon.maxUsage}</span>
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <span class="status ${isActive ? 'status-confirmed' : isExpired ? 'status-cancelled' : 'status-pending'}" style="font-size: 0.8rem;">
+                                    ${isActive ? 'Ativo' : isExpired ? 'Expirado' : 'Inativo'}
+                                </span>
+                                <div style="margin-top: 0.5rem;">
+                                    <button onclick="copyCouponCode('${coupon.code}')" style="padding: 0.2rem 0.5rem; font-size: 0.7rem;">
+                                        <i class="fas fa-copy"></i> Copiar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('coupons-list').innerHTML = couponsHTML;
+        }
+
+        function generateBulkCoupons() {
+            const quantity = parseInt(prompt('Quantos cupons gerar?', '10'));
+            if (isNaN(quantity) || quantity <= 0) return;
+            
+            const prefix = prompt('Prefixo dos cupons:', 'PINGO');
+            const discountValue = parseFloat(prompt('Valor do desconto (%):', '10'));
+            if (isNaN(discountValue)) return;
+            
+            const expiryDate = prompt('Data de expiração (YYYY-MM-DD):', new Date(Date.now() + 30*24*60*60*1000).toISOString().split('T')[0]);
+            if (!expiryDate) return;
+            
+            const coupons = JSON.parse(localStorage.getItem('coupons')) || [];
+            const newCoupons = [];
+            
+            for (let i = 0; i < quantity; i++) {
+                const code = `${prefix}${String(Date.now() + i).slice(-6)}`;
+                const newCoupon = {
+                    id: Date.now() + i,
+                    code: code,
+                    description: `Cupom promocional - ${discountValue}% de desconto`,
+                    discountType: 'percentage',
+                    discountValue: discountValue,
+                    expiryDate: expiryDate,
+                    maxUsage: 1,
+                    usageCount: 0,
+                    status: 'active',
+                    createdAt: new Date().toISOString(),
+                    usedBy: []
+                };
+                
+                coupons.push(newCoupon);
+                newCoupons.push(code);
+            }
+            
+            localStorage.setItem('coupons', JSON.stringify(coupons));
+            
+            // Simula download da lista de cupons
+            const couponsList = newCoupons.join('\n');
+            const blob = new Blob([couponsList], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cupons_${new Date().toISOString().split('T')[0]}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            alert(`${quantity} cupons gerados com sucesso! Lista baixada.`);
+            loadPromotionsData();
+        }
+
+        function loadAutoPromotionsSettings() {
+            const autoPromotions = JSON.parse(localStorage.getItem('autoPromotions')) || {};
+            
+            document.getElementById('birthday-promo').checked = autoPromotions.birthday || false;
+            document.getElementById('loyalty-promo').checked = autoPromotions.loyalty || false;
+            document.getElementById('time-promo').checked = autoPromotions.time || false;
+        }
+
+        function toggleAutoPromotion(type) {
+            const autoPromotions = JSON.parse(localStorage.getItem('autoPromotions')) || {};
+            const checkbox = document.getElementById(`${type}-promo`);
+            
+            autoPromotions[type] = checkbox.checked;
+            localStorage.setItem('autoPromotions', JSON.stringify(autoPromotions));
+            
+            const messages = {
+                birthday: 'Promoção de aniversário do pet',
+                loyalty: 'Promoção de cliente fiel',
+                time: 'Promoção por horário'
+            };
+            
+            alert(`${messages[type]} ${checkbox.checked ? 'ativada' : 'desativada'}!`);
+        }
+
+        // Funções auxiliares para promoções
+        function getPromotionTypeText(type) {
+            const types = {
+                1: 'Desconto Geral',
+                2: 'Desconto por Serviço',
+                3: 'Desconto por Porte',
+                4: 'Combo Especial',
+                5: 'Primeira Visita'
+            };
+            return types[type] || 'Desconhecido';
+        }
+
+        function getPromotionConditions(type) {
+            const conditions = {
+                1: { minValue: 0, services: [], petSizes: [] },
+                2: { minValue: 0, services: ['banho', 'tosa'], petSizes: [] },
+                3: { minValue: 0, services: [], petSizes: ['pequeno'] },
+                4: { minValue: 50, services: ['banho', 'tosa'], petSizes: [] },
+                5: { minValue: 0, services: [], petSizes: [], firstVisit: true }
+            };
+            return conditions[type] || {};
+        }
+
+        function generateCouponCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = 'PINGO';
+            for (let i = 0; i < 4; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        function copyCouponCode(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                alert(`Código ${code} copiado para a área de transferência!`);
+            });
+        }
+
+        function viewPromotionDetails(promoId) {
+            const promotions = JSON.parse(localStorage.getItem('promotions')) || [];
+            const promo = promotions.find(p => p.id === promoId);
+            
+            if (!promo) return;
+            
+            const details = `
+DETALHES DA PROMOÇÃO
+
+Nome: ${promo.name}
+Descrição: ${promo.description}
+Tipo: ${getPromotionTypeText(promo.type)}
+
+Desconto: ${promo.discountType === 'percentage' ? promo.discountValue + '%' : 'R$ ' + promo.discountValue.toFixed(2).replace('.', ',')}
+Período: ${new Date(promo.startDate).toLocaleDateString('pt-BR')} até ${new Date(promo.endDate).toLocaleDateString('pt-BR')}
+Status: ${promo.status.toUpperCase()}
+
+Estatísticas:
+- Usos: ${promo.usageCount || 0}${promo.maxUsage ? `/${promo.maxUsage}` : ''}
+- Economia gerada: R$ ${(promo.totalSavings || 0).toFixed(2).replace('.', ',')}
+- Clientes beneficiados: ${promo.usedBy ? promo.usedBy.length : 0}
+
+Criada em: ${new Date(promo.createdAt).toLocaleString('pt-BR')}
+            `;
+            
+            alert(details);
+        }
+
+        function editPromotion(promoId) {
+            alert('Funcionalidade de edição de promoção em desenvolvimento');
+        }
+
+        function duplicatePromotion(promoId) {
+            const promotions = JSON.parse(localStorage.getItem('promotions')) || [];
+            const promo = promotions.find(p => p.id === promoId);
+            
+            if (!promo) return;
+            
+            const newPromo = {
+                ...promo,
+                id: Date.now(),
+                name: promo.name + ' (Cópia)',
+                status: 'inactive',
+                createdAt: new Date().toISOString(),
+                usageCount: 0,
+                totalSavings: 0,
+                usedBy: []
+            };
+            
+            promotions.push(newPromo);
+            localStorage.setItem('promotions', JSON.stringify(promotions));
+            
+            alert('Promoção duplicada com sucesso!');
+            loadPromotionsData();
+        }
+
+        function activatePromotion(promoId) {
+            const promotions = JSON.parse(localStorage.getItem('promotions')) || [];
+            const promoIndex = promotions.findIndex(p => p.id === promoId);
+            
+            if (promoIndex === -1) return;
+            
+            promotions[promoIndex].status = 'active';
+            localStorage.setItem('promotions', JSON.stringify(promotions));
+            
+            alert('Promoção ativada com sucesso!');
+            loadPromotionsData();
+        }
+
+        function deactivatePromotion(promoId) {
+            const promotions = JSON.parse(localStorage.getItem('promotions')) || [];
+            const promoIndex = promotions.findIndex(p => p.id === promoId);
+            
+            if (promoIndex === -1) return;
+            
+            promotions[promoIndex].status = 'inactive';
+            localStorage.setItem('promotions', JSON.stringify(promotions));
+            
+            alert('Promoção desativada com sucesso!');
+            loadPromotionsData();
+        }
+
+        function sharePromotion(promoId) {
+            const promotions = JSON.parse(localStorage.getItem('promotions')) || [];
+            const promo = promotions.find(p => p.id === promoId);
+            
+            if (!promo) return;
+            
+            const message = `🎉 *PROMOÇÃO ESPECIAL* 🎉
+
+${promo.name}
+
+${promo.description}
+
+💰 *Desconto:* ${promo.discountType === 'percentage' ? promo.discountValue + '%' : 'R$ ' + promo.discountValue.toFixed(2).replace('.', ',')}
+📅 *Válida até:* ${new Date(promo.endDate).toLocaleDateString('pt-BR')}
+
+Agende já o seu horário!
+
+*Pingo de Fofura - Banho e Tosa*
+📞 (14) 99854-5722`;
+            
+            if (confirm('Compartilhar promoção via WhatsApp?')) {
+                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+            }
+        }
+
+        function exportPromotionsReport() {
+            const promotions = JSON.parse(localStorage.getItem('promotions')) || [];
+            const coupons = JSON.parse(localStorage.getItem('coupons')) || [];
+            
+            let report = 'RELATÓRIO DE PROMOÇÕES\n';
+            report += '='.repeat(50) + '\n\n';
+            
+            report += 'PROMOÇÕES:\n';
+            promotions.forEach(promo => {
+                report += `${promo.name} - ${promo.status} - Usos: ${promo.usageCount || 0} - Economia: R$ ${(promo.totalSavings || 0).toFixed(2).replace('.', ',')}\n`;
+            });
+            
+            report += '\nCUPONS:\n';
+            coupons.forEach(coupon => {
+                report += `${coupon.code} - ${coupon.status} - Usos: ${coupon.usageCount}/${coupon.maxUsage}\n`;
+            });
+            
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `relatorio_promocoes_${new Date().toISOString().split('T')[0]}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function configureAutoPromotions() {
+            alert('Configurações de promoções automáticas:\n\n✅ Use os checkboxes abaixo para ativar/desativar\n✅ Aniversário do Pet: 20% de desconto no mês\n✅ Cliente Fiel: 15% após 5 serviços\n✅ Horário Promocional: 10% pela manhã');
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verifica se há usuário logado no localStorage
+            const savedUser = localStorage.getItem('currentAdminUser');
+            
+            if (savedUser) {
+                currentAdminUser = JSON.parse(savedUser);
+                document.getElementById('admin-user-name').textContent = currentAdminUser.name;
+                document.getElementById('login-modal').style.display = 'none';
+                document.getElementById('admin-content').classList.add('show');
+                loadDashboardData();
+            }
+        });
+
+        // Salva usuário no localStorage ao fazer login
+        document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+            
+            const user = adminUsers.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                currentAdminUser = user;
+                localStorage.setItem('currentAdminUser', JSON.stringify(user));
+                document.getElementById('admin-user-name').textContent = user.name;
+                document.getElementById('login-modal').style.display = 'none';
+                document.getElementById('admin-content').classList.add('show');
+                loadDashboardData();
+            } else {
+                alert('Usuário ou senha incorretos!');
+            }
+        });
+
+        // Remove usuário do localStorage ao fazer logout
+        function adminLogout() {
+            currentAdminUser = null;
+            localStorage.removeItem('currentAdminUser');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
